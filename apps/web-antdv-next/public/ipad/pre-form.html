@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>医疗巡诊系统 - 巡诊信息登记</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+        body { background-color: #F1F5F9; font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+<div class="w-full max-w-[800px] bg-white rounded-3xl shadow-2xl p-10">
+<div class="flex items-center justify-between mb-10">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+<iconify-icon class="text-white text-3xl" icon="solar:clipboard-list-bold"></iconify-icon>
+</div>
+<div>
+<h1 class="text-3xl font-bold text-slate-800">巡诊信息登记</h1>
+<p class="text-slate-500">请先填写本次巡诊保障的基础背景信息</p>
+</div>
+</div>
+<a class="text-blue-600 hover:text-blue-700 flex items-center gap-1 font-medium" href="login.html">
+<iconify-icon icon="solar:logout-2-bold"></iconify-icon>
+<span>返回登录</span>
+</a>
+</div>
+<div class="grid grid-cols-2 gap-8 mb-12">
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700">保障类型</label>
+<input class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" id="type" placeholder="如：日常巡诊、演习保障" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700">保障地点</label>
+<input class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" id="location" placeholder="如：一号营区、训练场" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700">保障人数</label>
+<input class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" id="count" placeholder="请输入预计保障人数" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700">保障对象</label>
+<input class="w-full px-5 py-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" id="target" placeholder="如：某部全体官兵" type="text"/>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="group px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-xl shadow-blue-100 flex items-center gap-3 transition-all transform hover:translate-x-1" onclick="nextStep()">
+<span class="text-lg">下一步</span>
+<iconify-icon class="text-2xl group-hover:translate-x-1 transition-transform" icon="solar:alt-arrow-right-bold-duotone"></iconify-icon>
+</button>
+</div>
+</div>
+<script>
+        function nextStep() {
+            const type = document.getElementById('type').value;
+            const locationVal = document.getElementById('location').value;
+            const count = document.getElementById('count').value;
+            const target = document.getElementById('target').value;
+
+            if (!type || !locationVal || !count || !target) {
+                alert('请填写完整信息');
+                return;
+            }
+
+            // 携带参数跳转
+            const params = new URLSearchParams({
+                type,
+                location: locationVal,
+                count,
+                target
+            });
+            window.location.href = `form.html?${params.toString()}`;
+        }
+    </script>
+</body>
+</html>

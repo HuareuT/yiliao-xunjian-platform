@@ -1,0 +1,429 @@
+<!doctype html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>医疗巡诊系统 - 登录</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <style>
+      body {
+        background-color: #f8fafc;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+      .login-card {
+        transition: all 0.3s ease;
+      }
+      .input-field:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+      .error-shake {
+        animation: shake 0.4s ease-in-out;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-6px);
+        }
+        75% {
+          transform: translateX(6px);
+        }
+      }
+      .tab-btn {
+        transition: all 0.25s ease;
+        cursor: pointer;
+      }
+      .tab-btn.active {
+        background-color: #2563eb;
+        color: white;
+        border-color: #2563eb;
+      }
+      .tab-btn:not(.active) {
+        background-color: white;
+        color: #64748b;
+        border-color: #cbd5e1;
+      }
+      .tab-btn:not(.active):hover {
+        border-color: #2563eb;
+        color: #2563eb;
+      }
+      .field-group {
+        overflow: hidden;
+        transition:
+          max-height 0.35s ease,
+          opacity 0.3s ease,
+          margin 0.3s ease;
+        max-height: 0;
+        opacity: 0;
+        margin-bottom: 0;
+      }
+      .field-group.show {
+        max-height: 500px;
+        opacity: 1;
+        margin-bottom: 1.25rem;
+      }
+      .field-group.show > * {
+        transition-delay: 0.1s;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-slate-50">
+    <div class="w-full max-w-[900px] bg-white rounded-2xl shadow-xl overflow-hidden">
+      <!-- 顶部标题 -->
+      <div class="bg-blue-600 px-8 py-6 text-center">
+        <div class="flex items-center justify-center gap-3 mb-1">
+          <iconify-icon class="text-white text-3xl" icon="solar:stethoscope-bold"></iconify-icon>
+          <h1 class="text-2xl font-bold text-white">医疗巡诊系统</h1>
+        </div>
+        <p class="text-blue-100 text-sm">请填写医生与护士信息进行登录</p>
+      </div>
+      <!-- 左右分栏区域 -->
+      <div class="flex flex-col md:flex-row">
+        <!-- 左侧：医生登录 -->
+        <div class="flex-1 p-8 md:border-r border-slate-100">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <iconify-icon class="text-blue-600 text-xl" icon="solar:user-id-bold"></iconify-icon>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800">医生登录</h2>
+          </div>
+          <!-- Tab 切换 -->
+          <div class="flex rounded-lg border border-slate-200 overflow-hidden mb-5">
+            <div
+              class="tab-btn active flex-1 text-center py-2 text-sm font-medium"
+              data-side="doctor"
+              data-tab="fixed"
+              onclick="switchTab('doctor', 'fixed')"
+            >
+              固定账号
+            </div>
+            <div
+              class="tab-btn flex-1 text-center py-2 text-sm font-medium border-l border-slate-200"
+              data-side="doctor"
+              data-tab="public"
+              onclick="switchTab('doctor', 'public')"
+            >
+              公用账号
+            </div>
+          </div>
+          <div class="space-y-5">
+            <!-- 固定账号字段组（默认显示，通过 max-height 控制） -->
+            <div class="field-group show" id="doctor-fixed-fields">
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >账号 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="doctor-account"
+                  placeholder="请输入医生账号"
+                  type="text"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >密码 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="doctor-password"
+                  placeholder="请输入密码"
+                  type="password"
+                />
+              </div>
+            </div>
+            <!-- 公用账号字段组（默认隐藏） -->
+            <div class="field-group" id="doctor-public-fields">
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >账号 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="doctor-account-pub"
+                  placeholder="请输入医生账号"
+                  type="text"
+                />
+              </div>
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >密码 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="doctor-password-pub"
+                  placeholder="请输入密码"
+                  type="password"
+                />
+              </div>
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >姓名 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="doctor-name"
+                  placeholder="请输入医生姓名"
+                  type="text"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >科室 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="doctor-dept"
+                  placeholder="请输入所属科室"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 右侧：护士登录 -->
+        <div class="flex-1 p-8 bg-slate-50/30">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <iconify-icon class="text-blue-600 text-xl" icon="solar:user-speak-bold"></iconify-icon>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800">护士登录</h2>
+          </div>
+          <!-- Tab 切换 -->
+          <div class="flex rounded-lg border border-slate-200 overflow-hidden mb-5">
+            <div
+              class="tab-btn active flex-1 text-center py-2 text-sm font-medium"
+              data-side="nurse"
+              data-tab="fixed"
+              onclick="switchTab('nurse', 'fixed')"
+            >
+              固定账号
+            </div>
+            <div
+              class="tab-btn flex-1 text-center py-2 text-sm font-medium border-l border-slate-200"
+              data-side="nurse"
+              data-tab="public"
+              onclick="switchTab('nurse', 'public')"
+            >
+              公用账号
+            </div>
+          </div>
+          <div class="space-y-5">
+            <!-- 固定账号字段组（默认显示） -->
+            <div class="field-group show" id="nurse-fixed-fields">
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >账号 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="nurse-account"
+                  placeholder="请输入护士账号"
+                  type="text"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >密码 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="nurse-password"
+                  placeholder="请输入密码"
+                  type="password"
+                />
+              </div>
+            </div>
+            <!-- 公用账号字段组（默认隐藏） -->
+            <div class="field-group" id="nurse-public-fields">
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >账号 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="nurse-account-pub"
+                  placeholder="请输入护士账号"
+                  type="text"
+                />
+              </div>
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >密码 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="nurse-password-pub"
+                  placeholder="请输入密码"
+                  type="password"
+                />
+              </div>
+              <div class="mb-5">
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >姓名 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="nurse-name"
+                  placeholder="请输入护士姓名"
+                  type="text"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                  >科室 <span class="text-red-400">*</span></label
+                >
+                <input
+                  class="input-field w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none transition-all"
+                  id="nurse-dept"
+                  placeholder="请输入所属科室"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 底部：统一登录按钮 -->
+      <div class="px-8 pb-8 pt-2 flex justify-center">
+        <button
+          class="w-full max-w-[400px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 text-lg"
+          onclick="handleLogin()"
+        >
+          <iconify-icon icon="solar:login-2-bold"></iconify-icon>
+          <span>登 录</span>
+        </button>
+      </div>
+    </div>
+    <script>
+      // Tab 状态：记录左右两侧当前选中的 Tab 类型
+      var tabStates = {
+        doctor: "fixed",
+        nurse: "fixed",
+      };
+
+      // Tab 切换函数
+      function switchTab(side, tabType) {
+        tabStates[side] = tabType;
+
+        // 更新当前侧 Tab 按钮样式
+        var btns = document.querySelectorAll('.tab-btn[data-side="' + side + '"]');
+        btns.forEach(function (btn) {
+          if (btn.dataset.tab === tabType) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+
+        // 切换显示字段组
+        var fixedFields = document.getElementById(side + "-fixed-fields");
+        var publicFields = document.getElementById(side + "-public-fields");
+
+        if (tabType === "fixed") {
+          fixedFields.classList.add("show");
+          publicFields.classList.remove("show");
+        } else {
+          fixedFields.classList.remove("show");
+          publicFields.classList.add("show");
+        }
+      }
+
+      // 获取输入值的辅助函数（根据当前 tab 状态获取对应 input 的值）
+      function getFieldValue(side, fieldName) {
+        var tabType = tabStates[side];
+        var suffix = tabType === "public" ? "-pub" : "";
+        var id = side + "-" + fieldName + suffix;
+        var el = document.getElementById(id);
+        return el ? el.value.trim() : "";
+      }
+
+      function handleLogin() {
+        var doctorTab = tabStates.doctor;
+        var nurseTab = tabStates.nurse;
+
+        // 校验医生侧
+        var doctorAccount = getFieldValue("doctor", "account");
+        var doctorPassword = getFieldValue("doctor", "password");
+        var doctorName = getFieldValue("doctor", "name");
+        var doctorDept = getFieldValue("doctor", "dept");
+
+        // 校验护士侧
+        var nurseAccount = getFieldValue("nurse", "account");
+        var nursePassword = getFieldValue("nurse", "password");
+        var nurseName = getFieldValue("nurse", "name");
+        var nurseDept = getFieldValue("nurse", "dept");
+
+        // 收集所有需要校验的字段
+        var checkFields = [];
+
+        // 医生侧字段
+        checkFields.push({ id: "doctor-account" + (doctorTab === "public" ? "-pub" : ""), val: doctorAccount });
+        checkFields.push({ id: "doctor-password" + (doctorTab === "public" ? "-pub" : ""), val: doctorPassword });
+        if (doctorTab === "public") {
+          checkFields.push({ id: "doctor-name", val: doctorName });
+          checkFields.push({ id: "doctor-dept", val: doctorDept });
+        }
+
+        // 护士侧字段
+        checkFields.push({ id: "nurse-account" + (nurseTab === "public" ? "-pub" : ""), val: nurseAccount });
+        checkFields.push({ id: "nurse-password" + (nurseTab === "public" ? "-pub" : ""), val: nursePassword });
+        if (nurseTab === "public") {
+          checkFields.push({ id: "nurse-name", val: nurseName });
+          checkFields.push({ id: "nurse-dept", val: nurseDept });
+        }
+
+        // 校验：所有必填字段不能为空
+        var hasEmpty = false;
+        checkFields.forEach(function (f) {
+          var el = document.getElementById(f.id);
+          if (!el) return;
+          if (!f.val) {
+            el.classList.add("border-red-400", "bg-red-50");
+            el.classList.remove("border-slate-200");
+            hasEmpty = true;
+          } else {
+            el.classList.remove("border-red-400", "bg-red-50");
+            el.classList.add("border-slate-200");
+          }
+        });
+
+        if (hasEmpty) {
+          var card = document.querySelector(".max-w-\\[900px\\]");
+          card.classList.add("error-shake");
+          setTimeout(function () {
+            card.classList.remove("error-shake");
+          }, 400);
+          return;
+        }
+
+        // 构造跳转参数
+        var doctorNameParam, nurseNameParam;
+        if (doctorTab === "fixed") {
+          doctorNameParam = "医生（固定账号）";
+        } else {
+          doctorNameParam = doctorName;
+        }
+        if (nurseTab === "fixed") {
+          nurseNameParam = "护士（固定账号）";
+        } else {
+          nurseNameParam = nurseName;
+        }
+
+        window.location.href =
+          "pre-form.html?doctor_name=" +
+          encodeURIComponent(doctorNameParam) +
+          "&nurse_name=" +
+          encodeURIComponent(nurseNameParam);
+      }
+    </script>
+  </body>
+</html>

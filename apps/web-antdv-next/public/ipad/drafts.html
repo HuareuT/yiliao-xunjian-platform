@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>医疗巡诊系统 - 草稿箱</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+<style>
+        body { background-color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen p-8">
+<div class="max-w-[1000px] mx-auto">
+<header class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<button class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-200 text-slate-600 hover:text-blue-600 transition-colors" onclick="history.back()">
+<iconify-icon class="text-2xl" icon="solar:alt-arrow-left-bold"></iconify-icon>
+</button>
+<h1 class="text-3xl font-bold text-slate-800">草稿箱</h1>
+</div>
+<div class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
+                共 3 份草稿
+            </div>
+</header>
+<div class="space-y-4">
+<!-- 模拟草稿 1 -->
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-blue-200 transition-all">
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+<iconify-icon class="text-3xl" icon="solar:user-id-bold"></iconify-icon>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold text-slate-800">张三</h3>
+<span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded uppercase">上呼吸道感染</span>
+</div>
+<div class="flex items-center gap-4 text-sm text-slate-500">
+<span class="flex items-center gap-1"><iconify-icon icon="solar:card-2-bold"></iconify-icon> 3201011990****1234</span>
+<span class="flex items-center gap-1"><iconify-icon icon="solar:phone-bold"></iconify-icon> 138****8888</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<p class="text-xs text-slate-400 mr-4">最后保存：10分钟前</p>
+<button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100" onclick="editDraft('张三', '320101199001011234', '13812348888')">
+                        编辑
+                    </button>
+<button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors">
+<iconify-icon class="text-xl" icon="solar:trash-bin-trash-bold"></iconify-icon>
+</button>
+</div>
+</div>
+<!-- 模拟草稿 2 -->
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-blue-200 transition-all">
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+<iconify-icon class="text-3xl" icon="solar:user-id-bold"></iconify-icon>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold text-slate-800">李建国</h3>
+<span class="px-2 py-0.5 bg-orange-50 text-orange-600 text-[10px] font-bold rounded uppercase">皮肤外伤</span>
+</div>
+<div class="flex items-center gap-4 text-sm text-slate-500">
+<span class="flex items-center gap-1"><iconify-icon icon="solar:card-2-bold"></iconify-icon> 3201011985****5678</span>
+<span class="flex items-center gap-1"><iconify-icon icon="solar:phone-bold"></iconify-icon> 139****9999</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<p class="text-xs text-slate-400 mr-4">最后保存：1小时前</p>
+<button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100" onclick="editDraft('李建国', '320101198501015678', '13912349999')">
+                        编辑
+                    </button>
+<button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors">
+<iconify-icon class="text-xl" icon="solar:trash-bin-trash-bold"></iconify-icon>
+</button>
+</div>
+</div>
+<!-- 模拟草稿 3 -->
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-blue-200 transition-all">
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
+<iconify-icon class="text-3xl" icon="solar:user-id-bold"></iconify-icon>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h3 class="text-lg font-bold text-slate-800">王大锤</h3>
+<span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-bold rounded uppercase">高血压</span>
+</div>
+<div class="flex items-center gap-4 text-sm text-slate-500">
+<span class="flex items-center gap-1"><iconify-icon icon="solar:card-2-bold"></iconify-icon> 3201011978****4321</span>
+<span class="flex items-center gap-1"><iconify-icon icon="solar:phone-bold"></iconify-icon> 137****7777</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<p class="text-xs text-slate-400 mr-4">最后保存：昨日</p>
+<button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100" onclick="editDraft('王大锤', '320101197801014321', '13712347777')">
+                        编辑
+                    </button>
+<button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors">
+<iconify-icon class="text-xl" icon="solar:trash-bin-trash-bold"></iconify-icon>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-12 flex justify-center">
+<button class="flex items-center gap-2 text-slate-500 hover:text-blue-600 font-medium transition-colors" onclick="window.location.href='pre-form.html'">
+<iconify-icon icon="solar:home-2-bold"></iconify-icon>
+<span>返回前置登记页</span>
+</button>
+</div>
+</div>
+<script>
+        function editDraft(name, idcard, phone) {
+            const params = new URLSearchParams({
+                edit: '1',
+                name: name,
+                idcard: idcard,
+                phone: phone,
+                type: '日常巡诊',
+                location: '一号营区',
+                count: '50',
+                target: '某部官兵'
+            });
+            window.location.href = `form.html?${params.toString()}`;
+        }
+    </script>
+</body>
+</html>
