@@ -1,4 +1,4 @@
-import { appCopyrightPreferences, defineOverridesPreferences } from "@vben/preferences";
+import { defineOverridesPreferences } from "@vben/preferences";
 
 /**
  * @description 项目配置文件
@@ -12,7 +12,6 @@ export const overridesPreferences = defineOverridesPreferences({
     accessMode: "backend",
     defaultHomePath: "/home",
   },
-  copyright: appCopyrightPreferences,
   theme: {
     mode: "light",
   },
@@ -26,5 +25,16 @@ export const overridesPreferences = defineOverridesPreferences({
     languageToggle: false,
     notification: false,
     timezone: false,
+  },
+
+  copyright: {
+    companyName: "西南医大",
+    companySiteLink: "http://www.xnyy.cn",
+    date: "2026",
+    icp: "ICP备案号",
+  },
+  footer: {
+    enable: false,
+    fixed: false,
   },
 });
