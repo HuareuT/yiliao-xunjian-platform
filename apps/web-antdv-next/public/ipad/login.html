@@ -75,7 +75,9 @@
       }
     </style>
   </head>
-  <body class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-slate-50">
+  <body
+    class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-slate-50"
+  >
     <div class="w-full max-w-[900px] bg-white rounded-2xl shadow-xl overflow-hidden">
       <!-- 顶部标题 -->
       <div class="bg-blue-600 px-8 py-6 text-center">
@@ -193,7 +195,10 @@
         <div class="flex-1 p-8 bg-slate-50/30">
           <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <iconify-icon class="text-blue-600 text-xl" icon="solar:user-speak-bold"></iconify-icon>
+              <iconify-icon
+                class="text-blue-600 text-xl"
+                icon="solar:user-speak-bold"
+              ></iconify-icon>
             </div>
             <h2 class="text-xl font-bold text-slate-800">护士登录</h2>
           </div>
@@ -366,16 +371,28 @@
         var checkFields = [];
 
         // 医生侧字段
-        checkFields.push({ id: "doctor-account" + (doctorTab === "public" ? "-pub" : ""), val: doctorAccount });
-        checkFields.push({ id: "doctor-password" + (doctorTab === "public" ? "-pub" : ""), val: doctorPassword });
+        checkFields.push({
+          id: "doctor-account" + (doctorTab === "public" ? "-pub" : ""),
+          val: doctorAccount,
+        });
+        checkFields.push({
+          id: "doctor-password" + (doctorTab === "public" ? "-pub" : ""),
+          val: doctorPassword,
+        });
         if (doctorTab === "public") {
           checkFields.push({ id: "doctor-name", val: doctorName });
           checkFields.push({ id: "doctor-dept", val: doctorDept });
         }
 
         // 护士侧字段
-        checkFields.push({ id: "nurse-account" + (nurseTab === "public" ? "-pub" : ""), val: nurseAccount });
-        checkFields.push({ id: "nurse-password" + (nurseTab === "public" ? "-pub" : ""), val: nursePassword });
+        checkFields.push({
+          id: "nurse-account" + (nurseTab === "public" ? "-pub" : ""),
+          val: nurseAccount,
+        });
+        checkFields.push({
+          id: "nurse-password" + (nurseTab === "public" ? "-pub" : ""),
+          val: nursePassword,
+        });
         if (nurseTab === "public") {
           checkFields.push({ id: "nurse-name", val: nurseName });
           checkFields.push({ id: "nurse-dept", val: nurseDept });
