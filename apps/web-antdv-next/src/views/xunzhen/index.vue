@@ -1,21 +1,17 @@
 <script lang="ts" setup>
-import type { XunzhenRecord } from './data';
+import type { XunzhenRecord } from "./data";
 
-import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { VxeTableGridOptions } from "#/adapter/vxe-table";
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
-import { IconifyIcon } from '@vben/icons';
+import { Page, useVbenDrawer } from "@vben/common-ui";
+import { IconifyIcon } from "@vben/icons";
 
-import { Button } from 'antdv-next';
+import { Button } from "antdv-next";
 
-import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
+import { useVbenVxeGrid, VbenTableAction } from "#/adapter/vxe-table";
 
-import {
-  getMockXunzhenList,
-  useColumns,
-  useGridFormSchema,
-} from './data';
-import Detail from './modules/detail.vue';
+import { getMockXunzhenList, useColumns, useGridFormSchema } from "./data";
+import Detail from "./modules/detail.vue";
 
 const [DetailDrawer, detailDrawerApi] = useVbenDrawer({
   connectedComponent: Detail,
@@ -30,10 +26,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions: {
     columns: useColumns(),
     exportConfig: {
-      filename: '巡诊记录',
-      sheetName: '巡诊记录',
+      filename: "巡诊记录",
+      sheetName: "巡诊记录",
     },
-    height: 'auto',
+    height: "auto",
     keepSource: true,
     proxyConfig: {
       ajax: {
@@ -47,7 +43,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       },
     },
     rowConfig: {
-      keyField: 'id',
+      keyField: "id",
     },
     toolbarConfig: {
       custom: true,
@@ -65,9 +61,9 @@ function onDetail(row: XunzhenRecord) {
 
 function onExport() {
   gridApi.grid?.exportData({
-    filename: '巡诊记录',
-    sheetName: '巡诊记录',
-    type: 'xlsx',
+    filename: "巡诊记录",
+    sheetName: "巡诊记录",
+    type: "xlsx",
   });
 }
 </script>
@@ -91,6 +87,7 @@ function onExport() {
               onClick: () => onDetail(row),
             },
           ]"
+          align="center"
         />
       </template>
     </Grid>

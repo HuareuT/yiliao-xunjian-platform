@@ -1,4 +1,4 @@
-// import type { RouteRecordStringCosmponent } from "@vben/types";
+// import type { RouteRecordStringComponent } from "@vben/types";
 
 // import { requestClient } from "#/api/request";
 

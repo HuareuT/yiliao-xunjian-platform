@@ -16,4 +16,15 @@ export const overridesPreferences = defineOverridesPreferences({
   theme: {
     mode: "light",
   },
+
+  sidebar: {
+    collapsedButton: false,
+    fixedButton: false,
+    width: 174,
+  },
+  widget: {
+    languageToggle: false,
+    notification: false,
+    timezone: false,
+  },
 });
