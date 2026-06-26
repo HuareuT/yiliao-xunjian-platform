@@ -11,6 +11,7 @@ export const overridesPreferences = defineOverridesPreferences({
     name: import.meta.env.VITE_APP_TITLE,
     accessMode: "backend",
     defaultHomePath: "/home",
+    authPageLayout: "panel-center",
   },
   theme: {
     mode: "light",

@@ -22,12 +22,13 @@ onMounted(() => {
         animationEasing: 'exponentialInOut',
         animationType: 'scale',
         avoidLabelOverlap: false,
-        color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
+        color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9', '#ffb980'],
         data: [
-          { name: '搜索引擎', value: 1048 },
-          { name: '直接访问', value: 735 },
-          { name: '邮件营销', value: 580 },
-          { name: '联盟广告', value: 484 },
+          { name: '慢病管理', value: 86 },
+          { name: '术后康复', value: 42 },
+          { name: '呼吸感染', value: 58 },
+          { name: '急症观察', value: 31 },
+          { name: '妇儿随访', value: 27 },
         ],
         emphasis: {
           label: {
@@ -48,7 +49,7 @@ onMounted(() => {
         labelLine: {
           show: false,
         },
-        name: '访问来源',
+        name: '诊断分类',
         radius: ['40%', '65%'],
         type: 'pie',
       },

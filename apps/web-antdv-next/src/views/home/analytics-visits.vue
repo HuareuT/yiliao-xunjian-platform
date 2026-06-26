@@ -15,16 +15,14 @@ onMounted(() => {
       containLabel: true,
       left: '1%',
       right: '1%',
-      top: '2 %',
+      top: '2%',
     },
     series: [
       {
         barMaxWidth: 80,
-        // color: '#4f69fd',
-        data: [
-          3000, 2000, 3333, 5000, 3200, 4200, 3200, 2100, 3000, 5100, 6000,
-          3200, 4800,
-        ],
+        color: '#5ab1ef',
+        data: [186, 204, 218, 246, 263, 326, 0, 0, 0, 0, 0, 0],
+        name: '巡诊数',
         type: 'bar',
       },
     ],
@@ -42,7 +40,7 @@ onMounted(() => {
       type: 'category',
     },
     yAxis: {
-      max: 8000,
+      max: 360,
       splitNumber: 4,
       type: 'value',
     },

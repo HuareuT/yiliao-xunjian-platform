@@ -12,31 +12,37 @@ onMounted(() => {
   renderEcharts({
     legend: {
       bottom: 0,
-      data: ['访问', '趋势'],
+      data: ['本月', '上月'],
     },
     radar: {
       indicator: [
         {
-          name: '网页',
+          max: 180,
+          name: '常规巡诊',
         },
         {
-          name: '移动端',
+          max: 120,
+          name: '重点巡诊',
         },
         {
-          name: 'Ipad',
+          max: 120,
+          name: '复诊巡诊',
         },
         {
-          name: '客户端',
+          max: 80,
+          name: '临时巡诊',
         },
         {
-          name: '第三方',
+          max: 260,
+          name: '开药处理',
         },
         {
-          name: '其它',
+          max: 180,
+          name: '处置处理',
         },
       ],
       radius: '60%',
-      splitNumber: 8,
+      splitNumber: 5,
     },
     series: [
       {
@@ -52,15 +58,15 @@ onMounted(() => {
             itemStyle: {
               color: '#b6a2de',
             },
-            name: '访问',
-            value: [90, 50, 86, 40, 50, 20],
+            name: '本月',
+            value: [132, 76, 68, 50, 214, 156],
           },
           {
             itemStyle: {
               color: '#5ab1ef',
             },
-            name: '趋势',
-            value: [70, 75, 70, 76, 20, 85],
+            name: '上月',
+            value: [118, 64, 58, 48, 186, 139],
           },
         ],
         itemStyle: {
