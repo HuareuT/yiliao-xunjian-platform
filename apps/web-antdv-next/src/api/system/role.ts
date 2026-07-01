@@ -1,6 +1,6 @@
-import type { Recordable } from '@vben/types';
+import type { Recordable } from "@vben/types";
 
-import { requestClient } from '#/api/request';
+import { requestClient } from "#/api/request";
 
 export namespace SystemRoleApi {
   export interface SystemRole {
@@ -17,18 +17,48 @@ export namespace SystemRoleApi {
  * 获取角色列表数据
  */
 async function getRoleList(params: Recordable<any>) {
-  return requestClient.get<Array<SystemRoleApi.SystemRole>>(
-    '/system/role/list',
-    { params },
-  );
+  // return requestClient.get<Array<SystemRoleApi.SystemRole>>(
+  //   '/system/role/list',
+  //   { params },
+  // );
+  return new Promise((resolve) => {
+    resolve({
+      items: [
+        {
+          id: "4092d98f-d740-4069-8e30-ec5243fdc7bb",
+          name: "管理员",
+          status: 1,
+          createTime: "2023/01/09 06:13:16",
+          permissions: [20103, 901, 902, 2, 20401, 20102, 20402, 202, 9, 1, 20403, 201, 10],
+          remark: "",
+        },
+        {
+          id: "c7930ae8-f35b-49b5-bad2-94f6aa8a8890",
+          name: "医生管理",
+          status: 1,
+          createTime: "2023/01/30 09:18:30",
+          permissions: [2, 9, 1, 20102, 903, 20402, 201, 20401, 20101, 202, 10, 902],
+          remark: "",
+        },
+        {
+          id: "c7930ae8-f35b-49b5-bad2-94f6aa8a8891",
+          name: "药品管理",
+          status: 1,
+          createTime: "2023/01/30 09:18:30",
+          permissions: [2, 9, 1, 20102, 903, 20402, 201, 20401, 20101, 202, 10, 902],
+          remark: "",
+        },
+      ],
+    });
+  });
 }
 
 /**
  * 创建角色
  * @param data 角色数据
  */
-async function createRole(data: Omit<SystemRoleApi.SystemRole, 'id'>) {
-  return requestClient.post('/system/role', data);
+async function createRole(data: Omit<SystemRoleApi.SystemRole, "id">) {
+  return requestClient.post("/system/role", data);
 }
 
 /**
@@ -37,10 +67,7 @@ async function createRole(data: Omit<SystemRoleApi.SystemRole, 'id'>) {
  * @param id 角色 ID
  * @param data 角色数据
  */
-async function updateRole(
-  id: string,
-  data: Omit<SystemRoleApi.SystemRole, 'id'>,
-) {
+async function updateRole(id: string, data: Omit<SystemRoleApi.SystemRole, "id">) {
   return requestClient.put(`/system/role/${id}`, data);
 }
 
