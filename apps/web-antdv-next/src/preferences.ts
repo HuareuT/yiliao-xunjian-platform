@@ -15,6 +15,8 @@ export const overridesPreferences = defineOverridesPreferences({
   },
   theme: {
     mode: "light",
+    builtinType: "deep-green",
+    colorPrimary: "hsl(181 84% 32%)",
   },
 
   sidebar: {
@@ -26,6 +28,7 @@ export const overridesPreferences = defineOverridesPreferences({
     languageToggle: false,
     notification: false,
     timezone: false,
+    globalSearch: false,
   },
 
   copyright: {

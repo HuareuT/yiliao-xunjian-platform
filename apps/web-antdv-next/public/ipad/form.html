@@ -1,373 +1,607 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="zh-CN">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>医疗巡诊系统 - 录入</title>
-<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
-<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
-<style>
-        body { background-color: #F1F5F9; font-family: system-ui, -apple-system, sans-serif; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-        .search-suggestion { position: absolute; width: 100%; background: white; border: 1px solid #E2E8F0; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); z-index: 50; }
-        .search-item { padding: 0.75rem 1rem; cursor: pointer; }
-        .search-item:hover { background-color: #F8FAFC; color: #2563EB; }
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>医疗巡诊系统 - 录入</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <style>
+      body {
+        background-color: #f1f5f9;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      .search-suggestion {
+        position: absolute;
+        width: 100%;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        z-index: 50;
+      }
+      .search-item {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+      }
+      .search-item:hover {
+        background-color: #f8fafc;
+        color: #2563eb;
+      }
     </style>
-</head>
-<body class="h-screen flex overflow-hidden">
-<!-- 左侧栏 -->
-<aside class="w-[300px] bg-slate-900 text-white flex flex-col p-6 shrink-0">
-<div class="flex items-center gap-3 mb-10">
-<div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-<iconify-icon class="text-2xl text-white" icon="solar:health-bold"></iconify-icon>
-</div>
-<span class="text-xl font-bold tracking-tight">医疗巡诊系统</span>
-</div>
-<div class="space-y-6 flex-1 overflow-y-auto custom-scrollbar">
-<!-- 用户信息 -->
-<div class="bg-slate-800/50 rounded-2xl p-4 border border-slate-700">
-<h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">当前人员</h3>
-<div class="space-y-3">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-xs font-bold">医</div>
-<div>
-<p class="text-sm font-medium">王大明</p>
-<p class="text-[10px] text-slate-400">主治医师</p>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-xs font-bold">护</div>
-<div>
-<p class="text-sm font-medium">李小红</p>
-<p class="text-[10px] text-slate-400">主管护师</p>
-</div>
-</div>
-</div>
-</div>
-<!-- 公共字段回显 -->
-<div class="bg-slate-800/50 rounded-2xl p-4 border border-slate-700">
-<h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">巡诊背景</h3>
-<div class="space-y-3 text-sm">
-<div class="flex justify-between">
-<span class="text-slate-400">保障类型</span>
-<span class="text-blue-400" id="display-type">--</span>
-</div>
-<div class="flex justify-between">
-<span class="text-slate-400">保障地点</span>
-<span id="display-location">--</span>
-</div>
-<div class="flex justify-between">
-<span class="text-slate-400">保障人数</span>
-<span id="display-count">--</span>
-</div>
-<div class="flex justify-between">
-<span class="text-slate-400">保障对象</span>
-<span id="display-target">--</span>
-</div>
-</div>
-</div>
-<!-- 草稿箱入口 -->
-<div class="bg-blue-600/10 rounded-2xl p-4 border border-blue-600/30">
-<div class="flex items-center justify-between mb-2">
-<span class="text-sm font-medium text-blue-400">草稿箱</span>
-<span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full">3 份</span>
-</div>
-<p class="text-[11px] text-slate-400 mb-4">当前有 3 份未提交的巡诊记录</p>
-<button class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-semibold transition-colors" onclick="window.location.href='drafts.html'">查看草稿</button>
-</div>
-</div>
-<button class="mt-6 flex items-center justify-center gap-2 py-3 text-slate-400 hover:text-white transition-colors border border-slate-700 rounded-xl" onclick="window.location.href='login.html'">
-<iconify-icon icon="solar:logout-3-bold"></iconify-icon>
-<span class="text-sm">退出登录</span>
-</button>
-</aside>
-<!-- 主区域 -->
-<main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50">
-<!-- 顶部标题 -->
-<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
-<h2 class="text-lg font-bold text-slate-800">巡诊信息录入</h2>
-<div class="flex items-center gap-4 text-sm text-slate-500">
-<span id="current-time">2026-06-24 11:06</span>
-<div class="w-px h-4 bg-slate-200"></div>
-<div class="flex items-center gap-1">
-<div class="w-2 h-2 bg-green-500 rounded-full"></div>
-<span>在线</span>
-</div>
-</div>
-</header>
-<!-- 表单区 -->
-<div class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
-<!-- 模块1：基础信息 -->
-<section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
-<div class="flex items-center gap-2 mb-6">
-<div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
-<h3 class="text-lg font-bold text-slate-800">基础信息</h3>
-</div>
-<div class="grid grid-cols-3 gap-6">
-<div class="relative">
-<label class="block text-sm font-medium text-slate-600 mb-1.5"><span class="text-red-500 mr-1">*</span>姓名</label>
-<input class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" id="patient-name" oninput="handleNameInput(this.value)" placeholder="输入姓名搜索" type="text"/>
-<div class="search-suggestion hidden" id="name-suggestions">
-<!-- 动态生成 -->
-</div>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5"><span class="text-red-500 mr-1">*</span>身份证号</label>
-<input class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" id="patient-idcard" placeholder="请输入身份证号" type="text"/>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5"><span class="text-red-500 mr-1">*</span>手机号</label>
-<input class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" id="patient-phone" placeholder="请输入手机号" type="text"/>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5">ID号</label>
-<input class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" placeholder="内部ID号" type="text"/>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5">性别</label>
-<div class="flex gap-6 py-3">
-<label class="flex items-center gap-2 cursor-pointer">
-<input checked="" class="w-4 h-4 text-blue-600" name="gender" type="radio" value="male"/>
-<span class="text-sm">男</span>
-</label>
-<label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 text-blue-600" name="gender" type="radio" value="female"/>
-<span class="text-sm">女</span>
-</label>
-</div>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5">出生地</label>
-<input class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" placeholder="省/市/区" type="text"/>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5">身份类别</label>
-<select class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all appearance-none bg-no-repeat bg-[right_1rem_center]" style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3E%3Cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27m6 8 4 4 4-4%27/%3E%3C/svg%3E');">
-<option>军官</option>
-<option>士兵</option>
-<option>文职人员</option>
-<option>家属</option>
-<option>其他</option>
-</select>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5">联系人电话</label>
-<input class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" placeholder="紧急联系人电话" type="text"/>
-</div>
-</div>
-</section>
-<!-- 模块2：诊断信息 -->
-<section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
-<div class="flex items-center gap-2 mb-6">
-<div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
-<h3 class="text-lg font-bold text-slate-800">诊断信息</h3>
-</div>
-<div class="space-y-6">
-<div>
-<div class="flex items-center gap-1.5 mb-3 relative">
-    <button type="button" onclick="toggleDiagnosisHelp(event)" class="text-slate-400 hover:text-blue-500 transition-colors flex items-center justify-center focus:outline-none" title="查看说明">
-        <iconify-icon icon="solar:question-circle-bold-duotone" class="text-base"></iconify-icon>
-    </button>
-    <label class="block text-sm font-medium text-slate-600">诊断方式（多选）</label>
-    
-    <!-- 说明弹出层 -->
-    <div id="diagnosis-help-popover" class="absolute left-0 bottom-full mb-2.5 w-72 p-4 bg-white border border-slate-100 rounded-xl shadow-xl z-50 text-xs text-slate-600 hidden transition-all duration-200 transform scale-95 opacity-0 origin-bottom-left">
-        <div class="flex items-center gap-2 font-bold text-slate-700 mb-1.5 text-sm">
-            <iconify-icon class="text-blue-500 text-base" icon="solar:info-circle-bold-duotone"></iconify-icon>
-            <span>诊断方式说明</span>
+  </head>
+  <body class="h-screen flex overflow-hidden">
+    <!-- 左侧栏 -->
+    <aside class="w-[240px] bg-slate-900 text-white flex flex-col p-6 shrink-0">
+      <div class="flex items-center gap-3 mb-10">
+        <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+          <iconify-icon class="text-2xl text-white" icon="solar:health-bold"></iconify-icon>
         </div>
-        <p class="leading-relaxed text-slate-500 mb-2">
-            请根据现场初诊结果，勾选相应的一项或多项诊断方式。系统将根据您的选择自动匹配推荐处方及后续处置意见。
-        </p>
-        <p class="leading-relaxed text-slate-500">
-            若列表中无匹配项，可在下方“备注”文本框中输入详细的诊断补充说明。
-        </p>
-        <div class="absolute w-2 h-2 bg-white border-b border-r border-slate-100 transform rotate-45 left-2.5 -bottom-1"></div>
+        <span class="text-xl font-bold tracking-tight">医疗巡诊系统</span>
+      </div>
+      <div class="space-y-6 flex-1 overflow-y-auto custom-scrollbar">
+        <!-- 用户信息 -->
+        <div class="bg-slate-800/50 rounded-2xl p-4 border border-slate-700">
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+            当前人员
+          </h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-xs font-bold"
+              >
+                医
+              </div>
+              <div>
+                <p class="text-sm font-medium">王大明</p>
+                <p class="text-[10px] text-slate-400">主治医师</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-xs font-bold"
+              >
+                护
+              </div>
+              <div>
+                <p class="text-sm font-medium">李小红</p>
+                <p class="text-[10px] text-slate-400">主管护士</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 公共字段回显 -->
+        <div class="bg-slate-800/50 rounded-2xl p-4 border border-slate-700">
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+            巡诊背景
+          </h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between">
+              <span class="text-slate-400">保障类型</span>
+              <span class="text-blue-400" id="display-type">--</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">保障地点</span>
+              <span id="display-location">--</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">保障人数</span>
+              <span id="display-count">--</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">保障对象</span>
+              <span id="display-target">--</span>
+            </div>
+          </div>
+        </div>
+        <!-- 草稿箱入口 -->
+        <div class="bg-blue-600/10 rounded-2xl p-4 border border-blue-600/30">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-blue-400">草稿箱</span>
+            <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full">3 份</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mb-4">当前有 3 份未提交的巡诊记录</p>
+          <button
+            class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-semibold transition-colors"
+            onclick="window.location.href = 'drafts.html'"
+          >
+            查看草稿
+          </button>
+        </div>
+      </div>
+      <button
+        class="mt-6 flex items-center justify-center gap-2 py-3 text-slate-400 hover:text-white transition-colors border border-slate-700 rounded-xl"
+        onclick="window.location.href = 'login.html'"
+      >
+        <iconify-icon icon="solar:logout-3-bold"></iconify-icon>
+        <span class="text-sm">退出登录</span>
+      </button>
+    </aside>
+    <!-- 主区域 -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50">
+      <!-- 顶部标题 -->
+      <header
+        class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0"
+      >
+        <h2 class="text-lg font-bold text-slate-800">巡诊信息录入</h2>
+        <div class="flex items-center gap-4 text-sm text-slate-500">
+          <span id="current-time">2026-06-24 11:06</span>
+          <div class="w-px h-4 bg-slate-200"></div>
+          <div class="flex items-center gap-1">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span>在线</span>
+          </div>
+        </div>
+      </header>
+      <!-- 表单区 -->
+      <div class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+        <!-- 模块1：基础信息 -->
+        <section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
+            <h3 class="text-lg font-bold text-slate-800">基础信息</h3>
+          </div>
+          <div class="grid grid-cols-3 gap-6">
+            <div class="relative">
+              <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                ><span class="text-red-500 mr-1">*</span>姓名</label
+              >
+              <input
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                id="patient-name"
+                oninput="handleNameInput(this.value)"
+                placeholder="输入姓名搜索"
+                type="text"
+              />
+              <div class="search-suggestion hidden" id="name-suggestions">
+                <!-- 动态生成 -->
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                ><span class="text-red-500 mr-1">*</span>身份证号</label
+              >
+              <input
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                id="patient-idcard"
+                placeholder="请输入身份证号"
+                type="text"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                ><span class="text-red-500 mr-1">*</span>手机号</label
+              >
+              <input
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                id="patient-phone"
+                placeholder="请输入手机号"
+                type="text"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5">ID号</label>
+              <input
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                placeholder="内部ID号"
+                type="text"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5">性别</label>
+              <div class="flex gap-6 py-3">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    checked=""
+                    class="w-4 h-4 text-blue-600"
+                    name="gender"
+                    type="radio"
+                    value="male"
+                  />
+                  <span class="text-sm">男</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input class="w-4 h-4 text-blue-600" name="gender" type="radio" value="female" />
+                  <span class="text-sm">女</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5">出生地</label>
+              <input
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                placeholder="省/市/区"
+                type="text"
+              />
+            </div>
+            <div class="relative group">
+              <label class="block text-sm font-medium text-slate-600 mb-1.5">身份类别</label>
+              <div class="relative w-full">
+                <input
+                  type="text"
+                  id="identity-type"
+                  class="w-full px-4 py-3 pr-10 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all bg-white"
+                  placeholder="请选择或输入身份类别"
+                  onfocus="showIdentitySuggestions()"
+                  oninput="filterIdentitySuggestions(this.value)"
+                  onblur="hideIdentitySuggestions()"
+                  autocomplete="off"
+                />
+                <div
+                  class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors"
+                >
+                  <iconify-icon
+                    icon="solar:alt-arrow-down-bold-duotone"
+                    class="text-lg"
+                  ></iconify-icon>
+                </div>
+                <div
+                  id="identity-suggestions"
+                  class="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto hidden custom-scrollbar"
+                >
+                  <!-- 选项列表 -->
+                </div>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5">联系人电话</label>
+              <input
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                placeholder="紧急联系人电话"
+                type="text"
+              />
+            </div>
+          </div>
+        </section>
+        <!-- 模块2：诊断信息 -->
+        <section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
+            <h3 class="text-lg font-bold text-slate-800">诊断信息</h3>
+          </div>
+          <div class="space-y-6">
+            <div>
+              <div class="flex items-center gap-1.5 mb-3 relative">
+                <button
+                  type="button"
+                  onclick="toggleDiagnosisHelp(event)"
+                  class="text-slate-400 hover:text-blue-500 transition-colors flex items-center justify-center focus:outline-none"
+                  title="查看说明"
+                >
+                  <iconify-icon
+                    icon="solar:question-circle-bold-duotone"
+                    class="text-base"
+                  ></iconify-icon>
+                </button>
+                <label class="block text-sm font-medium text-slate-600">诊断方式（多选）</label>
+
+                <!-- 说明弹出层 -->
+                <div
+                  id="diagnosis-help-popover"
+                  class="absolute left-0 bottom-full mb-2.5 w-72 p-4 bg-white border border-slate-100 rounded-xl shadow-xl z-50 text-xs text-slate-600 hidden transition-all duration-200 transform scale-95 opacity-0 origin-bottom-left"
+                >
+                  <div class="flex items-center gap-2 font-bold text-slate-700 mb-1.5 text-sm">
+                    <iconify-icon
+                      class="text-blue-500 text-base"
+                      icon="solar:info-circle-bold-duotone"
+                    ></iconify-icon>
+                    <span>诊断方式说明</span>
+                  </div>
+                  <p class="leading-relaxed text-slate-500 mb-2">
+                    请根据现场初诊结果，勾选相应的一项或多项诊断方式。系统将根据您的选择自动匹配推荐处方及后续处置意见。
+                  </p>
+                  <p class="leading-relaxed text-slate-500">
+                    若列表中无匹配项，可在下方“备注”文本框中输入详细的诊断补充说明。
+                  </p>
+                  <div
+                    class="absolute w-2 h-2 bg-white border-b border-r border-slate-100 transform rotate-45 left-2.5 -bottom-1"
+                  ></div>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <label
+                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
+                >
+                  <input class="hidden" type="checkbox" value="上呼吸道感染" />
+                  <span class="text-sm">上呼吸道感染</span>
+                </label>
+                <label
+                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
+                >
+                  <input class="hidden" type="checkbox" value="急性胃肠炎" />
+                  <span class="text-sm">急性胃肠炎</span>
+                </label>
+                <label
+                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
+                >
+                  <input class="hidden" type="checkbox" value="皮肤外伤" />
+                  <span class="text-sm">皮肤外伤</span>
+                </label>
+                <label
+                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
+                >
+                  <input class="hidden" type="checkbox" value="高血压" />
+                  <span class="text-sm">高血压</span>
+                </label>
+                <label
+                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
+                >
+                  <input class="hidden" type="checkbox" value="糖尿病" />
+                  <span class="text-sm">糖尿病</span>
+                </label>
+                <label
+                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
+                >
+                  <input class="hidden" type="checkbox" value="感冒发热" />
+                  <span class="text-sm">感冒发热</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5">备注</label>
+              <textarea
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                placeholder="请输入诊断补充说明..."
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </section>
+        <!-- 模块3：处理信息 -->
+        <section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
+            <h3 class="text-lg font-bold text-slate-800">处理信息</h3>
+          </div>
+          <div class="space-y-8">
+            <!-- 开药 -->
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                  <iconify-icon
+                    class="text-blue-500 text-lg"
+                    icon="solar:pill-bold-duotone"
+                  ></iconify-icon>
+                  开药记录
+                </h4>
+                <button
+                  class="text-sm font-bold text-blue-600 bg-blue-50/50 hover:bg-blue-50 active:bg-blue-100 border border-blue-200/60 flex items-center gap-2 px-5 py-3 rounded-xl transition-all shadow-sm shadow-blue-50"
+                  onclick="addMedicine()"
+                >
+                  <iconify-icon icon="solar:add-circle-bold" class="text-lg"></iconify-icon>
+                  <span>添加药品</span>
+                </button>
+              </div>
+              <div class="space-y-3" id="medicine-list">
+                <!-- 动态添加 -->
+              </div>
+            </div>
+            <!-- 处置 -->
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                  <iconify-icon
+                    class="text-blue-500 text-lg"
+                    icon="solar:medical-kit-bold-duotone"
+                  ></iconify-icon>
+                  处置记录
+                </h4>
+                <button
+                  class="text-sm font-bold text-blue-600 bg-blue-50/50 hover:bg-blue-50 active:bg-blue-100 border border-blue-200/60 flex items-center gap-2 px-5 py-3 rounded-xl transition-all shadow-sm shadow-blue-50"
+                  onclick="addTreatment()"
+                >
+                  <iconify-icon icon="solar:add-circle-bold" class="text-lg"></iconify-icon>
+                  <span>添加处置</span>
+                </button>
+              </div>
+              <div class="space-y-3" id="treatment-list">
+                <!-- 动态添加 -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- 底部按钮区 -->
+      <footer
+        class="h-24 bg-white border-t border-slate-200 flex items-center justify-end px-10 gap-4 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]"
+      >
+        <button
+          class="px-8 py-3.5 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-all"
+          onclick="saveDraft()"
+        >
+          保存草稿
+        </button>
+        <button
+          class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-100 transition-all flex items-center gap-2"
+          onclick="submitForm()"
+        >
+          <iconify-icon icon="solar:check-circle-bold"></iconify-icon>
+          <span>提交信息</span>
+        </button>
+      </footer>
+    </main>
+    <!-- Toast 提示 -->
+    <div
+      class="fixed bottom-28 left-1/2 -translate-x-1/2 px-6 py-3 bg-slate-800 text-white text-sm rounded-full shadow-2xl transition-all opacity-0 pointer-events-none z-[100] flex items-center gap-2"
+      id="toast"
+    >
+      <iconify-icon class="text-green-400" icon="solar:check-circle-bold"></iconify-icon>
+      <span id="toast-msg"></span>
     </div>
-</div>
-<div class="flex flex-wrap gap-3">
-<label class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700">
-<input class="hidden" type="checkbox" value="上呼吸道感染"/>
-<span class="text-sm">上呼吸道感染</span>
-</label>
-<label class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700">
-<input class="hidden" type="checkbox" value="急性胃肠炎"/>
-<span class="text-sm">急性胃肠炎</span>
-</label>
-<label class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700">
-<input class="hidden" type="checkbox" value="皮肤外伤"/>
-<span class="text-sm">皮肤外伤</span>
-</label>
-<label class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700">
-<input class="hidden" type="checkbox" value="高血压"/>
-<span class="text-sm">高血压</span>
-</label>
-<label class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700">
-<input class="hidden" type="checkbox" value="糖尿病"/>
-<span class="text-sm">糖尿病</span>
-</label>
-<label class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700">
-<input class="hidden" type="checkbox" value="感冒发热"/>
-<span class="text-sm">感冒发热</span>
-</label>
-</div>
-</div>
-<div>
-<label class="block text-sm font-medium text-slate-600 mb-1.5">备注</label>
-<textarea class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all" placeholder="请输入诊断补充说明..." rows="3"></textarea>
-</div>
-</div>
-</section>
-<!-- 模块3：处理信息 -->
-<section class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
-<div class="flex items-center gap-2 mb-6">
-<div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
-<h3 class="text-lg font-bold text-slate-800">处理信息</h3>
-</div>
-<div class="space-y-8">
-<!-- 开药 -->
-<div>
-<div class="flex items-center justify-between mb-4">
-<h4 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-<iconify-icon class="text-blue-500 text-lg" icon="solar:pill-bold-duotone"></iconify-icon>
-                                开药记录
-                            </h4>
-<button class="text-xs font-bold text-blue-600 flex items-center gap-1 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors" onclick="addMedicine()">
-<iconify-icon icon="solar:add-circle-bold"></iconify-icon>
-<span>添加药品</span>
-</button>
-</div>
-<div class="space-y-3" id="medicine-list">
-<!-- 动态添加 -->
-</div>
-</div>
-<!-- 处置 -->
-<div>
-<div class="flex items-center justify-between mb-4">
-<h4 class="text-sm font-bold text-slate-700 flex items-center gap-2">
-<iconify-icon class="text-blue-500 text-lg" icon="solar:medical-kit-bold-duotone"></iconify-icon>
-                                处置记录
-                            </h4>
-<button class="text-xs font-bold text-blue-600 flex items-center gap-1 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors" onclick="addTreatment()">
-<iconify-icon icon="solar:add-circle-bold"></iconify-icon>
-<span>添加处置</span>
-</button>
-</div>
-<div class="space-y-3" id="treatment-list">
-<!-- 动态添加 -->
-</div>
-</div>
-</div>
-</section>
-</div>
-<!-- 底部按钮区 -->
-<footer class="h-24 bg-white border-t border-slate-200 flex items-center justify-end px-10 gap-4 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
-<button class="px-8 py-3.5 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-all" onclick="saveDraft()">保存草稿</button>
-<button class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-100 transition-all flex items-center gap-2" onclick="submitForm()">
-<iconify-icon icon="solar:check-circle-bold"></iconify-icon>
-<span>提交信息</span>
-</button>
-</footer>
-</main>
-<!-- Toast 提示 -->
-<div class="fixed bottom-28 left-1/2 -translate-x-1/2 px-6 py-3 bg-slate-800 text-white text-sm rounded-full shadow-2xl transition-all opacity-0 pointer-events-none z-[100] flex items-center gap-2" id="toast">
-<iconify-icon class="text-green-400" icon="solar:check-circle-bold"></iconify-icon>
-<span id="toast-msg"></span>
-</div>
-<script>
-        // 获取 URL 参数
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('display-type').textContent = params.get('type') || '--';
-        document.getElementById('display-location').textContent = params.get('location') || '--';
-        document.getElementById('display-count').textContent = params.get('count') || '--';
-        document.getElementById('display-target').textContent = params.get('target') || '--';
+    <script>
+      // 获取 URL 参数
+      const params = new URLSearchParams(window.location.search);
+      document.getElementById("display-type").textContent = params.get("type") || "--";
+      document.getElementById("display-location").textContent = params.get("location") || "--";
+      document.getElementById("display-count").textContent = params.get("count") || "--";
+      document.getElementById("display-target").textContent = params.get("target") || "--";
 
-        // 模拟回显数据
-        if (params.get('edit')) {
-            document.getElementById('patient-name').value = params.get('name') || '';
-            document.getElementById('patient-idcard').value = params.get('idcard') || '';
-            document.getElementById('patient-phone').value = params.get('phone') || '';
+      // 模拟回显数据
+      if (params.get("edit")) {
+        document.getElementById("patient-name").value = params.get("name") || "";
+        document.getElementById("patient-idcard").value = params.get("idcard") || "";
+        document.getElementById("patient-phone").value = params.get("phone") || "";
+      }
+
+      // 模糊搜索逻辑
+      const candidates = ["张三", "张伟", "张翠花", "李建国", "王大锤", "刘华强"];
+      function handleNameInput(val) {
+        const container = document.getElementById("name-suggestions");
+        if (!val) {
+          container.classList.add("hidden");
+          return;
         }
-
-        // 模糊搜索逻辑
-        const candidates = ['张三', '张伟', '张翠花', '李建国', '王大锤', '刘华强'];
-        function handleNameInput(val) {
-            const container = document.getElementById('name-suggestions');
-            if (!val) {
-                container.classList.add('hidden');
-                return;
-            }
-            const filtered = candidates.filter(c => c.includes(val));
-            if (filtered.length > 0) {
-                container.innerHTML = filtered.map(name => `<div class="search-item" onclick="selectName('${name}')">${name}</div>`).join('');
-                container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-            }
+        const filtered = candidates.filter((c) => c.includes(val));
+        if (filtered.length > 0) {
+          container.innerHTML = filtered
+            .map((name) => `<div class="search-item" onclick="selectName('${name}')">${name}</div>`)
+            .join("");
+          container.classList.remove("hidden");
+        } else {
+          container.classList.add("hidden");
         }
+      }
 
-        function selectName(name) {
-            document.getElementById('patient-name').value = name;
-            document.getElementById('name-suggestions').classList.add('hidden');
-            // 模拟自动带入身份证和手机号
-            document.getElementById('patient-idcard').value = '32010119900101' + Math.floor(Math.random() * 9000 + 1000);
-            document.getElementById('patient-phone').value = '138' + Math.floor(Math.random() * 90000000 + 10000000);
+      function selectName(name) {
+        document.getElementById("patient-name").value = name;
+        document.getElementById("name-suggestions").classList.add("hidden");
+        // 模拟自动带入身份证和手机号
+        document.getElementById("patient-idcard").value =
+          "32010119900101" + Math.floor(Math.random() * 9000 + 1000);
+        document.getElementById("patient-phone").value =
+          "138" + Math.floor(Math.random() * 90000000 + 10000000);
+      }
+
+      // 身份类别下拉建议
+      const identityCandidates = ["军官", "士兵", "文职人员", "家属", "其他"];
+
+      function showIdentitySuggestions() {
+        const container = document.getElementById("identity-suggestions");
+        const input = document.getElementById("identity-type");
+        renderIdentitySuggestions(input.value);
+        container.classList.remove("hidden");
+      }
+
+      function filterIdentitySuggestions(val) {
+        renderIdentitySuggestions(val);
+      }
+
+      function renderIdentitySuggestions(val) {
+        const container = document.getElementById("identity-suggestions");
+        const filtered = identityCandidates.filter((c) =>
+          c.toLowerCase().includes(val.toLowerCase()),
+        );
+        if (filtered.length > 0) {
+          container.innerHTML = filtered
+            .map(
+              (c) => `
+                    <div class="px-4 py-2.5 cursor-pointer hover:bg-slate-50 hover:text-blue-600 transition-colors text-sm text-slate-700 text-left"
+                         onmousedown="selectIdentity('${c}')">
+                        ${c}
+                    </div>
+                `,
+            )
+            .join("");
+        } else {
+          container.innerHTML = `
+                    <div class="px-4 py-2.5 text-xs text-slate-400 text-center">
+                        无匹配身份类别
+                    </div>
+                `;
         }
+      }
 
-        // 动态列表逻辑
-        const medicines = ['阿莫西林', '布洛芬', '头孢克肟', '板蓝根颗粒', '盐酸氨溴索', '氯雷他定', '奥美拉唑', '阿司匹林'];
+      function selectIdentity(val) {
+        const input = document.getElementById("identity-type");
+        input.value = val;
+        document.getElementById("identity-suggestions").classList.add("hidden");
+      }
 
-        function showMedSuggestions(id) {
-            const container = document.getElementById(`med-suggestions-${id}`);
-            const input = document.getElementById(`med-input-${id}`);
-            renderMedSuggestions(input.value, id);
-            container.classList.remove('hidden');
-        }
+      function hideIdentitySuggestions() {
+        setTimeout(() => {
+          const container = document.getElementById("identity-suggestions");
+          if (container) {
+            container.classList.add("hidden");
+          }
+        }, 200);
+      }
 
-        function filterMedSuggestions(val, id) {
-            renderMedSuggestions(val, id);
-        }
+      // 动态列表逻辑
+      const medicines = [
+        "阿莫西林",
+        "布洛芬",
+        "头孢克肟",
+        "板蓝根颗粒",
+        "盐酸氨溴索",
+        "氯雷他定",
+        "奥美拉唑",
+        "阿司匹林",
+      ];
 
-        function renderMedSuggestions(val, id) {
-            const container = document.getElementById(`med-suggestions-${id}`);
-            const filtered = medicines.filter(m => m.toLowerCase().includes(val.toLowerCase()));
-            if (filtered.length > 0) {
-                container.innerHTML = filtered.map(m => `
+      function showMedSuggestions(id) {
+        const container = document.getElementById(`med-suggestions-${id}`);
+        const input = document.getElementById(`med-input-${id}`);
+        renderMedSuggestions(input.value, id);
+        container.classList.remove("hidden");
+      }
+
+      function filterMedSuggestions(val, id) {
+        renderMedSuggestions(val, id);
+      }
+
+      function renderMedSuggestions(val, id) {
+        const container = document.getElementById(`med-suggestions-${id}`);
+        const filtered = medicines.filter((m) => m.toLowerCase().includes(val.toLowerCase()));
+        if (filtered.length > 0) {
+          container.innerHTML = filtered
+            .map(
+              (m) => `
                     <div class="px-3 py-2 cursor-pointer hover:bg-slate-50 hover:text-blue-600 transition-colors text-sm text-slate-700 text-left"
                          onmousedown="selectMed('${m}', ${id})">
                         ${m}
                     </div>
-                `).join('');
-            } else {
-                container.innerHTML = `
+                `,
+            )
+            .join("");
+        } else {
+          container.innerHTML = `
                     <div class="px-3 py-2 text-xs text-slate-400 text-center">
                         无匹配药品
                     </div>
                 `;
-            }
         }
+      }
 
-        function selectMed(m, id) {
-            const input = document.getElementById(`med-input-${id}`);
-            input.value = m;
-            document.getElementById(`med-suggestions-${id}`).classList.add('hidden');
-        }
+      function selectMed(m, id) {
+        const input = document.getElementById(`med-input-${id}`);
+        input.value = m;
+        document.getElementById(`med-suggestions-${id}`).classList.add("hidden");
+      }
 
-        function hideMedSuggestions(id) {
-            setTimeout(() => {
-                const container = document.getElementById(`med-suggestions-${id}`);
-                if (container) {
-                    container.classList.add('hidden');
-                }
-            }, 200);
-        }
+      function hideMedSuggestions(id) {
+        setTimeout(() => {
+          const container = document.getElementById(`med-suggestions-${id}`);
+          if (container) {
+            container.classList.add("hidden");
+          }
+        }, 200);
+      }
 
-        function addMedicine() {
-            const list = document.getElementById('medicine-list');
-            const id = Date.now();
-            const html = `
+      function addMedicine() {
+        const list = document.getElementById("medicine-list");
+        const id = Date.now();
+        const html = `
                 <div id="med-${id}" class="grid grid-cols-[1fr_120px_1fr_48px] gap-3 items-end bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <div class="relative group">
                         <label class="block text-[10px] text-slate-400 mb-1">药品名称</label>
@@ -395,28 +629,101 @@
                     </div>
                     <div>
                         <label class="block text-[10px] text-slate-400 mb-1">用法</label>
-                        <input type="text" placeholder="如: 口服每日3次" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none">
+                        <select class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white">
+                            <option>口服 每日3次</option>
+                            <option>口服 每日2次</option>
+                            <option>口服 每日1次</option>
+                            <option>外用 每日2次</option>
+                            <option>外用 每日3次</option>
+                            <option>舌下含服</option>
+                            <option>饭后口服</option>
+                            <option>饭前口服</option>
+                            <option>睡前服用</option>
+                        </select>
                     </div>
                     <button onclick="document.getElementById('med-${id}').remove()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
                         <iconify-icon icon="solar:trash-bin-trash-bold" class="text-xl"></iconify-icon>
                     </button>
                 </div>
             `;
-            list.insertAdjacentHTML('beforeend', html);
+        list.insertAdjacentHTML("beforeend", html);
+      }
+
+      const treatments = ["换药", "冰敷", "静养观察", "包扎", "冷敷", "理疗", "针灸", "推拿"];
+
+      function showTreatSuggestions(id) {
+        const container = document.getElementById(`treat-suggestions-${id}`);
+        const input = document.getElementById(`treat-input-${id}`);
+        renderTreatSuggestions(input.value, id);
+        container.classList.remove("hidden");
+      }
+
+      function filterTreatSuggestions(val, id) {
+        renderTreatSuggestions(val, id);
+      }
+
+      function renderTreatSuggestions(val, id) {
+        const container = document.getElementById(`treat-suggestions-${id}`);
+        const filtered = treatments.filter((t) => t.toLowerCase().includes(val.toLowerCase()));
+        if (filtered.length > 0) {
+          container.innerHTML = filtered
+            .map(
+              (t) => `
+                    <div class="px-3 py-2 cursor-pointer hover:bg-slate-50 hover:text-blue-600 transition-colors text-sm text-slate-700 text-left"
+                         onmousedown="selectTreat('${t}', ${id})">
+                        ${t}
+                    </div>
+                `,
+            )
+            .join("");
+        } else {
+          container.innerHTML = `
+                    <div class="px-3 py-2 text-xs text-slate-400 text-center">
+                        无匹配处置方式
+                    </div>
+                `;
         }
+      }
 
+      function selectTreat(t, id) {
+        const input = document.getElementById(`treat-input-${id}`);
+        input.value = t;
+        document.getElementById(`treat-suggestions-${id}`).classList.add("hidden");
+      }
 
-        const treatments = ['换药', '冰敷', '静养观察', '包扎', '冷敷', '理疗', '针灸', '推拿'];
-        function addTreatment() {
-            const list = document.getElementById('treatment-list');
-            const id = Date.now();
-            const html = `
+      function hideTreatSuggestions(id) {
+        setTimeout(() => {
+          const container = document.getElementById(`treat-suggestions-${id}`);
+          if (container) {
+            container.classList.add("hidden");
+          }
+        }, 200);
+      }
+
+      function addTreatment() {
+        const list = document.getElementById("treatment-list");
+        const id = Date.now();
+        const html = `
                 <div id="treat-${id}" class="grid grid-cols-[1fr_1fr_48px] gap-3 items-end bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <div>
+                    <div class="relative group">
                         <label class="block text-[10px] text-slate-400 mb-1">处置方式</label>
-                        <select class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none">
-                            ${treatments.map(t => `<option>${t}</option>`).join('')}
-                        </select>
+                        <div class="relative w-full">
+                            <input type="text"
+                                   id="treat-input-${id}"
+                                   class="w-full px-3 py-2 pr-8 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                                   placeholder="请输入或选择处置方式"
+                                   onfocus="showTreatSuggestions(${id})"
+                                   oninput="filterTreatSuggestions(this.value, ${id})"
+                                   onblur="hideTreatSuggestions(${id})"
+                                   autocomplete="off"
+                            />
+                            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                                <iconify-icon icon="solar:alt-arrow-down-bold-duotone" class="text-base"></iconify-icon>
+                            </div>
+                            <div id="treat-suggestions-${id}" class="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto hidden custom-scrollbar">
+                                <!-- 选项列表 -->
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-[10px] text-slate-400 mb-1">备注</label>
@@ -427,58 +734,62 @@
                     </button>
                 </div>
             `;
-            list.insertAdjacentHTML('beforeend', html);
+        list.insertAdjacentHTML("beforeend", html);
+      }
+
+      // 诊断方式说明气泡框交互
+      function toggleDiagnosisHelp(event) {
+        event.stopPropagation();
+        const popover = document.getElementById("diagnosis-help-popover");
+        if (popover.classList.contains("hidden")) {
+          popover.classList.remove("hidden");
+          setTimeout(() => {
+            popover.classList.remove("scale-95", "opacity-0");
+            popover.classList.add("scale-100", "opacity-100");
+          }, 10);
+        } else {
+          hideDiagnosisHelp();
         }
+      }
 
-        // 诊断方式说明气泡框交互
-        function toggleDiagnosisHelp(event) {
-            event.stopPropagation();
-            const popover = document.getElementById('diagnosis-help-popover');
-            if (popover.classList.contains('hidden')) {
-                popover.classList.remove('hidden');
-                setTimeout(() => {
-                    popover.classList.remove('scale-95', 'opacity-0');
-                    popover.classList.add('scale-100', 'opacity-100');
-                }, 10);
-            } else {
-                hideDiagnosisHelp();
-            }
+      function hideDiagnosisHelp() {
+        const popover = document.getElementById("diagnosis-help-popover");
+        if (popover && !popover.classList.contains("hidden")) {
+          popover.classList.remove("scale-100", "opacity-100");
+          popover.classList.add("scale-95", "opacity-0");
+          setTimeout(() => {
+            popover.classList.add("hidden");
+          }, 200);
         }
+      }
 
-        function hideDiagnosisHelp() {
-            const popover = document.getElementById('diagnosis-help-popover');
-            if (popover && !popover.classList.contains('hidden')) {
-                popover.classList.remove('scale-100', 'opacity-100');
-                popover.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => {
-                    popover.classList.add('hidden');
-                }, 200);
-            }
+      document.addEventListener("click", function (e) {
+        const popover = document.getElementById("diagnosis-help-popover");
+        if (popover && !popover.contains(e.target)) {
+          hideDiagnosisHelp();
         }
+      });
 
-        document.addEventListener('click', function(e) {
-            const popover = document.getElementById('diagnosis-help-popover');
-            if (popover && !popover.contains(e.target)) {
-                hideDiagnosisHelp();
-            }
-        });
+      // 初始化一行数据
+      addMedicine();
+      addTreatment();
 
-        // 初始化一行数据
-        addMedicine();
-        addTreatment();
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-msg").textContent = msg;
+        toast.style.opacity = "1";
+        setTimeout(() => (toast.style.opacity = "0"), 2000);
+      }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = msg;
-            toast.style.opacity = '1';
-            setTimeout(() => toast.style.opacity = '0', 2000);
-        }
-
-        function saveDraft() { showToast('已保存为草稿'); }
-        function submitForm() { 
-            showToast('已提交成功'); 
-            setTimeout(() => { window.location.href = 'pre-form.html'; }, 1500);
-        }
+      function saveDraft() {
+        showToast("已保存为草稿");
+      }
+      function submitForm() {
+        showToast("已提交成功");
+        setTimeout(() => {
+          window.location.href = "pre-form.html";
+        }, 1500);
+      }
     </script>
-</body>
+  </body>
 </html>
