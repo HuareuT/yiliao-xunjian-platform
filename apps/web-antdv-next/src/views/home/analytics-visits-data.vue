@@ -1,14 +1,46 @@
 <script lang="ts" setup>
 import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
+
+const props = withDefaults(
+  defineProps<{
+    campus?: string;
+  }>(),
+  {
+    campus: '全部',
+  },
+);
 
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+const processDataMap: Record<
+  string,
+  {
+    current: number[];
+    previous: number[];
+  }
+> = {
+  全部: {
+    current: [132, 76, 68, 50, 214, 156],
+    previous: [118, 64, 58, 48, 186, 139],
+  },
+  大学城: {
+    current: [78, 45, 39, 30, 126, 88],
+    previous: [68, 37, 34, 28, 105, 76],
+  },
+  江津: {
+    current: [54, 31, 29, 20, 88, 68],
+    previous: [50, 27, 24, 20, 81, 63],
+  },
+};
+
+function renderChart() {
+  const data = processDataMap[props.campus] ?? processDataMap['全部']!;
+
   renderEcharts({
     legend: {
       bottom: 0,
@@ -59,14 +91,14 @@ onMounted(() => {
               color: '#b6a2de',
             },
             name: '本月',
-            value: [132, 76, 68, 50, 214, 156],
+            value: data.current,
           },
           {
             itemStyle: {
               color: '#5ab1ef',
             },
             name: '上月',
-            value: [118, 64, 58, 48, 186, 139],
+            value: data.previous,
           },
         ],
         itemStyle: {
@@ -80,7 +112,11 @@ onMounted(() => {
     ],
     tooltip: {},
   });
-});
+}
+
+onMounted(renderChart);
+
+watch(() => props.campus, renderChart);
 </script>
 
 <template>

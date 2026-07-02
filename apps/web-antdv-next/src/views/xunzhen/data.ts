@@ -4,6 +4,7 @@ import type { VbenFormSchema } from "#/adapter/form";
 import type { VxeTableGridColumns } from "#/adapter/vxe-table";
 
 export interface XunzhenRecord {
+  campus: string;
   diagnosisType: string;
   doctorName: string;
   id: string;
@@ -22,6 +23,7 @@ interface XunzhenCareInfo {
 }
 
 export interface XunzhenQueryParams {
+  campus?: string;
   doctorName?: string;
   inspectionDate?: string;
   nurseName?: string;
@@ -37,8 +39,14 @@ export const visitTypeOptions = [
   { label: "临时巡诊", value: "temporary" },
 ];
 
+export const campusOptions = [
+  { label: "大学城", value: "大学城" },
+  { label: "江津", value: "江津" },
+];
+
 export const mockXunzhenRecords: XunzhenRecord[] = [
   {
+    campus: "大学城",
     diagnosisType: "高血压随访",
     doctorName: "张明",
     id: "XZ20260625001",
@@ -48,6 +56,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "routine",
   },
   {
+    campus: "大学城",
     diagnosisType: "糖尿病复查",
     doctorName: "陈宇",
     id: "XZ20260624002",
@@ -57,6 +66,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "followUp",
   },
   {
+    campus: "大学城",
     diagnosisType: "术后康复评估",
     doctorName: "刘洋",
     id: "XZ20260623003",
@@ -66,6 +76,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "key",
   },
   {
+    campus: "大学城",
     diagnosisType: "呼吸道感染",
     doctorName: "张明",
     id: "XZ20260622004",
@@ -75,6 +86,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "temporary",
   },
   {
+    campus: "大学城",
     diagnosisType: "冠心病管理",
     doctorName: "黄静",
     id: "XZ20260621005",
@@ -84,6 +96,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "routine",
   },
   {
+    campus: "大学城",
     diagnosisType: "脑卒中康复",
     doctorName: "周航",
     id: "XZ20260620006",
@@ -93,6 +106,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "key",
   },
   {
+    campus: "江津",
     diagnosisType: "肺部感染观察",
     doctorName: "陈宇",
     id: "XZ20260619007",
@@ -102,6 +116,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "temporary",
   },
   {
+    campus: "江津",
     diagnosisType: "妊娠期血糖管理",
     doctorName: "黄静",
     id: "XZ20260618008",
@@ -111,6 +126,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "followUp",
   },
   {
+    campus: "江津",
     diagnosisType: "慢阻肺随访",
     doctorName: "刘洋",
     id: "XZ20260617009",
@@ -120,6 +136,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "routine",
   },
   {
+    campus: "江津",
     diagnosisType: "贫血原因待查",
     doctorName: "周航",
     id: "XZ20260616010",
@@ -129,6 +146,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "temporary",
   },
   {
+    campus: "江津",
     diagnosisType: "骨折术后复查",
     doctorName: "张明",
     id: "XZ20260615011",
@@ -138,6 +156,7 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
     visitType: "followUp",
   },
   {
+    campus: "江津",
     diagnosisType: "肾功能异常观察",
     doctorName: "陈宇",
     id: "XZ20260614012",
@@ -272,6 +291,7 @@ export async function getMockXunzhenList(params: XunzhenQueryParams) {
     return (
       fuzzyMatch(item.doctorName, params.doctorName) &&
       fuzzyMatch(item.nurseName, params.nurseName) &&
+      (!params.campus || item.campus === params.campus) &&
       (!params.inspectionDate || item.inspectionDate === params.inspectionDate) &&
       (!params.visitType || item.visitType === params.visitType)
     );
@@ -366,6 +386,7 @@ export function useColumns(): VxeTableGridColumns<XunzhenRecord> {
 export function useDescriptionItems(row?: XunzhenRecord): DescriptionsItemType[] {
   return [
     { label: "编号", content: row?.id },
+    { label: "保障点", content: row?.campus },
     { label: "巡检日期", content: row?.inspectionDate },
     { label: "医生姓名", content: row?.doctorName },
     { label: "护士姓名", content: row?.nurseName },

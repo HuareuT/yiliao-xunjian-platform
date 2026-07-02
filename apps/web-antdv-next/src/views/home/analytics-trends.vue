@@ -1,14 +1,45 @@
 <script lang="ts" setup>
 import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
+
+const props = withDefaults(
+  defineProps<{
+    campus?: string;
+  }>(),
+  {
+    campus: '全部',
+  },
+);
 
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+const trendDataMap: Record<
+  string,
+  {
+    keyVisits: number[];
+    totalVisits: number[];
+  }
+> = {
+  全部: {
+    keyVisits: [7, 11, 9, 14, 12, 16, 11],
+    totalVisits: [25, 34, 29, 39, 34, 45, 39],
+  },
+  大学城: {
+    keyVisits: [4, 6, 5, 8, 7, 9, 6],
+    totalVisits: [14, 19, 16, 22, 18, 25, 21],
+  },
+  江津: {
+    keyVisits: [3, 5, 4, 6, 5, 7, 5],
+    totalVisits: [11, 15, 13, 17, 16, 20, 18],
+  },
+};
+
+function renderChart() {
+  const data = trendDataMap[props.campus] ?? trendDataMap['全部']!;
   renderEcharts({
     legend: {
       data: ['巡诊总数', '重点巡诊'],
@@ -24,7 +55,7 @@ onMounted(() => {
     series: [
       {
         areaStyle: {},
-        data: [14, 19, 16, 22, 18, 25, 21],
+        data: data.totalVisits,
         itemStyle: {
           color: '#5ab1ef',
         },
@@ -34,7 +65,7 @@ onMounted(() => {
       },
       {
         areaStyle: {},
-        data: [4, 6, 5, 8, 7, 9, 6],
+        data: data.keyVisits,
         itemStyle: {
           color: '#019680',
         },
@@ -72,7 +103,7 @@ onMounted(() => {
         axisTick: {
           show: false,
         },
-        max: 30,
+        max: props.campus === '全部' ? 50 : 30,
         splitArea: {
           show: true,
         },
@@ -81,7 +112,11 @@ onMounted(() => {
       },
     ],
   });
-});
+}
+
+onMounted(renderChart);
+
+watch(() => props.campus, renderChart);
 </script>
 
 <template>

@@ -74,6 +74,19 @@ const mockRequest = () => {
         },
         {
           id: 10005,
+          component: "baozhang-leixing/index",
+          type: "menu",
+          status: 1,
+          meta: {
+            icon: "lucide:list-tree",
+            order: 4,
+            title: "保障类型管理",
+          },
+          name: "BaozhangLeixing",
+          path: "/baozhang-leixing",
+        },
+        {
+          id: 10005,
           component: "rizhi/index",
           type: "menu",
           status: 1,

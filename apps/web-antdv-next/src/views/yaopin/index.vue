@@ -13,7 +13,7 @@ import { Button, message, Modal, Upload } from "antdv-next";
 import { useVbenVxeGrid } from "#/adapter/vxe-table";
 
 import {
-  categoryOptions,
+  manufacturerOptions,
   mockYaopinRecords,
   useColumns,
   useGridFormSchema,
@@ -28,22 +28,26 @@ const [EditDrawer, editDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
-const categoryOptionMap = computed(() => {
-  return new Map(categoryOptions.map((item) => [item.value, item.label]));
+const manufacturerOptionMap = computed(() => {
+  return new Map(manufacturerOptions.map((item) => [item.value, item.label]));
 });
 
 function buildRecord(row: YaopinRecord) {
   return {
     ...row,
-    category: categoryOptionMap.value.get(row.category) || row.category,
+    manufacturer:
+      manufacturerOptionMap.value.get(row.manufacturer) || row.manufacturer,
   };
 }
 
 function getFilteredRecords(formValues: Record<string, any>) {
   const name = String(formValues.name || "").trim();
-  const category = formValues.category as string | undefined;
+  const manufacturer = formValues.manufacturer as string | undefined;
   return records.value.filter((item) => {
-    return (!name || item.name.includes(name)) && (!category || item.category === category);
+    return (
+      (!name || item.name.includes(name)) &&
+      (!manufacturer || item.manufacturer === manufacturer)
+    );
   });
 }
 
@@ -153,10 +157,8 @@ function parseCsv(content: string) {
       return record;
     })
     .map((item, index) => ({
-      category: item["分类"] || "西药",
       id: item["编号"] || `YP${Date.now()}${index}`,
-      inventory: Number(item["库存"] || 0),
-      limit: item["使用限制"] || "",
+      manufacturer: item["厂家"] || "华北制药",
       name: item["药品名称"] || item["名称"] || "",
       specification: item["规格"] || "",
       unit: item["单位"] || "",

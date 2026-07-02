@@ -1,14 +1,31 @@
 <script lang="ts" setup>
 import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
+
+const props = withDefaults(
+  defineProps<{
+    campus?: string;
+  }>(),
+  {
+    campus: '全部',
+  },
+);
 
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+const monthlyDataMap: Record<string, number[]> = {
+  全部: [186, 204, 218, 246, 263, 326, 0, 0, 0, 0, 0, 0],
+  大学城: [98, 112, 126, 141, 158, 186, 0, 0, 0, 0, 0, 0],
+  江津: [88, 92, 92, 105, 105, 140, 0, 0, 0, 0, 0, 0],
+};
+
+function renderChart() {
+  const data = monthlyDataMap[props.campus] ?? monthlyDataMap['全部']!;
+
   renderEcharts({
     grid: {
       bottom: 0,
@@ -21,7 +38,7 @@ onMounted(() => {
       {
         barMaxWidth: 80,
         color: '#5ab1ef',
-        data: [186, 204, 218, 246, 263, 326, 0, 0, 0, 0, 0, 0],
+        data,
         name: '巡诊数',
         type: 'bar',
       },
@@ -40,12 +57,16 @@ onMounted(() => {
       type: 'category',
     },
     yAxis: {
-      max: 360,
+      max: props.campus === '全部' ? 360 : 220,
       splitNumber: 4,
       type: 'value',
     },
   });
-});
+}
+
+onMounted(renderChart);
+
+watch(() => props.campus, renderChart);
 </script>
 
 <template>

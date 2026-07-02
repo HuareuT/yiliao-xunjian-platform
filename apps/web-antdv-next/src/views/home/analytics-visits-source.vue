@@ -1,14 +1,49 @@
 <script lang="ts" setup>
 import type { EchartsUIType } from '@vben/plugins/echarts';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 import { EchartsUI, useEcharts } from '@vben/plugins/echarts';
+
+const props = withDefaults(
+  defineProps<{
+    campus?: string;
+  }>(),
+  {
+    campus: '全部',
+  },
+);
 
 const chartRef = ref<EchartsUIType>();
 const { renderEcharts } = useEcharts(chartRef);
 
-onMounted(() => {
+const diagnosisDataMap: Record<string, { name: string; value: number }[]> = {
+  全部: [
+    { name: '慢病管理', value: 86 },
+    { name: '术后康复', value: 42 },
+    { name: '呼吸感染', value: 58 },
+    { name: '急症观察', value: 31 },
+    { name: '妇儿随访', value: 27 },
+  ],
+  大学城: [
+    { name: '慢病管理', value: 48 },
+    { name: '术后康复', value: 24 },
+    { name: '呼吸感染', value: 30 },
+    { name: '急症观察', value: 16 },
+    { name: '妇儿随访', value: 15 },
+  ],
+  江津: [
+    { name: '慢病管理', value: 38 },
+    { name: '术后康复', value: 18 },
+    { name: '呼吸感染', value: 28 },
+    { name: '急症观察', value: 15 },
+    { name: '妇儿随访', value: 12 },
+  ],
+};
+
+function renderChart() {
+  const data = diagnosisDataMap[props.campus] ?? diagnosisDataMap['全部']!;
+
   renderEcharts({
     legend: {
       bottom: '2%',
@@ -23,13 +58,7 @@ onMounted(() => {
         animationType: 'scale',
         avoidLabelOverlap: false,
         color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9', '#ffb980'],
-        data: [
-          { name: '慢病管理', value: 86 },
-          { name: '术后康复', value: 42 },
-          { name: '呼吸感染', value: 58 },
-          { name: '急症观察', value: 31 },
-          { name: '妇儿随访', value: 27 },
-        ],
+        data,
         emphasis: {
           label: {
             fontSize: '12',
@@ -58,7 +87,11 @@ onMounted(() => {
       trigger: 'item',
     },
   });
-});
+}
+
+onMounted(renderChart);
+
+watch(() => props.campus, renderChart);
 </script>
 
 <template>

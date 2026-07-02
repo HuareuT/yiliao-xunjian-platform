@@ -1,29 +1,29 @@
 <script lang="ts" setup>
-import type { DiagnosisCategory, DiagnosisRecord } from './data';
+import type { DiagnosisCategory, DiagnosisRecord } from "./data";
 
-import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { VxeTableGridOptions } from "#/adapter/vxe-table";
 
-import { h, ref, watch } from 'vue';
+import { h, ref, watch } from "vue";
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
-import { Plus } from '@vben/icons';
+import { Page, useVbenDrawer } from "@vben/common-ui";
+import { Plus } from "@vben/icons";
 
-import { Button, Card, Input, InputSearch, message, Modal } from 'antdv-next';
+import { Button, Card, Input, InputSearch, message, Modal } from "antdv-next";
 
-import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
+import { useVbenVxeGrid, VbenTableAction } from "#/adapter/vxe-table";
 
 import {
   mockDiagnosisCategories,
   mockDiagnosisRecords,
   useColumns,
   useGridFormSchema,
-} from './data';
-import DiagnosisForm from './modules/form.vue';
+} from "./data";
+import DiagnosisForm from "./modules/form.vue";
 
 const categories = ref<DiagnosisCategory[]>([...mockDiagnosisCategories]);
 const records = ref<DiagnosisRecord[]>([...mockDiagnosisRecords]);
-const categorySearchValue = ref('');
-const selectedCategoryId = ref(categories.value[0]?.id || '');
+const categorySearchValue = ref("");
+const selectedCategoryId = ref(categories.value[0]?.id || "");
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: DiagnosisForm,
@@ -31,7 +31,7 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
 });
 
 function getCategoryName(categoryId: string) {
-  return categories.value.find((item) => item.id === categoryId)?.name || '';
+  return categories.value.find((item) => item.id === categoryId)?.name || "";
 }
 
 function getVisibleCategories() {
@@ -41,11 +41,10 @@ function getVisibleCategories() {
 }
 
 function getFilteredRecords(formValues: Record<string, any>) {
-  const diagnosisType = String(formValues.diagnosisType || '').trim();
+  const diagnosisType = String(formValues.diagnosisType || "").trim();
   return records.value.filter((item) => {
     return (
-      (!selectedCategoryId.value ||
-        item.categoryId === selectedCategoryId.value) &&
+      (!selectedCategoryId.value || item.categoryId === selectedCategoryId.value) &&
       (!diagnosisType || item.diagnosisType.includes(diagnosisType))
     );
   });
@@ -62,7 +61,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   },
   gridOptions: {
     columns: useColumns(onStatusChange),
-    height: 'auto',
+    height: "auto",
     keepSource: true,
     proxyConfig: {
       ajax: {
@@ -76,7 +75,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       },
     },
     rowConfig: {
-      keyField: 'id',
+      keyField: "id",
     },
     toolbarConfig: {
       custom: true,
@@ -98,22 +97,22 @@ function onSelectCategory(value: string) {
 }
 
 function onCreateCategory() {
-  const categoryName = ref('');
+  const categoryName = ref("");
   Modal.confirm({
-    cancelText: '取消',
+    cancelText: "取消",
     content: () =>
       h(Input, {
-        placeholder: '请输入分类名称',
+        placeholder: "请输入分类名称",
         value: categoryName.value,
-        'onUpdate:value': (value: string) => {
+        "onUpdate:value": (value: string) => {
           categoryName.value = value;
         },
       }),
     onOk() {
       const name = categoryName.value.trim();
       if (!name) {
-        message.warning('请输入分类名称');
-        return Promise.reject(new Error('请输入分类名称'));
+        message.warning("请输入分类名称");
+        return Promise.reject(new Error("请输入分类名称"));
       }
       const id = `category_${Date.now()}`;
       categories.value = [{ id, name }, ...categories.value];
@@ -122,8 +121,8 @@ function onCreateCategory() {
       onRefresh();
       return true;
     },
-    okText: '确定',
-    title: '新增分类',
+    okText: "确定",
+    title: "新增分类",
   });
 }
 
@@ -152,14 +151,14 @@ function onDelete(row: DiagnosisRecord) {
 }
 
 async function onStatusChange(newStatus: number, row: DiagnosisRecord) {
-  const statusText = newStatus === 1 ? '启用' : '停用';
+  const statusText = newStatus === 1 ? "启用" : "停用";
   records.value = records.value.map((item) =>
     item.id === row.id
       ? {
           ...item,
           status: newStatus,
-          updateBy: '管理员',
-          updateTime: new Date().toLocaleString('zh-CN'),
+          updateBy: "管理员",
+          updateTime: new Date().toLocaleString("zh-CN"),
         }
       : item,
   );
@@ -205,12 +204,9 @@ watch(categorySearchValue, () => {
   <Page auto-content-height>
     <FormDrawer @success="upsertRecord" />
     <div class="flex size-full">
-      <Card class="w-1/6">
+      <Card class="w-1/5">
         <div class="mb-3 flex gap-2">
-          <InputSearch
-            v-model:value="categorySearchValue"
-            placeholder="搜索分类"
-          />
+          <InputSearch v-model:value="categorySearchValue" placeholder="搜索分类" />
           <Button type="primary" @click="onCreateCategory">
             <Plus class="size-5" />
           </Button>
@@ -231,7 +227,7 @@ watch(categorySearchValue, () => {
         </div>
       </Card>
 
-      <div class="ml-4 w-5/6">
+      <div class="ml-4 w-4/5">
         <Grid table-title="诊断库管理">
           <template #toolbar-tools>
             <Button type="primary" @click="onCreate">
