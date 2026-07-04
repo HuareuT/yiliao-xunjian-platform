@@ -6,18 +6,12 @@ import type { VxeTableGridOptions } from "#/adapter/vxe-table";
 import { ref } from "vue";
 
 import { Page, useVbenDrawer } from "@vben/common-ui";
-import { IconifyIcon } from "@vben/icons";
 
-import { Button, RadioGroup } from "antdv-next";
+import { RadioGroup } from "antdv-next";
 
 import { useVbenVxeGrid, VbenTableAction } from "#/adapter/vxe-table";
 
-import {
-  campusOptions,
-  getMockXunzhenList,
-  useColumns,
-  useGridFormSchema,
-} from "./data";
+import { campusOptions, getMockXunzhenList, useColumns, useGridFormSchema } from "./data";
 import Detail from "./modules/detail.vue";
 
 const activeCampus = ref("大学城");
@@ -33,6 +27,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
     submitOnChange: true,
   },
   gridOptions: {
+    checkboxConfig: {
+      highlight: true,
+      // labelField: "id",
+    },
     columns: useColumns(),
     exportConfig: {
       filename: "巡诊记录",
@@ -95,12 +93,12 @@ function onExport() {
           @change="onCampusChange"
         />
       </template>
-      <template #toolbar-tools>
+      <!-- <template #toolbar-tools>
         <Button type="primary" @click="onExport">
           <IconifyIcon class="size-5" icon="lucide:download" />
           导出记录
         </Button>
-      </template>
+      </template> -->
       <template #action="{ row }">
         <VbenTableAction
           :actions="[

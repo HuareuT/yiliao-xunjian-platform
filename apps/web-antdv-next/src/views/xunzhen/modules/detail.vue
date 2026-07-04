@@ -7,21 +7,17 @@ import { useVbenDrawer, VbenDescriptions } from '@vben/common-ui';
 
 import {
   useDescriptionItems,
-  useMedicationDescriptionItems,
+  useMedicationGroups,
   usePatientDescriptionItems,
-  useTreatmentDescriptionItems,
+  useTreatmentGroups,
 } from '../data';
 
 const detailData = ref<XunzhenRecord>();
 
 const basicItems = computed(() => useDescriptionItems(detailData.value));
 const patientItems = computed(() => usePatientDescriptionItems(detailData.value));
-const medicationItems = computed(() =>
-  useMedicationDescriptionItems(detailData.value),
-);
-const treatmentItems = computed(() =>
-  useTreatmentDescriptionItems(detailData.value),
-);
+const medicationGroups = computed(() => useMedicationGroups(detailData.value));
+const treatmentGroups = computed(() => useTreatmentGroups(detailData.value));
 
 const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange(isOpen) {
@@ -44,11 +40,39 @@ const [Drawer, drawerApi] = useVbenDrawer({
     </div>
     <div class="detail-section">
       <div class="detail-section__title">开药</div>
-      <VbenDescriptions bordered :column="1" :items="medicationItems" />
+      <template v-if="medicationGroups.length > 0">
+        <div
+          v-for="(group, index) in medicationGroups"
+          :key="`medication-${index}`"
+          class="detail-subsection"
+        >
+          <VbenDescriptions bordered :column="1" :items="group.items" />
+        </div>
+      </template>
+      <VbenDescriptions
+        v-else
+        bordered
+        :column="1"
+        :items="[{ label: '开药信息', content: '暂无' }]"
+      />
     </div>
     <div class="detail-section">
       <div class="detail-section__title">处置</div>
-      <VbenDescriptions bordered :column="1" :items="treatmentItems" />
+      <template v-if="treatmentGroups.length > 0">
+        <div
+          v-for="(group, index) in treatmentGroups"
+          :key="`treatment-${index}`"
+          class="detail-subsection"
+        >
+          <VbenDescriptions bordered :column="1" :items="group.items" />
+        </div>
+      </template>
+      <VbenDescriptions
+        v-else
+        bordered
+        :column="1"
+        :items="[{ label: '处置信息', content: '暂无' }]"
+      />
     </div>
   </Drawer>
 </template>
@@ -64,4 +88,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
   font-size: 15px;
   font-weight: 600;
 }
+
+.detail-subsection + .detail-subsection {
+  margin-top: 12px;
+}
+
 </style>

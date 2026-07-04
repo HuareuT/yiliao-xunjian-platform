@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { DiagnosisCategory, DiagnosisRecord } from "./data";
 
-import type { VxeTableGridOptions } from "#/adapter/vxe-table";
+import type { VxeGridListeners, VxeTableGridOptions } from "#/adapter/vxe-table";
 
 import { h, ref, watch } from "vue";
 
@@ -23,6 +23,7 @@ import DiagnosisForm from "./modules/form.vue";
 const categories = ref<DiagnosisCategory[]>([...mockDiagnosisCategories]);
 const records = ref<DiagnosisRecord[]>([...mockDiagnosisRecords]);
 const categorySearchValue = ref("");
+const selectedCount = ref(0);
 const selectedCategoryId = ref(categories.value[0]?.id || "");
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
@@ -54,12 +55,25 @@ function paginate(list: DiagnosisRecord[], page: number, pageSize: number) {
   return list.slice((page - 1) * pageSize, page * pageSize);
 }
 
+function updateSelectedCount() {
+  selectedCount.value = gridApi.grid?.getCheckboxRecords?.().length ?? 0;
+}
+
+const gridEvents: VxeGridListeners<DiagnosisRecord> = {
+  checkboxAll: updateSelectedCount,
+  checkboxChange: updateSelectedCount,
+};
+
 const [Grid, gridApi] = useVbenVxeGrid({
+  gridEvents,
   formOptions: {
     schema: useGridFormSchema(),
     submitOnChange: true,
   },
   gridOptions: {
+    checkboxConfig: {
+      highlight: true,
+    },
     columns: useColumns(onStatusChange),
     height: "auto",
     keepSource: true,
@@ -88,6 +102,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 });
 
 function onRefresh() {
+  selectedCount.value = 0;
   gridApi.query();
 }
 
@@ -148,6 +163,27 @@ function onDelete(row: DiagnosisRecord) {
   records.value = records.value.filter((item) => item.id !== row.id);
   message.success(`已删除「${row.diagnosisType}」`);
   onRefresh();
+}
+
+function onBatchDelete() {
+  const selectedRows =
+    (gridApi.grid?.getCheckboxRecords?.() as DiagnosisRecord[] | undefined) ?? [];
+
+  if (selectedRows.length === 0) {
+    message.warning("请先选择需要删除的诊断类型");
+    return;
+  }
+
+  Modal.confirm({
+    content: `确认批量删除已选中的 ${selectedRows.length} 条诊断类型吗？`,
+    onOk() {
+      const selectedIds = new Set(selectedRows.map((item) => item.id));
+      records.value = records.value.filter((item) => !selectedIds.has(item.id));
+      message.success(`已批量删除 ${selectedRows.length} 条诊断类型`);
+      onRefresh();
+    },
+    title: "批量删除诊断类型",
+  });
 }
 
 async function onStatusChange(newStatus: number, row: DiagnosisRecord) {
@@ -233,6 +269,14 @@ watch(categorySearchValue, () => {
             <Button type="primary" @click="onCreate">
               <Plus class="size-5" />
               新增诊断类型
+            </Button>
+            <Button
+              danger
+              :disabled="selectedCount === 0"
+              class="ml-2"
+              @click="onBatchDelete"
+            >
+              批量删除
             </Button>
           </template>
           <template #action="{ row }">

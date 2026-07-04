@@ -28,11 +28,16 @@ export interface XunzhenRecord {
 }
 
 interface XunzhenCareInfo {
-  medicationDosage: string;
-  medicationRemark: string;
-  medicationUsage: string;
-  treatmentItems: string[];
-  treatmentRemarks: Record<string, string>;
+  medications: Array<{
+    dosage: string;
+    name: string;
+    remark: string;
+    usage: string;
+  }>;
+  treatments: Array<{
+    name: string;
+    remark: string;
+  }>;
 }
 
 export interface XunzhenQueryParams {
@@ -316,114 +321,190 @@ export const mockXunzhenRecords: XunzhenRecord[] = [
 
 const careInfoMap: Record<string, XunzhenCareInfo> = {
   高血压随访: {
-    medicationDosage: "每日1次，每次1片",
-    medicationRemark: "监测血压变化，低血压或头晕时暂停并复诊",
-    medicationUsage: "口服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "减少剧烈运动，连续记录晨起和睡前血压",
-    },
+    medications: [
+      {
+        dosage: "每日1次，每次1片",
+        name: "硝苯地平缓释片",
+        remark: "监测血压变化，低血压或头晕时暂停并复诊",
+        usage: "口服",
+      },
+      {
+        dosage: "每日1次，每次1片",
+        name: "阿司匹林肠溶片",
+        remark: "餐后服用，关注胃部不适",
+        usage: "口服",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "减少剧烈运动，连续记录晨起和睡前血压" }],
   },
   糖尿病复查: {
-    medicationDosage: "每日2次，每次1片",
-    medicationRemark: "餐后血糖异常时及时复查",
-    medicationUsage: "餐后口服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "记录空腹及餐后血糖，避免空腹运动",
-    },
+    medications: [
+      {
+        dosage: "每日2次，每次1片",
+        name: "二甲双胍片",
+        remark: "餐后血糖异常时及时复查",
+        usage: "餐后口服",
+      },
+      {
+        dosage: "每日1次，每次1片",
+        name: "格列美脲片",
+        remark: "低血糖症状出现时及时停药并复诊",
+        usage: "早餐前口服",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "记录空腹及餐后血糖，避免空腹运动" }],
   },
   术后康复评估: {
-    medicationDosage: "按医嘱执行",
-    medicationRemark: "如伤口红肿渗液需及时复诊",
-    medicationUsage: "外用或口服",
-    treatmentItems: ["换药", "静养观察"],
-    treatmentRemarks: {
-      换药: "保持伤口清洁干燥，每日观察敷料渗出情况",
-      静养观察: "避免牵拉伤口，观察体温和疼痛变化",
-    },
+    medications: [
+      {
+        dosage: "按医嘱执行",
+        name: "头孢克肟胶囊",
+        remark: "如伤口红肿渗液需及时复诊",
+        usage: "口服",
+      },
+      {
+        dosage: "每日2次，局部薄涂",
+        name: "莫匹罗星软膏",
+        remark: "换药后使用，避免接触污染",
+        usage: "外用",
+      },
+    ],
+    treatments: [
+      { name: "换药", remark: "保持伤口清洁干燥，每日观察敷料渗出情况" },
+      { name: "静养观察", remark: "避免牵拉伤口，观察体温和疼痛变化" },
+    ],
   },
   呼吸道感染: {
-    medicationDosage: "每日3次，每次1袋",
-    medicationRemark: "咳喘加重或发热不退时复诊",
-    medicationUsage: "温水冲服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "保持室内通风，多饮水，观察呼吸频率",
-    },
+    medications: [
+      {
+        dosage: "每日3次，每次1袋",
+        name: "板蓝根颗粒",
+        remark: "咳喘加重或发热不退时复诊",
+        usage: "温水冲服",
+      },
+      {
+        dosage: "每日3次，每次10ml",
+        name: "氨溴索口服液",
+        remark: "痰多时按需调整用量",
+        usage: "口服",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "保持室内通风，多饮水，观察呼吸频率" }],
   },
   冠心病管理: {
-    medicationDosage: "每日1次，每次1片",
-    medicationRemark: "胸痛加重时立即停止活动并就医",
-    medicationUsage: "口服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "避免情绪激动和剧烈运动，记录胸闷胸痛情况",
-    },
+    medications: [
+      {
+        dosage: "每日1次，每次1片",
+        name: "阿托伐他汀钙片",
+        remark: "胸痛加重时立即停止活动并就医",
+        usage: "口服",
+      },
+      {
+        dosage: "每日1次，每次1片",
+        name: "单硝酸异山梨酯片",
+        remark: "按时服药，观察头晕头痛反应",
+        usage: "口服",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "避免情绪激动和剧烈运动，记录胸闷胸痛情况" }],
   },
   脑卒中康复: {
-    medicationDosage: "每日1次，每次1片",
-    medicationRemark: "按康复计划执行，观察肢体活动变化",
-    medicationUsage: "口服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "协助进行轻量康复训练，防跌倒",
-    },
+    medications: [
+      {
+        dosage: "每日1次，每次1片",
+        name: "氯吡格雷片",
+        remark: "按康复计划执行，观察肢体活动变化",
+        usage: "口服",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "协助进行轻量康复训练，防跌倒" }],
   },
   肺部感染观察: {
-    medicationDosage: "每日2次，每次1片",
-    medicationRemark: "痰量增多或气促加重时复诊",
-    medicationUsage: "饭后口服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "观察体温、咳嗽和血氧变化",
-    },
+    medications: [
+      {
+        dosage: "每日2次，每次1片",
+        name: "左氧氟沙星片",
+        remark: "痰量增多或气促加重时复诊",
+        usage: "饭后口服",
+      },
+      {
+        dosage: "每日2次，每次1支",
+        name: "布地奈德混悬液",
+        remark: "雾化后漱口，避免口腔不适",
+        usage: "雾化吸入",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "观察体温、咳嗽和血氧变化" }],
   },
   妊娠期血糖管理: {
-    medicationDosage: "按医嘱调整",
-    medicationRemark: "避免自行增减用药",
-    medicationUsage: "餐前或餐后按医嘱使用",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "记录饮食和血糖变化，异常时联系医生",
-    },
+    medications: [
+      {
+        dosage: "按医嘱调整",
+        name: "门冬胰岛素注射液",
+        remark: "避免自行增减用药",
+        usage: "餐前皮下注射",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "记录饮食和血糖变化，异常时联系医生" }],
   },
   慢阻肺随访: {
-    medicationDosage: "每日2次，每次1吸",
-    medicationRemark: "使用吸入装置后漱口",
-    medicationUsage: "吸入",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "避免冷空气刺激，观察喘息和活动耐量",
-    },
+    medications: [
+      {
+        dosage: "每日2次，每次1吸",
+        name: "噻托溴铵粉吸入剂",
+        remark: "使用吸入装置后漱口",
+        usage: "吸入",
+      },
+      {
+        dosage: "每日2次，每次1吸",
+        name: "沙美特罗替卡松粉吸入剂",
+        remark: "避免漏吸，症状加重及时复诊",
+        usage: "吸入",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "避免冷空气刺激，观察喘息和活动耐量" }],
   },
   贫血原因待查: {
-    medicationDosage: "每日1次，每次1片",
-    medicationRemark: "复查血常规后调整方案",
-    medicationUsage: "饭后口服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "避免劳累，观察头晕乏力变化",
-    },
+    medications: [
+      {
+        dosage: "每日1次，每次1片",
+        name: "琥珀酸亚铁片",
+        remark: "复查血常规后调整方案",
+        usage: "饭后口服",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "避免劳累，观察头晕乏力变化" }],
   },
   骨折术后复查: {
-    medicationDosage: "疼痛明显时按医嘱使用",
-    medicationRemark: "避免超量使用止痛药",
-    medicationUsage: "口服",
-    treatmentItems: ["冰敷", "静养观察"],
-    treatmentRemarks: {
-      冰敷: "肿胀部位短时冰敷，避免冻伤",
-      静养观察: "抬高患肢，观察肿胀和末梢血运",
-    },
+    medications: [
+      {
+        dosage: "疼痛明显时按医嘱使用",
+        name: "塞来昔布胶囊",
+        remark: "避免超量使用止痛药",
+        usage: "口服",
+      },
+      {
+        dosage: "每日2次，每次1片",
+        name: "钙尔奇D片",
+        remark: "促进骨恢复，饭后服用",
+        usage: "口服",
+      },
+    ],
+    treatments: [
+      { name: "冰敷", remark: "肿胀部位短时冰敷，避免冻伤" },
+      { name: "静养观察", remark: "抬高患肢，观察肿胀和末梢血运" },
+    ],
   },
   肾功能异常观察: {
-    medicationDosage: "按医嘱执行",
-    medicationRemark: "避免使用肾毒性药物",
-    medicationUsage: "口服",
-    treatmentItems: ["静养观察"],
-    treatmentRemarks: {
-      静养观察: "记录尿量、水肿和血压变化",
-    },
+    medications: [
+      {
+        dosage: "按医嘱执行",
+        name: "复方α-酮酸片",
+        remark: "避免使用肾毒性药物",
+        usage: "口服",
+      },
+    ],
+    treatments: [{ name: "静养观察", remark: "记录尿量、水肿和血压变化" }],
   },
 };
 
@@ -539,6 +620,12 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useColumns(): VxeTableGridColumns<XunzhenRecord> {
   return [
     {
+      align: "center",
+      fixed: "left",
+      type: "checkbox",
+      width: 60,
+    },
+    {
       field: "id",
       fixed: "left",
       title: "编号",
@@ -597,9 +684,7 @@ export function useDescriptionItems(row?: XunzhenRecord): DescriptionsItemType[]
   ];
 }
 
-export function usePatientDescriptionItems(
-  row?: XunzhenRecord,
-): DescriptionsItemType[] {
+export function usePatientDescriptionItems(row?: XunzhenRecord): DescriptionsItemType[] {
   return [
     { label: "姓名", content: row?.patientName },
     { label: "性别", content: row?.gender },
@@ -612,33 +697,58 @@ export function usePatientDescriptionItems(
   ];
 }
 
-export function useMedicationDescriptionItems(
-  row?: XunzhenRecord,
-): DescriptionsItemType[] {
+export function useMedicationDescriptionItems(row?: XunzhenRecord): DescriptionsItemType[] {
   const careInfo = row ? careInfoMap[row.diagnosisType] : undefined;
+  const medications = careInfo?.medications ?? [];
 
-  return [
-    { label: "用量", content: careInfo?.medicationDosage ?? "暂无" },
-    { label: "用法", content: careInfo?.medicationUsage ?? "暂无" },
-    { label: "备注", content: careInfo?.medicationRemark ?? "暂无" },
-  ];
-}
-
-export function useTreatmentDescriptionItems(
-  row?: XunzhenRecord,
-): DescriptionsItemType[] {
-  const careInfo = row ? careInfoMap[row.diagnosisType] : undefined;
-  const treatmentItems = careInfo?.treatmentItems ?? [];
-
-  if (treatmentItems.length === 0) {
-    return [{ label: "处置项", content: "暂无" }];
+  if (medications.length === 0) {
+    return [{ label: "开药信息", content: "暂无" }];
   }
 
-  return [
-    { label: "处置项", content: treatmentItems.join("、") },
-    ...treatmentItems.map((item) => ({
-      content: careInfo?.treatmentRemarks[item] ?? "暂无",
-      label: `${item}备注`,
-    })),
-  ];
+  return medications.flatMap((item, index) => [
+    { label: `药品名称${index + 1}`, content: item.name },
+    { label: `用量${index + 1}`, content: item.dosage },
+    { label: `用法${index + 1}`, content: item.usage },
+    { label: `备注${index + 1}`, content: item.remark },
+  ]);
+}
+
+export function useMedicationGroups(row?: XunzhenRecord) {
+  const careInfo = row ? careInfoMap[row.diagnosisType] : undefined;
+  const medications = careInfo?.medications ?? [];
+
+  return medications.map((item) => ({
+    items: [
+      { label: "药品名称", content: item.name },
+      { label: "用量", content: item.dosage },
+      { label: "用法", content: item.usage },
+      { label: "备注", content: item.remark },
+    ] satisfies DescriptionsItemType[],
+  }));
+}
+
+export function useTreatmentDescriptionItems(row?: XunzhenRecord): DescriptionsItemType[] {
+  const careInfo = row ? careInfoMap[row.diagnosisType] : undefined;
+  const treatments = careInfo?.treatments ?? [];
+
+  if (treatments.length === 0) {
+    return [{ label: "处置信息", content: "暂无" }];
+  }
+
+  return treatments.flatMap((item, index) => [
+    { label: `处置项${index + 1}`, content: item.name },
+    { label: `备注${index + 1}`, content: item.remark },
+  ]);
+}
+
+export function useTreatmentGroups(row?: XunzhenRecord) {
+  const careInfo = row ? careInfoMap[row.diagnosisType] : undefined;
+  const treatments = careInfo?.treatments ?? [];
+
+  return treatments.map((item) => ({
+    items: [
+      { label: "处置项", content: item.name },
+      { label: "备注", content: item.remark },
+    ] satisfies DescriptionsItemType[],
+  }));
 }
