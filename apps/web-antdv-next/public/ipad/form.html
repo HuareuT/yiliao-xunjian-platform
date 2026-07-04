@@ -105,18 +105,18 @@
             </div>
           </div>
         </div>
-        <!-- 草稿箱入口 -->
+        <!-- 待提交入口 -->
         <div class="bg-blue-600/10 rounded-2xl p-4 border border-blue-600/30">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-blue-400">草稿箱</span>
-            <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full">3 份</span>
+            <span class="text-sm font-medium text-blue-400">待提交</span>
+            <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full" id="sidebar-drafts-count">3 份</span>
           </div>
-          <p class="text-[11px] text-slate-400 mb-4">当前有 3 份未提交的巡诊记录</p>
+          <p class="text-[11px] text-slate-400 mb-4">当前有 <span id="sidebar-drafts-text">3</span> 份待提交的巡诊记录</p>
           <button
-            class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-semibold transition-colors"
+            class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-semibold transition-colors focus:outline-none"
             onclick="window.location.href = 'drafts.html'"
           >
-            查看草稿
+            查看
           </button>
         </div>
       </div>
@@ -194,6 +194,7 @@
               <label class="block text-sm font-medium text-slate-600 mb-1.5">ID号</label>
               <input
                 class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                id="patient-soldier-id"
                 placeholder="内部ID号"
                 type="text"
               />
@@ -252,14 +253,18 @@
               <label class="block text-sm font-medium text-slate-600 mb-1.5">联系人电话</label>
               <input
                 class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                id="patient-contact-phone"
                 placeholder="紧急联系人电话"
                 type="text"
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-600 mb-1.5">单位/部队番号/队别</label>
+              <label class="block text-sm font-medium text-slate-600 mb-1.5"
+                >单位/部队番号/队别</label
+              >
               <input
                 class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                id="patient-dept"
                 placeholder="请输入单位/部队番号/队别"
                 type="text"
               />
@@ -286,7 +291,7 @@
                     class="text-base"
                   ></iconify-icon>
                 </button>
-                <label class="block text-sm font-medium text-slate-600">诊断方式（多选）</label>
+                <label class="block text-sm font-medium text-slate-600">诊断（多选）</label>
 
                 <!-- 说明弹出层 -->
                 <div
@@ -298,62 +303,38 @@
                       class="text-blue-500 text-base"
                       icon="solar:info-circle-bold-duotone"
                     ></iconify-icon>
-                    <span>诊断方式说明</span>
+                    <span>诊断说明</span>
                   </div>
                   <p class="leading-relaxed text-slate-500 mb-2">
-                    请根据现场初诊结果，勾选相应的一项或多项诊断方式。系统将根据您的选择自动匹配推荐处方及后续处置意见。
+                    请根据现场初诊结果，添加相应的一项或多项诊断。系统将根据您的选择自动匹配推荐处方及后续处置意见。
                   </p>
                   <p class="leading-relaxed text-slate-500">
-                    若列表中无匹配项，可在下方“备注”文本框中输入详细的诊断补充说明。
+                    若列表中无匹配项，可点击添加新的诊断组合，或在下方“备注”文本框中输入详细的诊断补充说明。
                   </p>
                   <div
                     class="absolute w-2 h-2 bg-white border-b border-r border-slate-100 transform rotate-45 left-2.5 -bottom-1"
                   ></div>
                 </div>
               </div>
-              <div class="flex flex-wrap gap-3">
-                <label
-                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
+              <div class="flex flex-wrap items-center gap-3">
+                <div id="selected-diagnosis-list" class="flex flex-wrap gap-2.5">
+                  <!-- 动态渲染已选择的诊断 -->
+                </div>
+                <button
+                  type="button"
+                  onclick="openDiagnosisModal()"
+                  class="text-sm font-bold text-blue-600 bg-blue-50/50 hover:bg-blue-50 active:bg-blue-100 border border-blue-200/60 flex items-center gap-1.5 px-4 py-2.5 rounded-xl transition-all shadow-sm shadow-blue-50 focus:outline-none"
                 >
-                  <input class="hidden" type="checkbox" value="上呼吸道感染" />
-                  <span class="text-sm">上呼吸道感染</span>
-                </label>
-                <label
-                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
-                >
-                  <input class="hidden" type="checkbox" value="急性胃肠炎" />
-                  <span class="text-sm">急性胃肠炎</span>
-                </label>
-                <label
-                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
-                >
-                  <input class="hidden" type="checkbox" value="皮肤外伤" />
-                  <span class="text-sm">皮肤外伤</span>
-                </label>
-                <label
-                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
-                >
-                  <input class="hidden" type="checkbox" value="高血压" />
-                  <span class="text-sm">高血压</span>
-                </label>
-                <label
-                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
-                >
-                  <input class="hidden" type="checkbox" value="糖尿病" />
-                  <span class="text-sm">糖尿病</span>
-                </label>
-                <label
-                  class="inline-flex items-center px-4 py-2 rounded-full border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-200 has-[:checked]:text-blue-700"
-                >
-                  <input class="hidden" type="checkbox" value="感冒发热" />
-                  <span class="text-sm">感冒发热</span>
-                </label>
+                  <iconify-icon icon="solar:add-circle-bold" class="text-lg"></iconify-icon>
+                  <span>添加诊断</span>
+                </button>
               </div>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-600 mb-1.5">备注</label>
               <textarea
                 class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                id="diagnosis-remark"
                 placeholder="请输入诊断补充说明..."
                 rows="3"
               ></textarea>
@@ -416,23 +397,225 @@
       </div>
       <!-- 底部按钮区 -->
       <footer
-        class="h-24 bg-white border-t border-slate-200 flex items-center justify-end px-10 gap-4 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]"
+        class="h-24 bg-white border-t border-slate-200 flex items-center justify-between px-10 gap-4 shrink-0 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]"
       >
-        <button
-          class="px-8 py-3.5 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-all"
-          onclick="saveDraft()"
-        >
-          保存草稿
-        </button>
-        <button
-          class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-100 transition-all flex items-center gap-2"
-          onclick="submitForm()"
-        >
-          <iconify-icon icon="solar:check-circle-bold"></iconify-icon>
-          <span>提交信息</span>
-        </button>
+        <!-- 左侧暂存记录列表，可横向滑动 -->
+        <div class="flex-1 flex items-center overflow-x-auto py-2 gap-2 pr-4 custom-scrollbar max-w-[calc(100%-360px)]" id="draft-records-list">
+          <!-- 动态填充暂存的记录标签 -->
+        </div>
+
+        <!-- 右侧操作按钮 -->
+        <div class="flex items-center gap-4 shrink-0">
+          <button
+            class="px-8 py-3.5 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-all focus:outline-none"
+            onclick="addNextRecord()"
+          >
+            填写下一位
+          </button>
+          <button
+            class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-100 transition-all flex items-center gap-2 focus:outline-none"
+            onclick="submitForm()"
+          >
+            <iconify-icon icon="solar:check-circle-bold"></iconify-icon>
+            <span>提交信息</span>
+          </button>
+        </div>
       </footer>
     </main>
+    <!-- 诊断弹窗 Modal -->
+    <div
+      id="diagnosis-modal"
+      class="fixed inset-0 z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300"
+    >
+      <!-- Backdrop overlay -->
+      <div
+        class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
+        onclick="closeDiagnosisModal()"
+      ></div>
+
+      <!-- Modal Content -->
+      <div
+        class="relative bg-white rounded-2xl w-[600px] max-w-[90%] shadow-2xl overflow-hidden transform scale-95 transition-all duration-300 flex flex-col max-h-[85vh]"
+      >
+        <!-- Header -->
+        <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <iconify-icon
+              icon="solar:clipboard-add-bold-duotone"
+              class="text-blue-500 text-xl"
+            ></iconify-icon>
+            添加诊断类型
+          </h3>
+          <button
+            onclick="closeDiagnosisModal()"
+            class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-all focus:outline-none"
+          >
+            <iconify-icon icon="solar:close-circle-bold" class="text-xl"></iconify-icon>
+          </button>
+        </header>
+
+        <!-- Body (scrollable) -->
+        <div class="p-6 overflow-y-auto space-y-6 custom-scrollbar flex-1">
+          <!-- Selected Diagnosis Builder (Preview & Custom text input) -->
+          <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 space-y-4">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              诊断组合与预览
+            </div>
+
+            <div class="flex items-center gap-3">
+              <!-- Prefix Input -->
+              <div class="w-1/3">
+                <label class="block text-xs font-medium text-slate-500 mb-1">前缀修饰词</label>
+                <input
+                  type="text"
+                  id="diag-prefix-input"
+                  class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  placeholder="如：疑似、拟"
+                  oninput="updateDiagnosisPreview()"
+                />
+              </div>
+
+              <!-- Diagnosis Type (Disabled text display) -->
+              <div class="flex-1">
+                <label class="block text-xs font-medium text-slate-500 mb-1">选定类型</label>
+                <div
+                  id="diag-type-display"
+                  class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-slate-100 text-slate-400 min-h-[38px] flex items-center"
+                >
+                  请从下方选择诊断类型...
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick prefixes -->
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs text-slate-400 flex items-center mr-1">快捷词：</span>
+              <button
+                type="button"
+                onclick="setDiagPrefix('疑似')"
+                class="px-2.5 py-1 text-xs rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 bg-white transition-all focus:outline-none"
+              >
+                疑似
+              </button>
+              <button
+                type="button"
+                onclick="setDiagPrefix('拟')"
+                class="px-2.5 py-1 text-xs rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 bg-white transition-all focus:outline-none"
+              >
+                拟
+              </button>
+              <button
+                type="button"
+                onclick="setDiagPrefix('待查')"
+                class="px-2.5 py-1 text-xs rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 bg-white transition-all focus:outline-none"
+              >
+                待查
+              </button>
+              <button
+                type="button"
+                onclick="setDiagPrefix('')"
+                class="px-2.5 py-1 text-xs rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 bg-white transition-all text-slate-400 focus:outline-none"
+              >
+                清除
+              </button>
+            </div>
+
+            <!-- Preview Box -->
+            <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-600">效果预览：</span>
+              <div
+                class="flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-xl text-sm font-bold text-blue-700 shadow-sm"
+                id="diag-preview-container"
+              >
+                <span
+                  class="px-1.5 py-0.5 text-[10px] font-bold bg-green-500 text-white rounded-md leading-none shadow-sm"
+                  >主</span
+                >
+                <span id="diag-preview-text" class="text-slate-400 font-normal"
+                  >请选择诊断类型</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Search & Select Section -->
+          <div class="space-y-4">
+            <!-- Search bar -->
+            <div class="relative">
+              <span
+                class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 flex items-center"
+              >
+                <iconify-icon icon="solar:magnifer-bold" class="text-lg"></iconify-icon>
+              </span>
+              <input
+                type="text"
+                id="diag-search-input"
+                class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                placeholder="请输入内容检索全部诊断"
+                oninput="filterDiagnosisTypes()"
+              />
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="border-b border-slate-100 flex gap-6 overflow-x-auto py-1 custom-scrollbar">
+              <button
+                type="button"
+                onclick="switchDiagCategory('all')"
+                id="diag-tab-all"
+                class="diag-tab py-2 text-sm font-bold border-b-2 border-blue-500 text-blue-600 focus:outline-none transition-all whitespace-nowrap"
+              >
+                全部诊断
+              </button>
+              <button
+                type="button"
+                onclick="switchDiagCategory('laonian')"
+                id="diag-tab-laonian"
+                class="diag-tab py-2 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 focus:outline-none transition-all whitespace-nowrap"
+              >
+                老年病
+              </button>
+              <button
+                type="button"
+                onclick="switchDiagCategory('pifu')"
+                id="diag-tab-pifu"
+                class="diag-tab py-2 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 focus:outline-none transition-all whitespace-nowrap"
+              >
+                皮肤病
+              </button>
+            </div>
+
+            <!-- Diagnosis grid list -->
+            <div
+              id="diag-grid-container"
+              class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto pr-1 custom-scrollbar"
+            >
+              <!-- 动态加载 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer
+          class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 shrink-0"
+        >
+          <button
+            type="button"
+            onclick="closeDiagnosisModal()"
+            class="px-5 py-2.5 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-100 transition-all text-sm focus:outline-none"
+          >
+            取消
+          </button>
+          <button
+            type="button"
+            onclick="confirmAddDiagnosis()"
+            class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-100 transition-all text-sm focus:outline-none"
+          >
+            确定添加
+          </button>
+        </footer>
+      </div>
+    </div>
+
     <!-- Toast 提示 -->
     <div
       class="fixed bottom-28 left-1/2 -translate-x-1/2 px-6 py-3 bg-slate-800 text-white text-sm rounded-full shadow-2xl transition-all opacity-0 pointer-events-none z-[100] flex items-center gap-2"
@@ -442,6 +625,32 @@
       <span id="toast-msg"></span>
     </div>
     <script>
+      // 诊断库数据
+      let diagnosisCatalog = [
+        { name: "上呼吸道感染", categories: ["all"], book: true },
+        { name: "急性胃肠炎", categories: ["all"], book: true },
+        { name: "皮肤外伤", categories: ["all"], book: false },
+        { name: "高血压", categories: ["all", "laonian"], book: true },
+        { name: "糖尿病", categories: ["all", "laonian"], book: true },
+        { name: "感冒发热", categories: ["all"], book: false },
+        { name: "寻常痤疮", categories: ["all", "pifu"], book: false },
+        { name: "泛发性湿疹", categories: ["all", "pifu"], book: false },
+        { name: "特应性皮炎(中重度)", categories: ["all", "pifu"], book: false },
+        { name: "睡眠障碍", categories: ["all", "laonian"], book: false },
+        { name: "痤疮", categories: ["all", "pifu"], book: false },
+        { name: "湿疹样皮炎", categories: ["all", "pifu"], book: true },
+        { name: "脂溢性皮炎", categories: ["all", "pifu"], book: true },
+        { name: "玫瑰痤疮", categories: ["all", "pifu"], book: true },
+        { name: "马拉色菌毛囊炎", categories: ["all", "pifu"], book: true },
+        { name: "角化性湿疹", categories: ["all", "pifu"], book: true },
+      ];
+
+      // 已选择的诊断列表，初始化包含一个默认主诊断
+      let selectedDiagnoses = [{ id: "diag_1", prefix: "疑似", type: "高血压", isPrimary: true }];
+
+      let currentCategory = "all";
+      let currentSelectedType = "";
+
       // 获取 URL 参数
       const params = new URLSearchParams(window.location.search);
       document.getElementById("display-type").textContent = params.get("type") || "--";
@@ -454,6 +663,229 @@
         document.getElementById("patient-name").value = params.get("name") || "";
         document.getElementById("patient-idcard").value = params.get("idcard") || "";
         document.getElementById("patient-phone").value = params.get("phone") || "";
+      }
+
+      // ==========================================
+      // 诊断选择弹窗及交互逻辑
+      // ==========================================
+
+      // 打开诊断弹窗
+      function openDiagnosisModal() {
+        const modal = document.getElementById("diagnosis-modal");
+        modal.classList.remove("pointer-events-none", "opacity-0");
+        modal.querySelector(".relative").classList.remove("scale-95");
+        modal.querySelector(".relative").classList.add("scale-100");
+
+        // 重置弹窗内状态
+        currentSelectedType = "";
+        document.getElementById("diag-prefix-input").value = "";
+        document.getElementById("diag-type-display").textContent = "请从下方选择诊断类型...";
+        document.getElementById("diag-type-display").className =
+          "w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-slate-100 text-slate-400 min-h-[38px] flex items-center";
+        document.getElementById("diag-search-input").value = "";
+
+        updateDiagnosisPreview();
+        switchDiagCategory("all");
+      }
+
+      // 关闭诊断弹窗
+      function closeDiagnosisModal() {
+        const modal = document.getElementById("diagnosis-modal");
+        modal.classList.add("pointer-events-none", "opacity-0");
+        modal.querySelector(".relative").classList.remove("scale-100");
+        modal.querySelector(".relative").classList.add("scale-95");
+      }
+
+      // 选择快捷词前缀
+      function setDiagPrefix(val) {
+        document.getElementById("diag-prefix-input").value = val;
+        updateDiagnosisPreview();
+      }
+
+      // 选择具体诊断类型
+      function selectDiagType(name) {
+        currentSelectedType = name;
+        const display = document.getElementById("diag-type-display");
+        display.textContent = `「${name}」`;
+        display.className =
+          "w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-white text-slate-800 min-h-[38px] flex items-center font-bold";
+        updateDiagnosisPreview();
+        renderDiagnosisGrid();
+      }
+
+      // 切换类别 Tab
+      function switchDiagCategory(cat) {
+        currentCategory = cat;
+        // 更新 Tab 样式
+        document.querySelectorAll(".diag-tab").forEach((tab) => {
+          tab.className =
+            "diag-tab py-2 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 focus:outline-none transition-all whitespace-nowrap";
+        });
+
+        const activeTab = document.getElementById(`diag-tab-${cat}`);
+        if (activeTab) {
+          activeTab.className =
+            "diag-tab py-2 text-sm font-bold border-b-2 border-blue-500 text-blue-600 focus:outline-none transition-all whitespace-nowrap";
+        }
+
+        renderDiagnosisGrid();
+      }
+
+      // 搜索/过滤诊断
+      function filterDiagnosisTypes() {
+        renderDiagnosisGrid();
+      }
+
+      // 更新弹窗预览
+      function updateDiagnosisPreview() {
+        const prefix = document.getElementById("diag-prefix-input").value.trim();
+        const previewText = document.getElementById("diag-preview-text");
+
+        if (!currentSelectedType) {
+          previewText.textContent = "请选择诊断类型";
+          previewText.className = "text-slate-400 font-normal";
+          return;
+        }
+
+        let result = "";
+        if (prefix) {
+          result += `[${prefix}] `;
+        }
+        result += `${currentSelectedType}`;
+
+        previewText.textContent = result;
+        previewText.className = "text-blue-700 font-bold";
+      }
+
+      // 渲染弹窗中的诊断网格
+      function renderDiagnosisGrid() {
+        const container = document.getElementById("diag-grid-container");
+        const query = document.getElementById("diag-search-input").value.trim().toLowerCase();
+
+        // 过滤
+        const filtered = diagnosisCatalog.filter((item) => {
+          const matchesCat = currentCategory === "all" || item.categories.includes(currentCategory);
+          const matchesQuery = !query || item.name.toLowerCase().includes(query);
+          return matchesCat && matchesQuery;
+        });
+
+        if (filtered.length === 0) {
+          container.innerHTML = `<div class="col-span-2 py-8 text-center text-sm text-slate-400">无匹配诊断类型</div>`;
+          return;
+        }
+
+        container.innerHTML = filtered
+          .map((item) => {
+            const isSelected = item.name === currentSelectedType;
+            return `
+            <div onclick="selectDiagType('${item.name}')" 
+                 class="p-3 border rounded-xl flex items-center gap-2.5 cursor-pointer transition-all hover:bg-slate-50 hover:border-slate-300 bg-white ${
+                   isSelected
+                     ? "border-blue-500 ring-2 ring-blue-500/20 bg-blue-50/20 shadow-sm"
+                     : "border-slate-200"
+                 }">
+              <div class="flex items-center gap-1 shrink-0">
+                <!-- Book Icon -->
+                ${
+                  item.book
+                    ? '<iconify-icon icon="solar:notebook-bold-duotone" class="text-blue-500 text-base"></iconify-icon>'
+                    : '<div class="w-4 h-4 shrink-0"></div>'
+                }
+              </div>
+              <span class="text-sm font-semibold text-slate-700 select-none">${item.name}</span>
+            </div>
+          `;
+          })
+          .join("");
+      }
+
+      // 确定添加诊断
+      function confirmAddDiagnosis() {
+        if (!currentSelectedType) {
+          showToast("请先选择诊断类型");
+          return;
+        }
+
+        const prefix = document.getElementById("diag-prefix-input").value.trim();
+
+        // 检查是否已经存在相同的诊断（前缀+类型）
+        const exists = selectedDiagnoses.some(
+          (d) => d.prefix === prefix && d.type === currentSelectedType,
+        );
+        if (exists) {
+          showToast("该诊断已存在");
+          return;
+        }
+
+        // 如果目前没有主诊断，新增的默认设为主诊断
+        const hasPrimary = selectedDiagnoses.some((d) => d.isPrimary);
+
+        selectedDiagnoses.push({
+          id: "diag_" + Date.now(),
+          prefix: prefix,
+          type: currentSelectedType,
+          isPrimary: !hasPrimary,
+        });
+
+        closeDiagnosisModal();
+        renderSelectedDiagnoses();
+        showToast("诊断添加成功");
+      }
+
+      // 删除诊断
+      function removeDiagnosis(id) {
+        const itemToRemove = selectedDiagnoses.find((d) => d.id === id);
+        selectedDiagnoses = selectedDiagnoses.filter((d) => d.id !== id);
+
+        // 如果删除的是主诊断，且还有剩余诊断，将第一个设为主诊断
+        if (itemToRemove && itemToRemove.isPrimary && selectedDiagnoses.length > 0) {
+          selectedDiagnoses[0].isPrimary = true;
+        }
+
+        renderSelectedDiagnoses();
+      }
+
+      // 切换主/副诊断
+      function togglePrimary(id) {
+        selectedDiagnoses.forEach((d) => {
+          if (d.id === id) {
+            d.isPrimary = true;
+          } else {
+            d.isPrimary = false;
+          }
+        });
+        renderSelectedDiagnoses();
+      }
+
+      // 渲染已选择的诊断
+      function renderSelectedDiagnoses() {
+        const container = document.getElementById("selected-diagnosis-list");
+        if (selectedDiagnoses.length === 0) {
+          container.innerHTML = `<span class="text-sm text-slate-400 mr-2 py-1">暂无诊断，请添加</span>`;
+          return;
+        }
+
+        container.innerHTML = selectedDiagnoses
+          .map((item) => {
+            const badgeClass = item.isPrimary
+              ? "bg-green-500 text-white shadow-sm shadow-green-100 border border-green-500"
+              : "bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-slate-600 border border-transparent";
+
+            return `
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-sm transition-all hover:bg-slate-100/50">
+              <span onclick="togglePrimary('${item.id}')" 
+                    title="点击切换主/副诊断"
+                    class="px-2 py-0.5 text-[10px] font-bold rounded-md cursor-pointer select-none leading-none transition-all ${badgeClass}">
+                主
+              </span>
+              <span class="font-bold text-slate-800">${item.prefix ? `<span class="text-slate-400 font-normal mr-1">[${item.prefix}]</span>` : ""}${item.type}</span>
+              <button type="button" onclick="removeDiagnosis('${item.id}')" class="w-5 h-5 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors focus:outline-none ml-1">
+                <iconify-icon icon="solar:close-circle-bold" class="text-base"></iconify-icon>
+              </button>
+            </div>
+          `;
+          })
+          .join("");
       }
 
       // 模糊搜索逻辑
@@ -600,9 +1032,9 @@
         }, 200);
       }
 
-      function addMedicine() {
+      function addMedicine(prefill = null) {
         const list = document.getElementById("medicine-list");
-        const id = Date.now();
+        const id = Date.now() + Math.floor(Math.random() * 10000);
         const html = `
                 <div id="med-${id}" class="grid grid-cols-[1fr_120px_1fr_48px] gap-3 items-end bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <div class="relative group">
@@ -615,6 +1047,7 @@
                                    onfocus="showMedSuggestions(${id})"
                                    oninput="filterMedSuggestions(this.value, ${id})"
                                    onblur="hideMedSuggestions(${id})"
+                                   value="${prefill ? prefill.name : ''}"
                                    autocomplete="off"
                             />
                             <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
@@ -627,11 +1060,11 @@
                     </div>
                     <div>
                         <label class="block text-[10px] text-slate-400 mb-1">用量</label>
-                        <input type="text" placeholder="如: 1盒" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none">
+                        <input type="text" placeholder="如: 1盒" value="${prefill ? prefill.dosage : ''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-[10px] text-slate-400 mb-1">用法</label>
-                        <select class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white">
+                        <select id="med-usage-${id}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white">
                             <option>口服 每日3次</option>
                             <option>口服 每日2次</option>
                             <option>口服 每日1次</option>
@@ -649,6 +1082,10 @@
                 </div>
             `;
         list.insertAdjacentHTML("beforeend", html);
+        if (prefill && prefill.usage) {
+          const selectEl = document.getElementById(`med-usage-${id}`);
+          if (selectEl) selectEl.value = prefill.usage;
+        }
       }
 
       const treatments = ["换药", "冰敷", "静养观察", "包扎", "冷敷", "理疗", "针灸", "推拿"];
@@ -660,6 +1097,7 @@
         container.classList.remove("hidden");
       }
 
+      // 声明成全局的
       function filterTreatSuggestions(val, id) {
         renderTreatSuggestions(val, id);
       }
@@ -702,9 +1140,9 @@
         }, 200);
       }
 
-      function addTreatment() {
+      function addTreatment(prefill = null) {
         const list = document.getElementById("treatment-list");
-        const id = Date.now();
+        const id = Date.now() + Math.floor(Math.random() * 10000);
         const html = `
                 <div id="treat-${id}" class="grid grid-cols-[1fr_1fr_48px] gap-3 items-end bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <div class="relative group">
@@ -717,6 +1155,7 @@
                                    onfocus="showTreatSuggestions(${id})"
                                    oninput="filterTreatSuggestions(this.value, ${id})"
                                    onblur="hideTreatSuggestions(${id})"
+                                   value="${prefill ? prefill.name : ''}"
                                    autocomplete="off"
                             />
                             <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-focus-within:text-blue-500 transition-colors">
@@ -729,7 +1168,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] text-slate-400 mb-1">备注</label>
-                        <input type="text" placeholder="补充说明" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none">
+                        <input type="text" placeholder="补充说明" value="${prefill ? prefill.remark : ''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none">
                     </div>
                     <button onclick="document.getElementById('treat-${id}').remove()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
                         <iconify-icon icon="solar:trash-bin-trash-bold" class="text-xl"></iconify-icon>
@@ -772,19 +1211,298 @@
         }
       });
 
-      // 初始化一行数据
+      // ==========================================
+      // 暂存记录及“填写下一位”逻辑
+      // ==========================================
+      let draftRecords = [];
+      let currentEditingDraftId = null;
+
+      // 从 localStorage 加载待提交记录，如果没有则初始化 3 个模拟数据
+      function initDraftRecords() {
+        const stored = localStorage.getItem("yiliao_draft_records");
+        if (stored) {
+          draftRecords = JSON.parse(stored);
+        } else {
+          draftRecords = [
+            { 
+              id: "draft_1", 
+              name: "张三", 
+              idcard: "320101199001011234", 
+              phone: "13812348888", 
+              gender: "male",
+              identityType: "战士",
+              contactPhone: "13800001111",
+              dept: "一连三排",
+              selectedDiagnoses: [{ id: "diag_1", prefix: "", type: "上呼吸道感染", isPrimary: true }],
+              diagnosisRemark: "咳嗽，有痰",
+              medicines: [{ name: "阿莫西林", dosage: "1盒", usage: "口服 每日3次" }],
+              treatments: [{ name: "静养观察", remark: "多喝温水" }]
+            },
+            { 
+              id: "draft_2", 
+              name: "李建国", 
+              idcard: "320101198501015678", 
+              phone: "13912349999", 
+              gender: "male",
+              identityType: "文职人员",
+              contactPhone: "13900002222",
+              dept: "机关事务科",
+              selectedDiagnoses: [{ id: "diag_1", prefix: "", type: "皮肤外伤", isPrimary: true }],
+              diagnosisRemark: "擦伤",
+              medicines: [{ name: "板蓝根颗粒", dosage: "2盒", usage: "口服 每日3次" }],
+              treatments: [{ name: "换药", remark: "清创包扎" }]
+            },
+            { 
+              id: "draft_3", 
+              name: "王大锤", 
+              idcard: "320101197801014321", 
+              phone: "13712347777", 
+              gender: "male",
+              identityType: "军官",
+              contactPhone: "13700003333",
+              dept: "司令部二科",
+              selectedDiagnoses: [{ id: "diag_1", prefix: "", type: "高血压", isPrimary: true }],
+              diagnosisRemark: "血压偏高",
+              medicines: [{ name: "奥美拉唑", dosage: "1盒", usage: "口服 每日1次" }],
+              treatments: [{ name: "静养观察", remark: "每日测血压" }]
+            }
+          ];
+          localStorage.setItem("yiliao_draft_records", JSON.stringify(draftRecords));
+        }
+      }
+
+      function getMedicineData() {
+        const list = [];
+        const items = document.querySelectorAll("#medicine-list > div");
+        items.forEach(item => {
+          const input = item.querySelector("input[id^='med-input-']");
+          const dosageInput = item.children[1].querySelector("input");
+          const usageSelect = item.querySelector("select");
+          if (input && input.value.trim()) {
+            list.push({
+              name: input.value.trim(),
+              dosage: dosageInput ? dosageInput.value.trim() : "",
+              usage: usageSelect ? usageSelect.value : ""
+            });
+          }
+        });
+        return list;
+      }
+
+      function getTreatmentData() {
+        const list = [];
+        const items = document.querySelectorAll("#treatment-list > div");
+        items.forEach(item => {
+          const input = item.querySelector("input[id^='treat-input-']");
+          const remarkInput = item.children[1].querySelector("input");
+          if (input && input.value.trim()) {
+            list.push({
+              name: input.value.trim(),
+              remark: remarkInput ? remarkInput.value.trim() : ""
+            });
+          }
+        });
+        return list;
+      }
+
+      function getSelectedGender() {
+        const checkedRadio = document.querySelector("input[name='gender']:checked");
+        return checkedRadio ? checkedRadio.value : "male";
+      }
+
+      function setSelectedGender(val) {
+        const radio = document.querySelector(`input[name='gender'][value='${val}']`);
+        if (radio) radio.checked = true;
+      }
+
+      function clearForm() {
+        document.getElementById("patient-name").value = "";
+        document.getElementById("patient-idcard").value = "";
+        document.getElementById("patient-phone").value = "";
+        document.getElementById("patient-soldier-id").value = "";
+        
+        setSelectedGender("male");
+        
+        document.getElementById("identity-type").value = "";
+        document.getElementById("patient-contact-phone").value = "";
+        document.getElementById("patient-dept").value = "";
+        
+        selectedDiagnoses = [{ id: "diag_1", prefix: "疑似", type: "高血压", isPrimary: true }];
+        renderSelectedDiagnoses();
+        document.getElementById("diagnosis-remark").value = "";
+        
+        document.getElementById("medicine-list").innerHTML = "";
+        document.getElementById("treatment-list").innerHTML = "";
+        addMedicine();
+        addTreatment();
+      }
+
+      function addNextRecord() {
+        const name = document.getElementById("patient-name").value.trim();
+        if (!name) {
+          showToast("请先填写姓名");
+          return;
+        }
+
+        const idcard = document.getElementById("patient-idcard").value.trim();
+        const phone = document.getElementById("patient-phone").value.trim();
+        const soldierId = document.getElementById("patient-soldier-id").value.trim();
+        const gender = getSelectedGender();
+        const identityType = document.getElementById("identity-type").value.trim();
+        const contactPhone = document.getElementById("patient-contact-phone").value.trim();
+        const dept = document.getElementById("patient-dept").value.trim();
+        const diagnosisRemark = document.getElementById("diagnosis-remark").value.trim();
+        
+        const medicines = getMedicineData();
+        const treatments = getTreatmentData();
+
+        const recordData = {
+          name,
+          idcard,
+          phone,
+          soldierId,
+          gender,
+          identityType,
+          contactPhone,
+          dept,
+          selectedDiagnoses: [...selectedDiagnoses],
+          diagnosisRemark,
+          medicines,
+          treatments
+        };
+
+        if (currentEditingDraftId) {
+          // 更新已有记录
+          const index = draftRecords.findIndex(r => r.id === currentEditingDraftId);
+          if (index !== -1) {
+            draftRecords[index] = { ...recordData, id: currentEditingDraftId };
+            showToast(`已更新 ${name} 的暂存记录`);
+          }
+        } else {
+          // 新增记录
+          const newId = "draft_" + Date.now();
+          draftRecords.push({ ...recordData, id: newId });
+          showToast(`已暂存 ${name} 的记录`);
+        }
+
+        localStorage.setItem("yiliao_draft_records", JSON.stringify(draftRecords));
+        currentEditingDraftId = null;
+        clearForm();
+        renderDraftRecordsList();
+      }
+
+      // 重写 loadDraftRecord 以兼容外部直接定位编辑
+      function loadDraftRecord(id) {
+        const record = draftRecords.find(r => r.id === id);
+        if (!record) return;
+
+        currentEditingDraftId = id;
+        
+        document.getElementById("patient-name").value = record.name || "";
+        document.getElementById("patient-idcard").value = record.idcard || "";
+        document.getElementById("patient-phone").value = record.phone || "";
+        document.getElementById("patient-soldier-id").value = record.soldierId || "";
+        
+        setSelectedGender(record.gender || "male");
+        
+        document.getElementById("identity-type").value = record.identityType || "";
+        document.getElementById("patient-contact-phone").value = record.contactPhone || "";
+        document.getElementById("patient-dept").value = record.dept || "";
+        
+        selectedDiagnoses = record.selectedDiagnoses ? [...record.selectedDiagnoses] : [];
+        renderSelectedDiagnoses();
+        
+        document.getElementById("diagnosis-remark").value = record.diagnosisRemark || "";
+        
+        document.getElementById("medicine-list").innerHTML = "";
+        document.getElementById("treatment-list").innerHTML = "";
+        
+        if (record.medicines && record.medicines.length > 0) {
+          record.medicines.forEach(med => addMedicine(med));
+        } else {
+          addMedicine();
+        }
+        
+        if (record.treatments && record.treatments.length > 0) {
+          record.treatments.forEach(treat => addTreatment(treat));
+        } else {
+          addTreatment();
+        }
+
+        renderDraftRecordsList();
+        showToast(`已载入 ${record.name} 的记录`);
+      }
+
+      function deleteDraftRecord(event, id) {
+        event.stopPropagation(); // 阻止触发载入
+        
+        const record = draftRecords.find(r => r.id === id);
+        const recordName = record ? record.name : "暂存";
+        
+        draftRecords = draftRecords.filter(r => r.id !== id);
+        localStorage.setItem("yiliao_draft_records", JSON.stringify(draftRecords));
+        
+        if (currentEditingDraftId === id) {
+          currentEditingDraftId = null;
+          clearForm();
+        }
+        
+        renderDraftRecordsList();
+        showToast(`已删除 ${recordName} 的暂存`);
+      }
+
+      function renderDraftRecordsList() {
+        const container = document.getElementById("draft-records-list");
+        
+        // 更新左侧侧边栏“待提交”个数
+        const count = draftRecords.length;
+        const countBadge = document.getElementById("sidebar-drafts-count");
+        const countText = document.getElementById("sidebar-drafts-text");
+        if (countBadge) countBadge.textContent = count + " 份";
+        if (countText) countText.textContent = count;
+
+        if (draftRecords.length === 0) {
+          container.innerHTML = `<span class="text-xs text-slate-400 select-none">暂无暂存记录</span>`;
+          return;
+        }
+
+        container.innerHTML = draftRecords.map(item => {
+          const isActive = currentEditingDraftId === item.id;
+          const bgClass = isActive 
+            ? 'bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-100' 
+            : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-800';
+          
+          return `
+            <div onclick="loadDraftRecord('${item.id}')" 
+                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 border select-none ${bgClass}">
+              <iconify-icon icon="solar:user-bold" class="text-sm shrink-0"></iconify-icon>
+              <span>${item.name || '未命名'}</span>
+              <button type="button" class="flex items-center justify-center p-0.5 ml-1 rounded-full transition-colors focus:outline-none" onclick="deleteDraftRecord(event, '${item.id}')">
+                <iconify-icon icon="solar:close-circle-bold" class="${isActive ? 'text-white/80 hover:text-white' : 'text-slate-400 hover:text-red-500'} text-base shrink-0"></iconify-icon>
+              </button>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // 初始化数据
+      initDraftRecords();
       addMedicine();
       addTreatment();
+      renderSelectedDiagnoses();
+      renderDraftRecordsList();
+
+      // 如果有 URL 参数传入 editId 强制加载
+      const editId = params.get("editId");
+      if (editId) {
+        setTimeout(() => loadDraftRecord(editId), 100);
+      }
 
       function showToast(msg) {
         const toast = document.getElementById("toast");
         document.getElementById("toast-msg").textContent = msg;
         toast.style.opacity = "1";
         setTimeout(() => (toast.style.opacity = "0"), 2000);
-      }
-
-      function saveDraft() {
-        showToast("已保存为草稿");
       }
       function submitForm() {
         showToast("已提交成功");

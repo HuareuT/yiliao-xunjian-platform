@@ -1,133 +1,234 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>医疗巡诊系统 - 草稿箱</title>
-<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
-<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
-<style>
-        body { background-color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>医疗巡诊系统 - 待提交</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <style>
+      body { background-color: #F8FAFC; font-family: system-ui, -apple-system, sans-serif; }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
     </style>
-</head>
-<body class="min-h-screen p-8">
-<div class="max-w-[1000px] mx-auto">
-<header class="flex items-center justify-between mb-8">
-<div class="flex items-center gap-4">
-<button class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-200 text-slate-600 hover:text-blue-600 transition-colors" onclick="history.back()">
-<iconify-icon class="text-2xl" icon="solar:alt-arrow-left-bold"></iconify-icon>
-</button>
-<h1 class="text-3xl font-bold text-slate-800">草稿箱</h1>
-</div>
-<div class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
-                共 3 份草稿
-            </div>
-</header>
-<div class="space-y-4">
-<!-- 模拟草稿 1 -->
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-blue-200 transition-all">
-<div class="flex items-center gap-6">
-<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
-<iconify-icon class="text-3xl" icon="solar:user-id-bold"></iconify-icon>
-</div>
-<div>
-<div class="flex items-center gap-3 mb-1">
-<h3 class="text-lg font-bold text-slate-800">张三</h3>
-<span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded uppercase">上呼吸道感染</span>
-</div>
-<div class="flex items-center gap-4 text-sm text-slate-500">
-<span class="flex items-center gap-1"><iconify-icon icon="solar:card-2-bold"></iconify-icon> 3201011990****1234</span>
-<span class="flex items-center gap-1"><iconify-icon icon="solar:phone-bold"></iconify-icon> 138****8888</span>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<p class="text-xs text-slate-400 mr-4">最后保存：10分钟前</p>
-<button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100" onclick="editDraft('张三', '320101199001011234', '13812348888')">
-                        编辑
-                    </button>
-<button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors">
-<iconify-icon class="text-xl" icon="solar:trash-bin-trash-bold"></iconify-icon>
-</button>
-</div>
-</div>
-<!-- 模拟草稿 2 -->
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-blue-200 transition-all">
-<div class="flex items-center gap-6">
-<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
-<iconify-icon class="text-3xl" icon="solar:user-id-bold"></iconify-icon>
-</div>
-<div>
-<div class="flex items-center gap-3 mb-1">
-<h3 class="text-lg font-bold text-slate-800">李建国</h3>
-<span class="px-2 py-0.5 bg-orange-50 text-orange-600 text-[10px] font-bold rounded uppercase">皮肤外伤</span>
-</div>
-<div class="flex items-center gap-4 text-sm text-slate-500">
-<span class="flex items-center gap-1"><iconify-icon icon="solar:card-2-bold"></iconify-icon> 3201011985****5678</span>
-<span class="flex items-center gap-1"><iconify-icon icon="solar:phone-bold"></iconify-icon> 139****9999</span>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<p class="text-xs text-slate-400 mr-4">最后保存：1小时前</p>
-<button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100" onclick="editDraft('李建国', '320101198501015678', '13912349999')">
-                        编辑
-                    </button>
-<button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors">
-<iconify-icon class="text-xl" icon="solar:trash-bin-trash-bold"></iconify-icon>
-</button>
-</div>
-</div>
-<!-- 模拟草稿 3 -->
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-blue-200 transition-all">
-<div class="flex items-center gap-6">
-<div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-colors">
-<iconify-icon class="text-3xl" icon="solar:user-id-bold"></iconify-icon>
-</div>
-<div>
-<div class="flex items-center gap-3 mb-1">
-<h3 class="text-lg font-bold text-slate-800">王大锤</h3>
-<span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-bold rounded uppercase">高血压</span>
-</div>
-<div class="flex items-center gap-4 text-sm text-slate-500">
-<span class="flex items-center gap-1"><iconify-icon icon="solar:card-2-bold"></iconify-icon> 3201011978****4321</span>
-<span class="flex items-center gap-1"><iconify-icon icon="solar:phone-bold"></iconify-icon> 137****7777</span>
-</div>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<p class="text-xs text-slate-400 mr-4">最后保存：昨日</p>
-<button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100" onclick="editDraft('王大锤', '320101197801014321', '13712347777')">
-                        编辑
-                    </button>
-<button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors">
-<iconify-icon class="text-xl" icon="solar:trash-bin-trash-bold"></iconify-icon>
-</button>
-</div>
-</div>
-</div>
-<div class="mt-12 flex justify-center">
-<button class="flex items-center gap-2 text-slate-500 hover:text-blue-600 font-medium transition-colors" onclick="window.location.href='pre-form.html'">
-<iconify-icon icon="solar:home-2-bold"></iconify-icon>
-<span>返回前置登记页</span>
-</button>
-</div>
-</div>
-<script>
-        function editDraft(name, idcard, phone) {
-            const params = new URLSearchParams({
-                edit: '1',
-                name: name,
-                idcard: idcard,
-                phone: phone,
-                type: '日常巡诊',
-                location: '一号营区',
-                count: '50',
-                target: '某部官兵'
-            });
-            window.location.href = `form.html?${params.toString()}`;
+  </head>
+  <body class="min-h-screen p-8">
+    <div class="max-w-[1000px] mx-auto">
+      <header class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
+          <button class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-200 text-slate-600 hover:text-blue-600 transition-colors focus:outline-none" onclick="history.back()">
+            <iconify-icon class="text-2xl" icon="solar:alt-arrow-left-bold"></iconify-icon>
+          </button>
+          <h1 class="text-3xl font-bold text-slate-800">待提交记录</h1>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <div class="px-4 py-2.5 bg-blue-50 text-blue-700 rounded-2xl text-sm font-bold border border-blue-100 flex items-center gap-1.5 shadow-sm">
+            <iconify-icon icon="solar:folder-error-bold-duotone" class="text-lg"></iconify-icon>
+            共 <span id="total-count">0</span> 份待提交
+          </div>
+          <button id="submit-all-btn" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-green-100 flex items-center gap-2 focus:outline-none" onclick="submitAll()">
+            <iconify-icon icon="solar:check-circle-bold"></iconify-icon>
+            <span>全部提交</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 待提交列表 -->
+      <div class="space-y-4" id="drafts-list-container">
+        <!-- 动态生成 -->
+      </div>
+
+      <!-- 返回 -->
+      <div class="mt-12 flex justify-center">
+        <button class="flex items-center gap-2 text-slate-500 hover:text-blue-600 font-medium transition-colors focus:outline-none" onclick="window.location.href='pre-form.html'">
+          <iconify-icon icon="solar:home-2-bold"></iconify-icon>
+          <span>返回前置登记页</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Toast 提示 -->
+    <div
+      class="fixed bottom-12 left-1/2 -translate-x-1/2 px-6 py-3 bg-slate-800 text-white text-sm rounded-full shadow-2xl transition-all opacity-0 pointer-events-none z-[100] flex items-center gap-2"
+      id="toast"
+    >
+      <iconify-icon class="text-green-400" id="toast-icon" icon="solar:check-circle-bold"></iconify-icon>
+      <span id="toast-msg"></span>
+    </div>
+
+    <script>
+      let draftRecords = [];
+
+      function showToast(msg, isSuccess = true) {
+        const toast = document.getElementById("toast");
+        const icon = document.getElementById("toast-icon");
+        document.getElementById("toast-msg").textContent = msg;
+        
+        if (isSuccess) {
+          icon.icon = "solar:check-circle-bold";
+          icon.className = "text-green-400";
+        } else {
+          icon.icon = "solar:info-circle-bold";
+          icon.className = "text-blue-400";
         }
+        
+        toast.style.opacity = "1";
+        setTimeout(() => (toast.style.opacity = "0"), 2000);
+      }
+
+      function loadRecords() {
+        const data = localStorage.getItem("yiliao_draft_records");
+        if (data) {
+          draftRecords = JSON.parse(data);
+        } else {
+          // 初始化模拟数据
+          draftRecords = [
+            { 
+              id: "draft_1", 
+              name: "张三", 
+              idcard: "320101199001011234", 
+              phone: "13812348888", 
+              gender: "male",
+              identityType: "战士",
+              contactPhone: "13800001111",
+              dept: "一连三排",
+              selectedDiagnoses: [{ id: "diag_1", prefix: "", type: "上呼吸道感染", isPrimary: true }],
+              diagnosisRemark: "咳嗽，有痰",
+              medicines: [{ name: "阿莫西林", dosage: "1盒", usage: "口服 每日3次" }],
+              treatments: [{ name: "静养观察", remark: "多喝温水" }]
+            },
+            { 
+              id: "draft_2", 
+              name: "李建国", 
+              idcard: "320101198501015678", 
+              phone: "13912349999", 
+              gender: "male",
+              identityType: "文职人员",
+              contactPhone: "13900002222",
+              dept: "机关事务科",
+              selectedDiagnoses: [{ id: "diag_1", prefix: "", type: "皮肤外伤", isPrimary: true }],
+              diagnosisRemark: "擦伤",
+              medicines: [{ name: "板蓝根颗粒", dosage: "2盒", usage: "口服 每日3次" }],
+              treatments: [{ name: "换药", remark: "清创包扎" }]
+            },
+            { 
+              id: "draft_3", 
+              name: "王大锤", 
+              idcard: "320101197801014321", 
+              phone: "13712347777", 
+              gender: "male",
+              identityType: "军官",
+              contactPhone: "13700003333",
+              dept: "司令部二科",
+              selectedDiagnoses: [{ id: "diag_1", prefix: "", type: "高血压", isPrimary: true }],
+              diagnosisRemark: "血压偏高",
+              medicines: [{ name: "奥美拉唑", dosage: "1盒", usage: "口服 每日1次" }],
+              treatments: [{ name: "静养观察", remark: "每日测血压" }]
+            }
+          ];
+          localStorage.setItem("yiliao_draft_records", JSON.stringify(draftRecords));
+        }
+        renderRecords();
+      }
+
+      function renderRecords() {
+        const container = document.getElementById("drafts-list-container");
+        document.getElementById("total-count").textContent = draftRecords.length;
+        
+        const submitBtn = document.getElementById("submit-all-btn");
+        if (draftRecords.length === 0) {
+          submitBtn.disabled = true;
+          submitBtn.className = "px-6 py-2.5 bg-slate-200 text-slate-400 font-bold rounded-xl cursor-not-allowed flex items-center gap-2";
+          container.innerHTML = `
+            <div class="bg-white p-12 rounded-2xl border border-slate-100 flex flex-col items-center justify-center text-slate-400 text-sm shadow-sm">
+              <iconify-icon icon="solar:folder-empty-bold-duotone" class="text-5xl text-slate-300 mb-3"></iconify-icon>
+              <span>暂无待提交的巡诊记录</span>
+            </div>
+          `;
+          return;
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.className = "px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-green-100 flex items-center gap-2 focus:outline-none";
+
+        container.innerHTML = draftRecords.map(item => {
+          // 获取主诊断名称
+          let diagName = "未定诊断";
+          if (item.selectedDiagnoses && item.selectedDiagnoses.length > 0) {
+            const primary = item.selectedDiagnoses.find(d => d.isPrimary) || item.selectedDiagnoses[0];
+            diagName = primary.prefix ? `[${primary.prefix}] ${primary.type}` : primary.type;
+          }
+          
+          return `
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-blue-200 hover:shadow-md transition-all">
+              <div class="flex items-center gap-6">
+                <div class="w-14 h-14 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 group-hover:border-blue-100 transition-colors">
+                  <iconify-icon class="text-3xl" icon="solar:user-id-bold-duotone"></iconify-icon>
+                </div>
+                <div>
+                  <div class="flex items-center gap-3 mb-1">
+                    <h3 class="text-lg font-bold text-slate-800">${item.name}</h3>
+                    <span class="px-2.5 py-0.5 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg">${diagName}</span>
+                    <span class="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-lg">${item.dept || '无单位'}</span>
+                  </div>
+                  <div class="flex items-center gap-4 text-xs text-slate-500">
+                    <span class="flex items-center gap-1"><iconify-icon icon="solar:card-2-bold" class="text-sm text-slate-400"></iconify-icon> 身份证: ${item.idcard || '--'}</span>
+                    <span class="flex items-center gap-1"><iconify-icon icon="solar:phone-bold" class="text-sm text-slate-400"></iconify-icon> 手机: ${item.phone || '--'}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100 focus:outline-none text-sm" onclick="editRecord('${item.id}')">
+                  编辑
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors focus:outline-none" onclick="deleteRecord('${item.id}')" title="删除">
+                  <iconify-icon class="text-xl" icon="solar:trash-bin-trash-bold"></iconify-icon>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      function editRecord(id) {
+        window.location.href = `form.html?editId=${id}`;
+      }
+
+      function deleteRecord(id) {
+        if (confirm("确定要删除这条待提交记录吗？")) {
+          draftRecords = draftRecords.filter(item => item.id !== id);
+          localStorage.setItem("yiliao_draft_records", JSON.stringify(draftRecords));
+          renderRecords();
+          showToast("已成功删除该记录");
+        }
+      }
+
+      function submitAll() {
+        const count = draftRecords.length;
+        if (count === 0) return;
+        
+        if (confirm(`确定要提交全部 ${count} 份巡诊记录吗？`)) {
+          // 清空待提交
+          localStorage.removeItem("yiliao_draft_records");
+          draftRecords = [];
+          renderRecords();
+          
+          showToast(`已成功全部提交 ${count} 份记录！`);
+          
+          setTimeout(() => {
+            window.location.href = "pre-form.html";
+          }, 1500);
+        }
+      }
+
+      // 页面加载
+      window.onload = loadRecords;
     </script>
-</body>
+  </body>
 </html>
