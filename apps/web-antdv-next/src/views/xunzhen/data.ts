@@ -3,14 +3,27 @@ import type { DescriptionsItemType } from "@vben/common-ui";
 import type { VbenFormSchema } from "#/adapter/form";
 import type { VxeTableGridColumns } from "#/adapter/vxe-table";
 
+import dayjs from "dayjs";
+
 export interface XunzhenRecord {
+  contactPhone: string;
   campus: string;
   diagnosisType: string;
   doctorName: string;
+  gender: string;
   id: string;
+  idCard: string;
+  identityCategory: string;
   inspectionDate: string;
   nurseName: string;
-  patientType: string;
+  patientName: string;
+  phone: string;
+  protectionLocation: string;
+  protectionObject: string;
+  protectionPeopleCount: number;
+  protectionType: string;
+  queueInfo: string;
+  soldierId: string;
   visitType: string;
 }
 
@@ -26,9 +39,11 @@ export interface XunzhenQueryParams {
   campus?: string;
   doctorName?: string;
   inspectionDate?: string;
+  inspectionDateRange?: string[];
   nurseName?: string;
   page?: number;
   pageSize?: number;
+  patientName?: string;
   visitType?: string;
 }
 
@@ -46,123 +61,255 @@ export const campusOptions = [
 
 export const mockXunzhenRecords: XunzhenRecord[] = [
   {
+    contactPhone: "13800138001",
     campus: "大学城",
     diagnosisType: "高血压随访",
     doctorName: "张明",
+    gender: "男",
     id: "XZ20260625001",
+    idCard: "500381198805163215",
+    identityCategory: "教职工",
     inspectionDate: "2026-06-25",
+    patientName: "王建国",
+    phone: "13900139001",
+    protectionLocation: "大学城校区东操场",
+    protectionObject: "新生军训",
+    protectionPeopleCount: 320,
+    protectionType: "军训保障",
+    queueInfo: "校医院一连",
+    soldierId: "DJC-001",
     nurseName: "李雪",
-    patientType: "慢病患者",
     visitType: "routine",
   },
   {
+    contactPhone: "13800138002",
     campus: "大学城",
     diagnosisType: "糖尿病复查",
     doctorName: "陈宇",
+    gender: "女",
     id: "XZ20260624002",
+    idCard: "500381199103067428",
+    identityCategory: "学生",
     inspectionDate: "2026-06-24",
+    patientName: "李晓雨",
+    phone: "13900139002",
+    protectionLocation: "大学城校区学生活动中心",
+    protectionObject: "拉练保障",
+    protectionPeopleCount: 180,
+    protectionType: "拉练保障",
+    queueInfo: "护理学院二排",
+    soldierId: "DJC-002",
     nurseName: "王琳",
-    patientType: "复诊患者",
     visitType: "followUp",
   },
   {
+    contactPhone: "13800138003",
     campus: "大学城",
     diagnosisType: "术后康复评估",
     doctorName: "刘洋",
+    gender: "男",
     id: "XZ20260623003",
+    idCard: "500381198912121257",
+    identityCategory: "学生",
     inspectionDate: "2026-06-23",
+    patientName: "周俊杰",
+    phone: "13900139003",
+    protectionLocation: "大学城校区田径场",
+    protectionObject: "操场值守",
+    protectionPeopleCount: 260,
+    protectionType: "训练保障",
+    queueInfo: "机电学院三班",
+    soldierId: "DJC-003",
     nurseName: "赵敏",
-    patientType: "重点患者",
     visitType: "key",
   },
   {
+    contactPhone: "13800138004",
     campus: "大学城",
     diagnosisType: "呼吸道感染",
     doctorName: "张明",
+    gender: "女",
     id: "XZ20260622004",
+    idCard: "500381200109084629",
+    identityCategory: "学生",
     inspectionDate: "2026-06-22",
+    patientName: "陈可欣",
+    phone: "13900139004",
+    protectionLocation: "大学城校区西区宿舍",
+    protectionObject: "日常巡诊",
+    protectionPeopleCount: 95,
+    protectionType: "宿舍保障",
+    queueInfo: "外语学院四队",
+    soldierId: "DJC-004",
     nurseName: "孙悦",
-    patientType: "普通患者",
     visitType: "temporary",
   },
   {
+    contactPhone: "13800138005",
     campus: "大学城",
     diagnosisType: "冠心病管理",
     doctorName: "黄静",
+    gender: "男",
     id: "XZ20260621005",
+    idCard: "500381197707213214",
+    identityCategory: "退休职工",
     inspectionDate: "2026-06-21",
+    patientName: "赵志强",
+    phone: "13900139005",
+    protectionLocation: "大学城校区校医院门诊",
+    protectionObject: "重点慢病保障",
+    protectionPeopleCount: 42,
+    protectionType: "慢病保障",
+    queueInfo: "离退休保障组",
+    soldierId: "DJC-005",
     nurseName: "李雪",
-    patientType: "慢病患者",
     visitType: "routine",
   },
   {
+    contactPhone: "13800138006",
     campus: "大学城",
     diagnosisType: "脑卒中康复",
     doctorName: "周航",
+    gender: "男",
     id: "XZ20260620006",
+    idCard: "500381198204153817",
+    identityCategory: "教职工家属",
     inspectionDate: "2026-06-20",
+    patientName: "孙伟",
+    phone: "13900139006",
+    protectionLocation: "大学城校区康复室",
+    protectionObject: "重点康复保障",
+    protectionPeopleCount: 28,
+    protectionType: "康复保障",
+    queueInfo: "康复观察组",
+    soldierId: "DJC-006",
     nurseName: "王琳",
-    patientType: "重点患者",
     visitType: "key",
   },
   {
+    contactPhone: "13800138007",
     campus: "江津",
     diagnosisType: "肺部感染观察",
     doctorName: "陈宇",
+    gender: "男",
     id: "XZ20260619007",
+    idCard: "500381199512304210",
+    identityCategory: "学生",
     inspectionDate: "2026-06-19",
+    patientName: "何明轩",
+    phone: "13900139007",
+    protectionLocation: "江津校区北区操场",
+    protectionObject: "新生军训",
+    protectionPeopleCount: 360,
+    protectionType: "军训保障",
+    queueInfo: "步兵一营一连",
+    soldierId: "JJ-001",
     nurseName: "赵敏",
-    patientType: "普通患者",
     visitType: "temporary",
   },
   {
+    contactPhone: "13800138008",
     campus: "江津",
     diagnosisType: "妊娠期血糖管理",
     doctorName: "黄静",
+    gender: "女",
     id: "XZ20260618008",
+    idCard: "500381199411057526",
+    identityCategory: "家属",
     inspectionDate: "2026-06-18",
+    patientName: "林雅婷",
+    phone: "13900139008",
+    protectionLocation: "江津校区卫生所",
+    protectionObject: "家属门诊",
+    protectionPeopleCount: 36,
+    protectionType: "门诊保障",
+    queueInfo: "家属保障组",
+    soldierId: "JJ-002",
     nurseName: "孙悦",
-    patientType: "复诊患者",
     visitType: "followUp",
   },
   {
+    contactPhone: "13800138009",
     campus: "江津",
     diagnosisType: "慢阻肺随访",
     doctorName: "刘洋",
+    gender: "男",
     id: "XZ20260617009",
+    idCard: "500381197811235672",
+    identityCategory: "退役军人",
     inspectionDate: "2026-06-17",
+    patientName: "唐国华",
+    phone: "13900139009",
+    protectionLocation: "江津校区南区训练场",
+    protectionObject: "拉练保障",
+    protectionPeopleCount: 210,
+    protectionType: "拉练保障",
+    queueInfo: "后勤保障一组",
+    soldierId: "JJ-003",
     nurseName: "李雪",
-    patientType: "慢病患者",
     visitType: "routine",
   },
   {
+    contactPhone: "13800138010",
     campus: "江津",
     diagnosisType: "贫血原因待查",
     doctorName: "周航",
+    gender: "女",
     id: "XZ20260616010",
+    idCard: "500381200012166248",
+    identityCategory: "学生",
     inspectionDate: "2026-06-16",
+    patientName: "许梦洁",
+    phone: "13900139010",
+    protectionLocation: "江津校区教学楼A栋",
+    protectionObject: "课堂保障",
+    protectionPeopleCount: 120,
+    protectionType: "教学保障",
+    queueInfo: "通信学院五队",
+    soldierId: "JJ-004",
     nurseName: "赵敏",
-    patientType: "普通患者",
     visitType: "temporary",
   },
   {
+    contactPhone: "13800138011",
     campus: "江津",
     diagnosisType: "骨折术后复查",
     doctorName: "张明",
+    gender: "男",
     id: "XZ20260615011",
+    idCard: "500381199901256411",
+    identityCategory: "学生",
     inspectionDate: "2026-06-15",
+    patientName: "郭子豪",
+    phone: "13900139011",
+    protectionLocation: "江津校区新训宿舍",
+    protectionObject: "新生军训",
+    protectionPeopleCount: 300,
+    protectionType: "军训保障",
+    queueInfo: "战术训练二排",
+    soldierId: "JJ-005",
     nurseName: "王琳",
-    patientType: "复诊患者",
     visitType: "followUp",
   },
   {
+    contactPhone: "13800138012",
     campus: "江津",
     diagnosisType: "肾功能异常观察",
     doctorName: "陈宇",
+    gender: "女",
     id: "XZ20260614012",
+    idCard: "500381198610087221",
+    identityCategory: "文职人员",
     inspectionDate: "2026-06-14",
+    patientName: "高静",
+    phone: "13900139012",
+    protectionLocation: "江津校区校医院留观室",
+    protectionObject: "重点观察保障",
+    protectionPeopleCount: 18,
+    protectionType: "留观保障",
+    queueInfo: "机关服务队",
+    soldierId: "JJ-006",
     nurseName: "孙悦",
-    patientType: "重点患者",
     visitType: "key",
   },
 ];
@@ -284,6 +431,47 @@ function fuzzyMatch(value: string, keyword?: string) {
   return !keyword || value.includes(keyword.trim());
 }
 
+function getWeekStart(date = dayjs()) {
+  const day = date.day();
+  return date.add(day === 0 ? -6 : 1 - day, "day").startOf("day");
+}
+
+function getDateRangePresets() {
+  const today = dayjs();
+  const yesterday = today.subtract(1, "day");
+  const thisWeekStart = getWeekStart(today);
+  const lastWeekStart = thisWeekStart.subtract(7, "day");
+  const lastMonth = today.subtract(1, "month");
+
+  return [
+    {
+      label: "昨日",
+      value: [yesterday.startOf("day"), yesterday.endOf("day")],
+    },
+    {
+      label: "本周",
+      value: [thisWeekStart, today.endOf("day")],
+    },
+    {
+      label: "上周",
+      value: [lastWeekStart, lastWeekStart.add(6, "day").endOf("day")],
+    },
+    {
+      label: "本月",
+      value: [today.startOf("month"), today.endOf("day")],
+    },
+    {
+      label: "上月",
+      value: [lastMonth.startOf("month"), lastMonth.endOf("month")],
+    },
+  ];
+}
+
+function isDateInRange(date: string, range?: string[]) {
+  if (!range || range.length < 2 || !range[0] || !range[1]) return true;
+  return date >= range[0] && date <= range[1];
+}
+
 export async function getMockXunzhenList(params: XunzhenQueryParams) {
   const currentPage = params.page ?? 1;
   const pageSize = params.pageSize ?? 10;
@@ -291,8 +479,10 @@ export async function getMockXunzhenList(params: XunzhenQueryParams) {
     return (
       fuzzyMatch(item.doctorName, params.doctorName) &&
       fuzzyMatch(item.nurseName, params.nurseName) &&
+      fuzzyMatch(item.patientName, params.patientName) &&
       (!params.campus || item.campus === params.campus) &&
       (!params.inspectionDate || item.inspectionDate === params.inspectionDate) &&
+      isDateInRange(item.inspectionDate, params.inspectionDateRange) &&
       (!params.visitType || item.visitType === params.visitType)
     );
   });
@@ -310,12 +500,19 @@ export function getVisitTypeLabel(value?: string) {
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
-      component: "DatePicker",
+      component: "RangePicker",
       componentProps: {
+        allowClear: true,
+        presets: getDateRangePresets(),
         valueFormat: "YYYY-MM-DD",
       },
-      fieldName: "inspectionDate",
+      fieldName: "inspectionDateRange",
       label: "巡诊日期",
+    },
+    {
+      component: "Input",
+      fieldName: "patientName",
+      label: "患者姓名",
     },
     {
       component: "Input",
@@ -349,8 +546,18 @@ export function useColumns(): VxeTableGridColumns<XunzhenRecord> {
     },
     {
       field: "inspectionDate",
-      title: "巡检日期",
+      title: "巡诊日期",
       width: 140,
+    },
+    {
+      field: "patientName",
+      title: "患者姓名",
+      width: 120,
+    },
+    {
+      field: "gender",
+      title: "患者性别",
+      width: 100,
     },
     {
       field: "doctorName",
@@ -361,11 +568,6 @@ export function useColumns(): VxeTableGridColumns<XunzhenRecord> {
       field: "nurseName",
       title: "护士姓名",
       width: 120,
-    },
-    {
-      field: "patientType",
-      title: "患者类型",
-      width: 140,
     },
     {
       field: "diagnosisType",
@@ -385,14 +587,28 @@ export function useColumns(): VxeTableGridColumns<XunzhenRecord> {
 
 export function useDescriptionItems(row?: XunzhenRecord): DescriptionsItemType[] {
   return [
-    { label: "编号", content: row?.id },
-    { label: "保障点", content: row?.campus },
-    { label: "巡检日期", content: row?.inspectionDate },
+    { label: "保障类型", content: row?.protectionType },
+    { label: "保障地点", content: row?.protectionLocation },
+    { label: "保障人数", content: row?.protectionPeopleCount },
+    { label: "保障对象", content: row?.protectionObject },
+    { label: "巡诊日期", content: row?.inspectionDate },
     { label: "医生姓名", content: row?.doctorName },
     { label: "护士姓名", content: row?.nurseName },
-    { label: "患者类型", content: row?.patientType },
-    { label: "诊断类型", content: row?.diagnosisType },
-    { label: "巡诊类型", content: getVisitTypeLabel(row?.visitType) },
+  ];
+}
+
+export function usePatientDescriptionItems(
+  row?: XunzhenRecord,
+): DescriptionsItemType[] {
+  return [
+    { label: "姓名", content: row?.patientName },
+    { label: "性别", content: row?.gender },
+    { label: "身份证号", content: row?.idCard },
+    { label: "手机号", content: row?.phone },
+    { label: "ID号", content: row?.soldierId },
+    { label: "身份类别", content: row?.identityCategory },
+    { label: "联系人电话", content: row?.contactPhone },
+    { label: "单位/部队番号/队列", content: row?.queueInfo },
   ];
 }
 

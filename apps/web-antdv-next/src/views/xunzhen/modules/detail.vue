@@ -8,12 +8,14 @@ import { useVbenDrawer, VbenDescriptions } from '@vben/common-ui';
 import {
   useDescriptionItems,
   useMedicationDescriptionItems,
+  usePatientDescriptionItems,
   useTreatmentDescriptionItems,
 } from '../data';
 
 const detailData = ref<XunzhenRecord>();
 
-const items = computed(() => useDescriptionItems(detailData.value));
+const basicItems = computed(() => useDescriptionItems(detailData.value));
+const patientItems = computed(() => usePatientDescriptionItems(detailData.value));
 const medicationItems = computed(() =>
   useMedicationDescriptionItems(detailData.value),
 );
@@ -33,7 +35,12 @@ const [Drawer, drawerApi] = useVbenDrawer({
 <template>
   <Drawer :footer="false" title="巡诊详情">
     <div class="detail-section">
-      <VbenDescriptions bordered :column="1" :items="items" />
+      <div class="detail-section__title">基础信息</div>
+      <VbenDescriptions bordered :column="1" :items="basicItems" />
+    </div>
+    <div class="detail-section">
+      <div class="detail-section__title">患者信息</div>
+      <VbenDescriptions bordered :column="1" :items="patientItems" />
     </div>
     <div class="detail-section">
       <div class="detail-section__title">开药</div>
