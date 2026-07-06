@@ -1035,8 +1035,42 @@
       function addMedicine(prefill = null) {
         const list = document.getElementById("medicine-list");
         const id = Date.now() + Math.floor(Math.random() * 10000);
+        
+        let dosageNum = 1;
+        let dosageUnit = "片";
+        let route = "口服";
+        let frequency = "1/日";
+        let quantityNum = 1;
+        let quantityUnit = "盒";
+
+        if (prefill) {
+          if (prefill.dosageNum !== undefined) {
+            dosageNum = prefill.dosageNum;
+            dosageUnit = prefill.dosageUnit || "片";
+            route = prefill.route || "口服";
+            frequency = prefill.frequency || "1/日";
+            quantityNum = prefill.quantityNum || 1;
+            quantityUnit = prefill.quantityUnit || "盒";
+          } else if (prefill.dosage) {
+            // 兼容老草稿格式，例如 dosage: "1盒"
+            const numMatch = prefill.dosage.match(/^\d+/);
+            quantityNum = numMatch ? numMatch[0] : 1;
+            quantityUnit = prefill.dosage.replace(/^\d+/, "") || "盒";
+            
+            if (prefill.usage) {
+              const usageParts = prefill.usage.split(" ");
+              if (usageParts.length >= 2) {
+                route = usageParts[0];
+                frequency = usageParts[1];
+              } else {
+                route = prefill.usage;
+              }
+            }
+          }
+        }
+
         const html = `
-                <div id="med-${id}" class="grid grid-cols-[1fr_120px_1fr_48px] gap-3 items-end bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <div id="med-${id}" class="grid grid-cols-[1.5fr_1.1fr_1.1fr_1.1fr_1.1fr_48px] gap-2.5 items-end bg-slate-50 p-4 rounded-xl border border-slate-100">
                     <div class="relative group">
                         <label class="block text-[10px] text-slate-400 mb-1">药品名称</label>
                         <div class="relative w-full">
@@ -1059,22 +1093,62 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">用量</label>
-                        <input type="text" placeholder="如: 1盒" value="${prefill ? prefill.dosage : ''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none">
+                        <label class="block text-[10px] text-slate-400 mb-1">剂量</label>
+                        <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white">
+                            <input type="number" id="med-dosage-num-${id}" value="${dosageNum}" min="1" class="w-full px-2 py-2 text-sm focus:outline-none text-center border-r border-slate-200 font-semibold text-slate-800">
+                            <select id="med-dosage-unit-${id}" class="px-1.5 py-2 text-xs bg-white focus:outline-none text-slate-600 font-bold cursor-pointer shrink-0">
+                                <option value="片">片</option>
+                                <option value="贴">贴</option>
+                                <option value="袋">袋</option>
+                                <option value="支">支</option>
+                                <option value="ml">ml</option>
+                                <option value="g">g</option>
+                                <option value="粒">粒</option>
+                                <option value="包">包</option>
+                            </select>
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">用法</label>
-                        <select id="med-usage-${id}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white">
-                            <option>口服 每日3次</option>
-                            <option>口服 每日2次</option>
-                            <option>口服 每日1次</option>
-                            <option>外用 每日2次</option>
-                            <option>外用 每日3次</option>
-                            <option>舌下含服</option>
-                            <option>饭后口服</option>
-                            <option>饭前口服</option>
-                            <option>睡前服用</option>
+                        <label class="block text-[10px] text-slate-400 mb-1">给药途径</label>
+                        <select id="med-route-${id}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white font-semibold text-slate-700">
+                            <option value="口服">口服</option>
+                            <option value="外用">外用</option>
+                            <option value="静脉滴注">静脉滴注</option>
+                            <option value="肌肉注射">肌肉注射</option>
+                            <option value="皮下注射">皮下注射</option>
+                            <option value="吸入">吸入</option>
+                            <option value="其它">其它</option>
                         </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">频次</label>
+                        <select id="med-frequency-${id}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none bg-white font-semibold text-slate-700">
+                            <option value="1/日">1/日</option>
+                            <option value="2/日">2/日</option>
+                            <option value="3/日">3/日</option>
+                            <option value="4/日">4/日</option>
+                            <option value="必要时">必要时</option>
+                            <option value="立即">立即</option>
+                            <option value="每12小时">每12小时</option>
+                            <option value="每8小时">每8小时</option>
+                            <option value="每6小时">每6小时</option>
+                            <option value="每4小时">每4小时</option>
+                            <option value="每2小时">每2小时</option>
+                            <option value="每小时">每小时</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">数量</label>
+                        <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white">
+                            <input type="number" id="med-qty-num-${id}" value="${quantityNum}" min="1" class="w-full px-2 py-2 text-sm focus:outline-none text-center border-r border-slate-200 font-semibold text-slate-800">
+                            <select id="med-qty-unit-${id}" class="px-1.5 py-2 text-xs bg-white focus:outline-none text-slate-600 font-bold cursor-pointer shrink-0">
+                                <option value="盒">盒</option>
+                                <option value="瓶">瓶</option>
+                                <option value="包">包</option>
+                                <option value="支">支</option>
+                                <option value="袋">袋</option>
+                            </select>
+                        </div>
                     </div>
                     <button onclick="document.getElementById('med-${id}').remove()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
                         <iconify-icon icon="solar:trash-bin-trash-bold" class="text-xl"></iconify-icon>
@@ -1082,10 +1156,19 @@
                 </div>
             `;
         list.insertAdjacentHTML("beforeend", html);
-        if (prefill && prefill.usage) {
-          const selectEl = document.getElementById(`med-usage-${id}`);
-          if (selectEl) selectEl.value = prefill.usage;
-        }
+        
+        // 设置 select 选中值
+        const routeEl = document.getElementById(`med-route-${id}`);
+        if (routeEl) routeEl.value = route;
+        
+        const freqEl = document.getElementById(`med-frequency-${id}`);
+        if (freqEl) freqEl.value = frequency;
+        
+        const dosUnitEl = document.getElementById(`med-dosage-unit-${id}`);
+        if (dosUnitEl) dosUnitEl.value = dosageUnit;
+        
+        const qtyUnitEl = document.getElementById(`med-qty-unit-${id}`);
+        if (qtyUnitEl) qtyUnitEl.value = quantityUnit;
       }
 
       const treatments = ["换药", "冰敷", "静养观察", "包扎", "冷敷", "理疗", "针灸", "推拿"];
@@ -1275,15 +1358,28 @@
         const list = [];
         const items = document.querySelectorAll("#medicine-list > div");
         items.forEach(item => {
-          const input = item.querySelector("input[id^='med-input-']");
-          const dosageInput = item.children[1].querySelector("input");
-          const usageSelect = item.querySelector("select");
-          if (input && input.value.trim()) {
-            list.push({
-              name: input.value.trim(),
-              dosage: dosageInput ? dosageInput.value.trim() : "",
-              usage: usageSelect ? usageSelect.value : ""
-            });
+          const idMatch = item.id.match(/^med-(.+)$/);
+          if (idMatch) {
+            const id = idMatch[1];
+            const nameEl = document.getElementById(`med-input-${id}`);
+            const dosageNumEl = document.getElementById(`med-dosage-num-${id}`);
+            const dosageUnitEl = document.getElementById(`med-dosage-unit-${id}`);
+            const routeEl = document.getElementById(`med-route-${id}`);
+            const freqEl = document.getElementById(`med-frequency-${id}`);
+            const qtyNumEl = document.getElementById(`med-qty-num-${id}`);
+            const qtyUnitEl = document.getElementById(`med-qty-unit-${id}`);
+            
+            if (nameEl && nameEl.value.trim()) {
+              list.push({
+                name: nameEl.value.trim(),
+                dosageNum: dosageNumEl ? dosageNumEl.value : "1",
+                dosageUnit: dosageUnitEl ? dosageUnitEl.value : "片",
+                route: routeEl ? routeEl.value : "口服",
+                frequency: freqEl ? freqEl.value : "1/日",
+                quantityNum: qtyNumEl ? qtyNumEl.value : "1",
+                quantityUnit: qtyUnitEl ? qtyUnitEl.value : "盒"
+              });
+            }
           }
         });
         return list;
