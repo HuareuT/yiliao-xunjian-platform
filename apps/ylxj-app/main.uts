@@ -1,0 +1,28 @@
+
+import App from './App'
+// 源码用户
+import { xui } from "@/uni_modules/tmx-ui/index.uts"
+
+//多语言配置类型 从1.1.15开始改变了安装配置表，使用了类型定义。
+import { Tmui4xOptions } from "@/uni_modules/tmx-ui/interface.uts"
+
+import { createSSRApp } from 'vue'
+export function createApp() {
+	const app = createSSRApp(App)
+	//直接使用不使用任何配置，可以直接这样，如果想配置更多见下方
+	app.use(xui)
+	// 如果想全局配置统一所有主题属性,比如默认按钮圆角,颜色等可以如下设置
+	// 配置中的字段见文档:全局风格配置页面，以下配置sdk4.71+支持
+	app.use(xui,
+		{
+			config: {
+				designSize: 2200
+			}, // 可选，tmui主题配置
+			i18nOptions: null // 可选，多语言配置
+		} as Tmui4xOptions
+	)
+
+	return {
+		app
+	}
+}
