@@ -1,83 +1,85 @@
 {
-    "name" : "ylxj-app",
-    "appid" : "__UNI__C43F787",
-    "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
-    "uni-app-x" : {
-        "styleIsolationVersion" : "2"
-    },
-    /* 快应用特有相关 */
-    "quickapp" : {},
-    /* 小程序特有相关 */
-    "mp-weixin" : {
-        "appid" : "",
-        "setting" : {
-            "urlCheck" : false
-        },
-        "usingComponents" : true
-    },
-    "mp-alipay" : {
-        "usingComponents" : true
-    },
-    "mp-baidu" : {
-        "usingComponents" : true
-    },
-    "mp-toutiao" : {
-        "usingComponents" : true
-    },
-    "uniStatistics" : {
-        "enable" : false
-    },
-    "vueVersion" : "3",
-    "app" : {
-        "distribute" : {
-            "icons" : {
-                "android" : {
-                    "hdpi" : "",
-                    "xhdpi" : "",
-                    "xxhdpi" : "",
-                    "xxxhdpi" : ""
-                }
-            }
-        }
-    },
-    "app-android" : {
-        "distribute" : {
-            "modules" : {},
-            "icons" : {
-                "hdpi" : "",
-                "xhdpi" : "",
-                "xxhdpi" : "",
-                "xxxhdpi" : ""
-            },
-            "splashScreens" : {
-                "default" : {}
-            }
-        }
-    },
-    "app-ios" : {
-        "distribute" : {
-            "modules" : {},
-            "icons" : {},
-            "splashScreens" : {}
-        }
-    },
-    "app-harmony" : {
-        "distribute" : {
-            "deviceTypes" : [ "tablet" ],
-            "bundleName" : "uni.app.UNIC43F787",
-            "signingConfigs" : {
-                "default" : {
-                    "certpath" : "/Users/huareu/Library/Application Support/HBuilder X/extensions/launcher/agc-certs/1783585834054.cer",
-                    "keyAlias" : "debugKey",
-                    "keyPassword" : "0000001B3AD0AAEF47E8FE6A1AF5690E9344F86FDEF8A8EE0931212DF3D1645400766048CDDA3043CDC0B5",
-                    "profile" : "/Users/huareu/Library/Application Support/HBuilder X/extensions/launcher/agc-certs/1783585834054.p7b",
-                    "signAlg" : "SHA256withECDSA",
-                    "storeFile" : "/Users/huareu/Library/Application Support/HBuilder X/extensions/launcher/agc-certs/1783585834054.p12",
-                    "storePassword" : "0000001B3AD0AAEF47E8FE6A1AF5690E9344F86FDEF8A8EE0931212DF3D1645400766048CDDA3043CDC0B5"
-                }
-            }
-        }
-    }
+	"name": "ylxj-app",
+	"appid": "__UNI__C43F787",
+	"description": "",
+	"versionName": "1.0.1",
+	"versionCode": "101",
+	"uni-app-x": {
+		"styleIsolationVersion": "2"
+	},
+	/* 快应用特有相关 */
+	"quickapp": {},
+	/* 小程序特有相关 */
+	"mp-weixin": {
+		"appid": "",
+		"setting": {
+			"urlCheck": false
+		},
+		"usingComponents": true
+	},
+	"mp-alipay": {
+		"usingComponents": true
+	},
+	"mp-baidu": {
+		"usingComponents": true
+	},
+	"mp-toutiao": {
+		"usingComponents": true
+	},
+	"uniStatistics": {
+		"enable": false
+	},
+	"vueVersion": "3",
+	"app": {
+		"distribute": {
+			"icons": {
+				"android": {
+					"hdpi": "",
+					"xhdpi": "",
+					"xxhdpi": "",
+					"xxxhdpi": ""
+				}
+			}
+		}
+	},
+	"app-android": {
+		"distribute": {
+			"modules": {},
+			"icons": {
+				"hdpi": "",
+				"xhdpi": "",
+				"xxhdpi": "",
+				"xxxhdpi": ""
+			},
+			"splashScreens": {
+				"default": {}
+			}
+		}
+	},
+	"app-ios": {
+		"distribute": {
+			"modules": {},
+			"icons": {},
+			"splashScreens": {}
+		}
+	},
+	"app-harmony": {
+		"distribute": {
+			"deviceTypes": [
+				"tablet"
+			],
+			"bundleName": "uni.app.UNIC43F787",
+			"signingConfigs": {
+				"default": {
+					"certpath": "/Users/huareu/Library/Application Support/HBuilder X/extensions/launcher/agc-certs/1783585834054.cer",
+					"keyAlias": "debugKey",
+					"keyPassword": "0000001B3AD0AAEF47E8FE6A1AF5690E9344F86FDEF8A8EE0931212DF3D1645400766048CDDA3043CDC0B5",
+					"profile": "/Users/huareu/Library/Application Support/HBuilder X/extensions/launcher/agc-certs/1783585834054.p7b",
+					"signAlg": "SHA256withECDSA",
+					"storeFile": "/Users/huareu/Library/Application Support/HBuilder X/extensions/launcher/agc-certs/1783585834054.p12",
+					"storePassword": "0000001B3AD0AAEF47E8FE6A1AF5690E9344F86FDEF8A8EE0931212DF3D1645400766048CDDA3043CDC0B5"
+				}
+			}
+		}
+	}
 }
