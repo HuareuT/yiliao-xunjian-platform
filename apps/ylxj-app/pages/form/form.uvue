@@ -1,0 +1,699 @@
+<template>
+	<view class="form_page fulled-height overflow flex-row">
+		<x-sheet width="300" height="100%" color="#153d4a" :linear-gradient="['to bottom','#153d4a','#0c796c']" :round="[0]"
+			:margin="[0]" :padding="[0]">
+			<view class="fulled-height flex-col flex-between">
+				<view class="flex-row flex-row-center-start ma-20">
+					<x-text font-size="26" color="#ffffff" _class="text-weight-b">巡诊信息录入</x-text>
+				</view>
+				<scroll-view scroll-y="true" class="flex-1">
+					<view class="mx-20">
+						<view class="side_card pa-18">
+							<x-text font-size="20" color="#d9fff4" _class="text-weight-b">当前人员</x-text>
+							<view class="flex-row flex-row-center-start mt-18">
+								<view class="staff_avatar doctor_avatar flex-center">
+									<x-text font-size="17" color="#ffffff" _class="text-weight-b">医</x-text>
+								</view>
+								<view class="ml-18">
+									<x-text font-size="20" color="#ffffff" _class="text-weight-b">王大明</x-text>
+									<x-text font-size="14" color="rgba(255,255,255,0.66)" class="mt-2">主治医师</x-text>
+								</view>
+							</view>
+							<view class="flex-row flex-row-center-start mt-18">
+								<view class="staff_avatar nurse_avatar flex-center">
+									<x-text font-size="17" color="#ffffff" _class="text-weight-b">护</x-text>
+								</view>
+								<view class="ml-18">
+									<x-text font-size="20" color="#ffffff" _class="text-weight-b">李小红</x-text>
+									<x-text font-size="14" color="rgba(255,255,255,0.66)" class="mt-2">主管护士</x-text>
+								</view>
+							</view>
+						</view>
+
+						<view class="side_card pa-18 mt-18">
+							<x-text font-size="20" color="#d9fff4" _class="text-weight-b">巡诊背景</x-text>
+							<view class="mt-16">
+								<view class="flex-row flex-row-center-between mb-12">
+									<x-text font-size="17" color="rgba(255,255,255,0.62)">保障类型</x-text>
+									<x-text font-size="18" color="#ffffff" _class="text-weight-b">日常巡诊</x-text>
+								</view>
+								<view class="flex-row flex-row-center-between mb-12">
+									<x-text font-size="17" color="rgba(255,255,255,0.62)">保障地点</x-text>
+									<x-text font-size="18" color="#ffffff" _class="text-weight-b">江津</x-text>
+								</view>
+								<view class="flex-row flex-row-center-between mb-12">
+									<x-text font-size="17" color="rgba(255,255,255,0.62)">保障人数</x-text>
+									<x-text font-size="18" color="#ffffff" _class="text-weight-b">22</x-text>
+								</view>
+								<view class="flex-row flex-row-center-between">
+									<x-text font-size="17" color="rgba(255,255,255,0.62)">保障对象</x-text>
+									<x-text font-size="18" color="#ffffff" _class="text-weight-b">33</x-text>
+								</view>
+							</view>
+						</view>
+
+						<view class="side_card pa-18 mt-18">
+							<view class="flex-row flex-row-center-between">
+								<x-text font-size="20" color="#d9fff4" _class="text-weight-b">缓存人员</x-text>
+								<x-tag color="success" skin="thin" :round="8" font-size="12">{{ cachedPatients.length.toString() }}
+									人</x-tag>
+							</view>
+							<view class="mt-14">
+								<view v-if="cachedPatients.length == 0" class="empty_cache flex-center">
+									<x-text font-size="14" color="rgba(255,255,255,0.54)">暂无缓存，填写下一位后显示</x-text>
+								</view>
+								<view v-for="(item, index) in cachedPatients" :key="item.id"
+									class="cache_item flex-row flex-row-center-between mb-8">
+									<view class="flex-1">
+										<x-text font-size="15" color="#ffffff" _class="text-weight-b">{{ item.name }}</x-text>
+										<x-text font-size="12" color="rgba(255,255,255,0.56)" class="mt-2">{{ item.identity }} ·
+											{{ item.diagnosis }}</x-text>
+									</view>
+									<x-text font-size="13" color="#8fd9ff">#{{ (index + 1).toString() }}</x-text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+
+				<view class="ma-20">
+					<x-button height="48" width="100%" round="15" color="rgba(255,255,255,0.08)" font-color="#d9fff4" border="1"
+						border-color="rgba(217,255,244,0.24)" icon="logout-box-r-line" icon-size="20" font-size="17"
+						font-weight="bold" @click="logout">退出登录</x-button>
+				</view>
+
+			</view>
+		</x-sheet>
+
+		<view class="flex-1 form_content py-16 flex-col">
+			<scroll-view scroll-y="true" class="form_scroll flex-1">
+				<view class="mx-20">
+					<x-sheet width="100%" color="#ffffff" :round="18" :margin="[0]" :padding="[24,18,24,18]" :border="1"
+						:border-color="['#dfeaf5']" :shadow="['0','8','rgba(40, 76, 112, 0.06)']">
+						<view class="section_title flex-row flex-row-center-start">
+							<view class="title_bar"></view>
+							<x-text font-size="17" color="#16233a" _class="text-weight-b">基础信息</x-text>
+						</view>
+
+						<view class="mt-12">
+							<view class="flex-row mb-10">
+								<view class="flex-1">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#e75c61">*</x-text>
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">姓名</x-text>
+									</view>
+									<x-input v-model="patientName" height="42" round="12" color="#f7fbff" font-size="14"
+										placeholder="输入姓名搜索" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										_class="round-a-12 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-16">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#e75c61">*</x-text>
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">身份证号</x-text>
+									</view>
+									<x-input v-model="idCard" height="42" round="12" color="#f7fbff" font-size="14" placeholder="请输入身份证号"
+										placeholder-style="color:#9aa8be" input-padding="8px 12px" _class="round-a-12 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-16">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#e75c61">*</x-text>
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">手机号</x-text>
+									</view>
+									<x-input v-model="phone" type="tel" height="42" round="12" color="#f7fbff" font-size="14"
+										placeholder="请输入手机号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										_class="round-a-12 overflow"></x-input>
+								</view>
+							</view>
+
+							<view class="flex-row mb-10">
+								<view class="flex-1">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">ID号</x-text>
+									</view>
+									<x-input v-model="internalId" height="42" round="12" color="#f7fbff" font-size="14"
+										placeholder="内部ID号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										_class="round-a-12 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-16">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">性别</x-text>
+									</view>
+									<view class="flex-row flex-row-center-start">
+										<x-button width="62" height="42" round="12" :skin="gender == '男' ? 'default' : 'thin'"
+											color="primary" font-size="14" @click="setGender('男')">男</x-button>
+										<x-button class="ml-8" width="62" height="42" round="12" :skin="gender == '女' ? 'default' : 'thin'"
+											color="primary" font-size="14" @click="setGender('女')">女</x-button>
+									</view>
+								</view>
+								<view class="flex-1 ml-16">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">联系人电话</x-text>
+									</view>
+									<x-input v-model="contactPhone" type="tel" height="42" round="12" color="#f7fbff" font-size="14"
+										placeholder="紧急联系人电话" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										_class="round-a-12 overflow"></x-input>
+								</view>
+							</view>
+
+							<view class="flex-row">
+								<view class="flex-1">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">身份类别</x-text>
+									</view>
+									<x-picker-selected v-model="identityValue" v-model:model-str="identityText" title="选择身份类别"
+										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
+										:list="identityList" :width-cover-center="true">
+										<template v-slot:default="{ label }">
+											<x-sheet width="100%" height="42" color="#f7fbff" :round="12" :margin="[0]"
+												:padding="[12,0,12,0]">
+												<view class="fulled-height flex-row flex-row-center-between">
+													<view class="flex-row flex-row-center-start flex-1">
+														<x-text font-size="14"
+															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "请选择或输入身份类别" : label }}</x-text>
+													</view>
+													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
+												</view>
+											</x-sheet>
+										</template>
+									</x-picker-selected>
+								</view>
+								<view class="flex-1 ml-16">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">单位/部队番号/队别</x-text>
+									</view>
+									<x-input v-model="unitName" height="42" round="12" color="#f7fbff" font-size="14"
+										placeholder="请输入单位/部队番号/队别" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										_class="round-a-12 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-16"></view>
+							</view>
+						</view>
+					</x-sheet>
+
+					<x-sheet width="100%" color="#ffffff" :round="18" :margin="[0,14,0,0]" :padding="[24,18,24,18]" :border="1"
+						:border-color="['#dfeaf5']" :shadow="['0','8','rgba(40, 76, 112, 0.06)']">
+						<view class="section_title flex-row flex-row-center-between">
+							<view class="flex-row flex-row-center-start">
+								<view class="title_bar"></view>
+								<x-text font-size="17" color="#16233a" _class="text-weight-b">诊断信息</x-text>
+							</view>
+							<x-button width="112" height="36" round="11" color="success" skin="thin" icon="add-circle-fill"
+								icon-size="17" font-size="14" @click="openDiagnosisModal">添加诊断</x-button>
+						</view>
+						<view class="mt-14">
+							<view class="flex-row flex-row-center-start mb-10">
+								<view class="flex-row flex-row-center-start flex-wrap">
+									<x-tag v-for="(item, index) in diagnosisTags" :key="index" color="primary" skin="thin" :round="8"
+										font-size="13" icon="close-circle-fill" class="mr-8 mb-6"
+										@click="removeDiagnosis(index)">{{ item }}</x-tag>
+									<x-text v-if="diagnosisTags.length == 0" font-size="13" color="#9aa8be">暂无诊断，请点击右上角添加</x-text>
+								</view>
+							</view>
+							<view>
+								<view class="flex-row flex-row-center-start mb-5">
+									<x-text font-size="13" color="#44556d" _class="text-weight-b">备注</x-text>
+								</view>
+								<x-input v-model="diagnosisRemark" type="textarea" height="82" round="12" color="#f7fbff" font-size="14"
+									placeholder="请输入诊断补充说明..." placeholder-style="color:#9aa8be" input-padding="10px 12px"
+									_class="round-a-12 overflow"></x-input>
+							</view>
+						</view>
+					</x-sheet>
+
+					<x-sheet width="100%" color="#ffffff" :round="18" :margin="[0,14,0,0]" :padding="[24,18,24,18]" :border="1"
+						:border-color="['#dfeaf5']" :shadow="['0','8','rgba(40, 76, 112, 0.06)']">
+						<view class="section_title flex-row flex-row-center-start">
+							<view class="title_bar"></view>
+							<x-text font-size="17" color="#16233a" _class="text-weight-b">处理信息</x-text>
+						</view>
+						<view class="mt-12">
+							<view class="flex-row flex-row-center-between mb-12">
+								<view class="flex-row flex-row-center-start">
+									<x-icon name="capsule-line" font-size="16" color="#6ba7ff"></x-icon>
+									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">开药记录</x-text>
+								</view>
+								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
+									icon-size="15" font-size="13">添加药品</x-button>
+							</view>
+							<view class="process_row flex-row mb-20">
+								<view class="flex-2">
+									<x-picker-selected v-model="medicineValue" v-model:model-str="medicineText" title="选择药品"
+										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
+										:list="medicineList" :width-cover-center="true">
+										<template v-slot:default="{ label }">
+											<x-sheet width="100%" height="38" color="#f7fbff" :round="11" :margin="[0]"
+												:padding="[10,0,10,0]">
+												<view class="fulled-height flex-row flex-row-center-between">
+													<view class="flex-row flex-row-center-start flex-1">
+														<x-text font-size="13"
+															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "请选择药品" : label }}</x-text>
+													</view>
+													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
+												</view>
+											</x-sheet>
+										</template>
+									</x-picker-selected>
+								</view>
+								<view class="flex-1 ml-8">
+									<x-input v-model="dosage" height="38" round="11" color="#f7fbff" font-size="13" placeholder="剂量"
+										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-8">
+									<x-input v-model="route" height="38" round="11" color="#f7fbff" font-size="13" placeholder="给药途径"
+										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-8">
+									<x-input v-model="frequency" height="38" round="11" color="#f7fbff" font-size="13" placeholder="频次"
+										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-8">
+									<x-input v-model="amount" height="38" round="11" color="#f7fbff" font-size="13" placeholder="数量"
+										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+								</view>
+							</view>
+
+							<view class="flex-row flex-row-center-between mb-12">
+								<view class="flex-row flex-row-center-start">
+									<x-icon name="first-aid-kit-line" font-size="16" color="#6ba7ff"></x-icon>
+									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">处置记录</x-text>
+								</view>
+								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
+									icon-size="15" font-size="13">添加处置</x-button>
+							</view>
+							<view class="process_row flex-row">
+								<view class="flex-1">
+									<x-picker-selected v-model="disposeWayValue" v-model:model-str="disposeWayText" title="选择处置方式"
+										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
+										:list="disposeWayList" :width-cover-center="true">
+										<template v-slot:default="{ label }">
+											<x-sheet width="100%" height="38" color="#f7fbff" :round="11" :margin="[0]"
+												:padding="[10,0,10,0]">
+												<view class="fulled-height flex-row flex-row-center-between">
+													<view class="flex-row flex-row-center-start flex-1">
+														<x-text font-size="13"
+															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "请选择处置方式" : label }}</x-text>
+													</view>
+													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
+												</view>
+											</x-sheet>
+										</template>
+									</x-picker-selected>
+								</view>
+								<view class="flex-1 ml-8">
+									<x-input v-model="disposeRemark" height="38" round="11" color="#f7fbff" font-size="13"
+										placeholder="补充说明" placeholder-style="color:#9aa8be" input-padding="8px 10px"
+										_class="round-a-11 overflow"></x-input>
+								</view>
+							</view>
+						</view>
+					</x-sheet>
+				</view>
+			</scroll-view>
+
+			<x-sheet height="70" color="#ffffff" :round="18" :margin="[20,14,20,0]" :padding="[18,10,18,10]" :border="1"
+				:border-color="['#dfeaf5']">
+				<view class="fulled-height flex-row flex-row-center-between">
+					<view class="flex-row flex-row-center-start flex-wrap flex-1">
+						<x-tag v-for="item in cachedPatients" :key="item.id" color="success" skin="thin" icon="user-3-fill"
+							:round="8" font-size="13" class="mr-8 mb-6">{{ item.name }}</x-tag>
+						<x-text v-if="cachedPatients.length == 0" font-size="14" color="#8a9bb0">已缓存人员会显示在这里，右侧操作栏固定不随表单滚动</x-text>
+					</view>
+					<view class="flex-row flex-row-center-end">
+						<x-button width="136" height="46" round="13" color="#ffffff" font-color="#3d5876" border="1"
+							border-color="#dbe7f3" font-size="15" font-weight="bold" @click="cacheCurrentAndNext">填写下一位</x-button>
+						<x-button class="ml-12" width="136" height="46" round="13" color="primary" icon="checkbox-circle-fill"
+							icon-size="18" font-size="15" font-weight="bold" :shadow="[0, 8, 18]" @click="submitAll">提交信息</x-button>
+					</view>
+				</view>
+			</x-sheet>
+		</view>
+
+		<x-modal v-model:show="diagnosisModalShow" title="添加诊断类型" width="560" height="530" round="18" content-padding="18"
+			confirm-text="确定添加" cancel-text="取消" :show-close="true" :show-footer="false" :overlay-click="true">
+			<view class="diagnosis_modal">
+				<view class="diagnosis_preview pa-14">
+					<x-text font-size="14" color="#7a8da6" _class="text-weight-b">诊断组合与预览</x-text>
+					<view class="flex-row mt-12">
+						<view class="flex-1">
+							<x-text font-size="13" color="#52647d">前缀修饰词</x-text>
+							<x-input v-model="diagnosisPrefix" height="40" round="12" color="#f7fbff" font-size="14"
+								placeholder="如：疑似、拟" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+								_class="round-a-12 overflow"></x-input>
+						</view>
+						<view class="flex-2 ml-12">
+							<x-text font-size="13" color="#52647d">选定类型</x-text>
+							<x-sheet width="100%" height="40" color="#f7fbff" :round="12" :margin="[0]" :padding="[12,0,12,0]">
+								<view class="fulled-height flex-row flex-row-center-start">
+									<x-text font-size="14"
+										:color="selectedDiagnosisName == '' ? '#9aa8be' : '#243a55'">{{ selectedDiagnosisName == "" ? "请从下方选择诊断类型..." : selectedDiagnosisName }}</x-text>
+								</view>
+							</x-sheet>
+						</view>
+					</view>
+					<view class="flex-row flex-row-center-start mt-12">
+						<x-text font-size="13" color="#52647d">快速词：</x-text>
+						<x-button width="54" height="28" round="8" :skin="diagnosisPrefix == '疑似' ? 'default' : 'thin'"
+							color="success" font-size="13" @click="setDiagnosisPrefix('疑似')">疑似</x-button>
+						<x-button class="ml-8" width="48" height="28" round="8" :skin="diagnosisPrefix == '拟' ? 'default' : 'thin'"
+							color="success" font-size="13" @click="setDiagnosisPrefix('拟')">拟</x-button>
+						<x-button class="ml-8" width="54" height="28" round="8" :skin="diagnosisPrefix == '待查' ? 'default' : 'thin'"
+							color="success" font-size="13" @click="setDiagnosisPrefix('待查')">待查</x-button>
+						<x-button class="ml-8" width="58" height="28" round="8" color="#ffffff" font-color="#7a8da6" border="1"
+							border-color="#dbe7f3" font-size="13" @click="setDiagnosisPrefix('')">清除</x-button>
+					</view>
+					<view class="diagnosis_result flex-row flex-row-center-between mt-14 px-10">
+						<x-text font-size="14" color="#243a55" _class="text-weight-b">效果预览：</x-text>
+						<x-tag color="success" skin="thin" :round="10" font-size="13">{{ getDiagnosisPreview() }}</x-tag>
+					</view>
+				</view>
+
+				<x-input v-model="diagnosisSearch" height="40" round="12" left-icon="search-line" icon-color="#9aa8be"
+					color="#f7fbff" font-size="14" placeholder="请输入内容检索全部诊断" placeholder-style="color:#9aa8be"
+					input-padding="8px 12px" _class="round-a-12 overflow mt-14"></x-input>
+
+				<view class="flex-row flex-row-center-start mt-16 mb-12">
+					<x-button width="78" height="30" round="8" :skin="diagnosisCategory == '全部诊断' ? 'default' : 'text'"
+						color="success" font-size="14" @click="setDiagnosisCategory('全部诊断')">全部诊断</x-button>
+					<x-button class="ml-8" width="66" height="30" round="8"
+						:skin="diagnosisCategory == '老年病' ? 'default' : 'text'" color="success" font-size="14"
+						@click="setDiagnosisCategory('老年病')">老年病</x-button>
+					<x-button class="ml-8" width="66" height="30" round="8"
+						:skin="diagnosisCategory == '皮肤病' ? 'default' : 'text'" color="success" font-size="14"
+						@click="setDiagnosisCategory('皮肤病')">皮肤病</x-button>
+				</view>
+
+				<view class="diagnosis_grid flex-row flex-wrap">
+					<x-button v-for="item in getDiagnosisRenderList()" :key="item.id" width="48%" height="42" round="11"
+						:skin="selectedDiagnosisId == item.id ? 'default' : 'thin'" color="success" font-size="14"
+						class="mr-10 mb-10" @click="selectDiagnosis(item)">{{ item.title }}</x-button>
+				</view>
+				<view class="flex-row flex-row-center-end mt-10">
+					<x-button width="88" height="40" round="12" color="#ffffff" font-color="#3d5876" border="1"
+						border-color="#dbe7f3" font-size="14" @click="closeDiagnosisModal">取消</x-button>
+					<x-button class="ml-12" width="112" height="40" round="12" color="primary" font-size="14" font-weight="bold"
+						@click="confirmDiagnosis">确定添加</x-button>
+				</view>
+			</view>
+		</x-modal>
+	</view>
+</template>
+
+<script setup lang="uts">
+	type DiagnosisOption = {
+		id : string,
+		title : string,
+		category : string
+	}
+
+	type CachedPatient = {
+		id : string,
+		name : string,
+		identity : string,
+		diagnosis : string
+	}
+
+	defineOptions({ name: "FormPage" })
+
+	const identityList = ref<UTSJSONObject[]>([
+		{ id: "patient", text: "患者本人" } as UTSJSONObject,
+		{ id: "family", text: "家属陪同" } as UTSJSONObject,
+		{ id: "staff", text: "院内职工" } as UTSJSONObject,
+		{ id: "soldier", text: "部队人员" } as UTSJSONObject,
+		{ id: "other", text: "其他保障对象" } as UTSJSONObject
+	])
+
+	const disposeWayList = ref<UTSJSONObject[]>([
+		{ id: "observe", text: "现场观察" } as UTSJSONObject,
+		{ id: "medicine", text: "开药处理" } as UTSJSONObject,
+		{ id: "bandage", text: "清创包扎" } as UTSJSONObject,
+		{ id: "transfer", text: "转诊复查" } as UTSJSONObject,
+		{ id: "education", text: "健康宣教" } as UTSJSONObject
+	])
+
+	const medicineList = ref<UTSJSONObject[]>([
+		{ id: "ibuprofen", text: "布洛芬缓释胶囊" } as UTSJSONObject,
+		{ id: "loratadine", text: "氯雷他定片" } as UTSJSONObject,
+		{ id: "montmorillonite", text: "蒙脱石散" } as UTSJSONObject,
+		{ id: "povidone", text: "碘伏消毒液" } as UTSJSONObject,
+		{ id: "bandage", text: "无菌敷贴" } as UTSJSONObject
+	])
+
+	const diagnosisOptions = ref<DiagnosisOption[]>([
+		{ id: "resp", title: "上呼吸道感染", category: "全部诊断" } as DiagnosisOption,
+		{ id: "gastro", title: "急性胃肠炎", category: "全部诊断" } as DiagnosisOption,
+		{ id: "skin-injury", title: "皮肤外伤", category: "皮肤病" } as DiagnosisOption,
+		{ id: "hypertension", title: "高血压", category: "老年病" } as DiagnosisOption,
+		{ id: "diabetes", title: "糖尿病", category: "老年病" } as DiagnosisOption,
+		{ id: "cold-fever", title: "感冒发热", category: "全部诊断" } as DiagnosisOption,
+		{ id: "eczema", title: "泛发性湿疹", category: "皮肤病" } as DiagnosisOption,
+		{ id: "spasm", title: "寻常痉挛", category: "全部诊断" } as DiagnosisOption
+	])
+
+	const patientName = ref<string>("")
+	const idCard = ref<string>("")
+	const phone = ref<string>("")
+	const internalId = ref<string>("")
+	const gender = ref<string>("男")
+	const contactPhone = ref<string>("")
+	const identityValue = ref<any[]>([] as any[])
+	const identityText = ref<string[]>([] as string[])
+	const unitName = ref<string>("")
+
+	const diagnosisTags = ref<string[]>([] as string[])
+	const diagnosisRemark = ref<string>("")
+	const diagnosisModalShow = ref<boolean>(false)
+	const diagnosisPrefix = ref<string>("疑似")
+	const diagnosisSearch = ref<string>("")
+	const diagnosisCategory = ref<string>("全部诊断")
+	const selectedDiagnosisId = ref<string>("")
+	const selectedDiagnosisName = ref<string>("")
+
+	const medicineValue = ref<any[]>([] as any[])
+	const medicineText = ref<string[]>([] as string[])
+	const dosage = ref<string>("")
+	const route = ref<string>("口服")
+	const frequency = ref<string>("1/日")
+	const amount = ref<string>("")
+	const disposeWayValue = ref<any[]>([] as any[])
+	const disposeWayText = ref<string[]>([] as string[])
+	const disposeRemark = ref<string>("")
+
+	const cachedPatients = ref<CachedPatient[]>([] as CachedPatient[])
+
+	function getFirstText(values : string[], fallback : string) : string {
+		if (values.length > 0) {
+			return values[0]
+		}
+		return fallback
+	}
+
+	function getDiagnosisSummary() : string {
+		if (diagnosisTags.value.length > 0) {
+			return diagnosisTags.value.join("、")
+		}
+		return "未添加诊断"
+	}
+
+	function getDiagnosisPreview() : string {
+		if (selectedDiagnosisName.value == "") {
+			return "请选择诊断类型"
+		}
+		if (diagnosisPrefix.value == "") {
+			return selectedDiagnosisName.value
+		}
+		return diagnosisPrefix.value + " " + selectedDiagnosisName.value
+	}
+
+	function setGender(value : string) : void {
+		gender.value = value
+	}
+
+	function logout() : void {
+		uni.redirectTo({
+			url: "/pages/login/login"
+		})
+	}
+
+	function openDiagnosisModal() : void {
+		diagnosisModalShow.value = true
+	}
+
+	function closeDiagnosisModal() : void {
+		diagnosisModalShow.value = false
+	}
+
+	function setDiagnosisPrefix(value : string) : void {
+		diagnosisPrefix.value = value
+	}
+
+	function setDiagnosisCategory(value : string) : void {
+		diagnosisCategory.value = value
+	}
+
+	function selectDiagnosis(item : DiagnosisOption) : void {
+		selectedDiagnosisId.value = item.id
+		selectedDiagnosisName.value = item.title
+	}
+
+	function getDiagnosisRenderList() : DiagnosisOption[] {
+		const keyword = diagnosisSearch.value.trim()
+		let result = [] as DiagnosisOption[]
+		for (let i = 0; i < diagnosisOptions.value.length; i++) {
+			const item = diagnosisOptions.value[i]
+			const matchCategory = diagnosisCategory.value == "全部诊断" || item.category == diagnosisCategory.value
+			const matchKeyword = keyword == "" || item.title.indexOf(keyword) > -1
+			if (matchCategory && matchKeyword) {
+				result.push(item)
+			}
+		}
+		return result
+	}
+
+	function confirmDiagnosis() : void {
+		const label = getDiagnosisPreview()
+		if (selectedDiagnosisName.value == "") {
+			uni.showToast({
+				title: "请先选择诊断类型",
+				icon: "none"
+			})
+			return
+		}
+		diagnosisTags.value.push(label)
+		diagnosisTags.value = diagnosisTags.value.slice(0)
+		diagnosisModalShow.value = false
+	}
+
+	function removeDiagnosis(index : number) : void {
+		if (index >= 0 && index < diagnosisTags.value.length) {
+			diagnosisTags.value.splice(index, 1)
+			diagnosisTags.value = diagnosisTags.value.slice(0)
+		}
+	}
+
+	function resetForm() : void {
+		patientName.value = ""
+		idCard.value = ""
+		phone.value = ""
+		internalId.value = ""
+		gender.value = "男"
+		contactPhone.value = ""
+		identityValue.value = [] as any[]
+		identityText.value = [] as string[]
+		unitName.value = ""
+		diagnosisTags.value = [] as string[]
+		diagnosisRemark.value = ""
+		medicineValue.value = [] as any[]
+		medicineText.value = [] as string[]
+		dosage.value = ""
+		route.value = "口服"
+		frequency.value = "1/日"
+		amount.value = ""
+		disposeWayValue.value = [] as any[]
+		disposeWayText.value = [] as string[]
+		disposeRemark.value = ""
+		selectedDiagnosisId.value = ""
+		selectedDiagnosisName.value = ""
+		diagnosisSearch.value = ""
+	}
+
+	function cacheCurrentAndNext() : void {
+		const cacheName = patientName.value.trim() == "" ? "未命名人员" : patientName.value.trim()
+		const cacheItem = {
+			id: "cache_" + (cachedPatients.value.length + 1).toString(),
+			name: cacheName,
+			identity: getFirstText(identityText.value, "未选择身份"),
+			diagnosis: getDiagnosisSummary()
+		} as CachedPatient
+		cachedPatients.value.push(cacheItem)
+		cachedPatients.value = cachedPatients.value.slice(0)
+		resetForm()
+		uni.showToast({
+			title: "已缓存，继续填写下一位",
+			icon: "none"
+		})
+	}
+
+	function submitAll() : void {
+		const total = cachedPatients.value.length + (patientName.value.trim() == "" && diagnosisTags.value.length == 0 ? 0 : 1)
+		uni.showToast({
+			title: "已提交 " + total.toString() + " 位人员信息",
+			icon: "none"
+		})
+	}
+</script>
+
+<style>
+	.form_page {
+		background-color: #f2f6fb;
+	}
+
+	.form_content {
+		background-color: #f4f8fc;
+	}
+
+	.form_scroll {
+		flex: 1;
+	}
+
+	.side_card {
+		border-width: 1px;
+		border-style: solid;
+		border-color: rgba(226, 255, 241, 0.18);
+		border-radius: 22px;
+		background-color: rgba(255, 255, 255, 0.12);
+	}
+
+	.staff_avatar {
+		width: 48px;
+		height: 48px;
+		border-radius: 24px;
+	}
+
+	.doctor_avatar {
+		background-color: #6566f1;
+	}
+
+	.nurse_avatar {
+		background-color: #18c18f;
+	}
+
+	.empty_cache {
+		height: 54px;
+		border-radius: 14px;
+		background-color: rgba(255, 255, 255, 0.08);
+	}
+
+	.cache_item {
+		min-height: 44px;
+		border-radius: 12px;
+		background-color: rgba(255, 255, 255, 0.08);
+		padding: 8px 10px;
+	}
+
+	.title_bar {
+		width: 4px;
+		height: 18px;
+		border-radius: 3px;
+		background-color: #2f6df6;
+		margin-right: 8px;
+	}
+
+	.diagnosis_preview {
+		border-width: 1px;
+		border-style: solid;
+		border-color: #e0e9f5;
+		border-radius: 14px;
+		background-color: #f7faff;
+	}
+
+	.diagnosis_result {
+		height: 38px;
+		border-top-width: 1px;
+		border-top-style: solid;
+		border-top-color: #e6eef8;
+	}
+
+	.diagnosis_grid {
+		height: 178px;
+	}
+</style>
