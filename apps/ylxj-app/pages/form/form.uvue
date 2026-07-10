@@ -54,24 +54,15 @@
 
 						<view class="side_card pa-18 mt-18">
 							<view class="flex-row flex-row-center-between">
-								<x-text font-size="20" color="#d9fff4" _class="text-weight-b">缓存人员</x-text>
-								<x-tag color="success" skin="thin" :round="8" font-size="12">{{ cachedPatients.length.toString() }}
-									人</x-tag>
-							</view>
-							<view class="mt-14">
-								<view v-if="cachedPatients.length == 0" class="empty_cache flex-center">
-									<x-text font-size="14" color="rgba(255,255,255,0.54)">暂无缓存，填写下一位后显示</x-text>
-								</view>
-								<view v-for="(item, index) in cachedPatients" :key="item.id"
-									class="cache_item flex-row flex-row-center-between mb-8">
-									<view class="flex-1">
-										<x-text font-size="15" color="#ffffff" _class="text-weight-b">{{ item.name }}</x-text>
-										<x-text font-size="12" color="rgba(255,255,255,0.56)" class="mt-2">{{ item.identity }} ·
-											{{ item.diagnosis }}</x-text>
-									</view>
-									<x-text font-size="13" color="#8fd9ff">#{{ (index + 1).toString() }}</x-text>
+								<x-text font-size="20" color="#d9fff4" _class="text-weight-b">待提交</x-text>
+								<view class="submit_count_badge flex-center">
+									<x-text font-size="14" color="#ffffff" _class="text-weight-b">{{ cachedPatients.length.toString() }} 份</x-text>
 								</view>
 							</view>
+							<x-text font-size="14" color="rgba(255,255,255,0.66)" class="mt-14">当前有 {{ cachedPatients.length.toString() }} 份待提交的巡诊记录</x-text>
+							<x-button class="mt-20" width="100%" height="48" round="14" color="rgba(255,255,255,0.12)"
+								font-color="#d9fff4" border="1" border-color="rgba(217,255,244,0.24)" font-size="17"
+								font-weight="bold" @click="viewPendingPatients">查看</x-button>
 						</view>
 					</view>
 				</scroll-view>
@@ -111,8 +102,9 @@
 										<x-text font-size="13" color="#e75c61">*</x-text>
 										<x-text font-size="13" color="#44556d" _class="text-weight-b">身份证号</x-text>
 									</view>
-									<x-input v-model="idCard" height="42" round="12" color="#f7fbff" font-size="14" placeholder="请输入身份证号"
-										placeholder-style="color:#9aa8be" input-padding="8px 12px" _class="round-a-12 overflow"></x-input>
+									<x-input v-model="idCard" height="42" round="12" color="#f7fbff" font-size="14" :maxlength="18"
+										placeholder="请输入身份证号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										_class="round-a-12 overflow"></x-input>
 								</view>
 								<view class="flex-1 ml-16">
 									<view class="flex-row flex-row-center-start mb-5">
@@ -120,7 +112,7 @@
 										<x-text font-size="13" color="#44556d" _class="text-weight-b">手机号</x-text>
 									</view>
 									<x-input v-model="phone" type="tel" height="42" round="12" color="#f7fbff" font-size="14"
-										placeholder="请输入手机号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										:maxlength="11" placeholder="请输入手机号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
 							</view>
@@ -147,16 +139,24 @@
 								</view>
 								<view class="flex-1 ml-16">
 									<view class="flex-row flex-row-center-start mb-5">
-										<x-text font-size="13" color="#44556d" _class="text-weight-b">联系人电话</x-text>
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">出生地</x-text>
 									</view>
-									<x-input v-model="contactPhone" type="tel" height="42" round="12" color="#f7fbff" font-size="14"
-										placeholder="紧急联系人电话" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+									<x-input v-model="birthPlace" height="42" round="12" color="#f7fbff" font-size="14"
+										placeholder="请输入出生地" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
 							</view>
 
 							<view class="flex-row">
 								<view class="flex-1">
+									<view class="flex-row flex-row-center-start mb-5">
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">联系人电话</x-text>
+									</view>
+									<x-input v-model="contactPhone" type="tel" height="42" round="12" color="#f7fbff" font-size="14"
+										placeholder="紧急联系人电话" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+										_class="round-a-12 overflow"></x-input>
+								</view>
+								<view class="flex-1 ml-16">
 									<view class="flex-row flex-row-center-start mb-5">
 										<x-text font-size="13" color="#44556d" _class="text-weight-b">身份类别</x-text>
 									</view>
@@ -185,7 +185,6 @@
 										placeholder="请输入单位/部队番号/队别" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
-								<view class="flex-1 ml-16"></view>
 							</view>
 						</view>
 					</x-sheet>
@@ -344,7 +343,7 @@
 								</view>
 							</view>
 
-							<view class="flex-row flex-row-center-between mb-12">
+							<view class="flex-row flex-row-center-between mb-12 mt-12">
 								<view class="flex-row flex-row-center-start">
 									<x-icon name="first-aid-kit-line" font-size="16" color="#6ba7ff"></x-icon>
 									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">处置记录</x-text>
@@ -373,8 +372,8 @@
 									</x-picker-selected>
 								</view>
 								<view class="flex-1 ml-8">
-									<x-input v-model="(item.disposeRemark as string)" height="38" round="11" color="#f7fbff" font-size="13"
-										placeholder="补充说明" placeholder-style="color:#9aa8be" input-padding="8px 10px"
+									<x-input v-model="(item.disposeRemark as string)" type="textarea" height="72" round="11"
+										color="#f7fbff" font-size="13" placeholder="补充说明" placeholder-style="color:#9aa8be" input-padding="8px 10px"
 										_class="round-a-11 overflow"></x-input>
 								</view>
 								<view v-if="disposeRows.length > 1" class="ml-8">
@@ -392,9 +391,15 @@
 				:border-color="['#dfeaf5']">
 				<view class="fulled-height flex-row flex-row-center-between">
 					<view class="flex-row flex-row-center-start flex-wrap flex-1">
-						<x-tag v-for="item in cachedPatients" :key="item.id" color="success" skin="thin" icon="user-3-fill"
-							:round="8" font-size="13" class="mr-8 mb-6">{{ item.name }}</x-tag>
-						<x-text v-if="cachedPatients.length == 0" font-size="14" color="#8a9bb0">已缓存人员会显示在这里，右侧操作栏固定不随表单滚动</x-text>
+						<view v-for="(item, index) in cachedPatients" :key="item.id"
+							class="bottom_cache_tag flex-row flex-row-center-start mr-8 mb-6">
+							<x-icon name="user-3-fill" font-size="14" color="#0f7d74"></x-icon>
+							<x-text class="ml-4" font-size="13" color="#0f7d74" _class="text-weight-b">{{ item.name }}</x-text>
+							<view class="bottom_cache_close flex-center ml-6" @click="removeCachedPatient(index)">
+								<x-icon name="close-line" font-size="12" color="#0f7d74"></x-icon>
+							</view>
+						</view>
+						<x-text v-if="cachedPatients.length == 0" font-size="14" color="#8a9bb0">已缓存人员会显示在这里</x-text>
 					</view>
 					<view class="flex-row flex-row-center-end">
 						<x-button width="136" height="46" round="13" color="#ffffff" font-color="#3d5876" border="1"
@@ -506,6 +511,7 @@
 	const phone = ref<string>("")
 	const internalId = ref<string>("")
 	const gender = ref<string>("男")
+	const birthPlace = ref<string>("")
 	const contactPhone = ref<string>("")
 	const identityValue = ref<any[]>([] as any[])
 	const identityText = ref<string[]>([] as string[])
@@ -544,6 +550,7 @@
 
 	let medicineRowSeed = 1
 	let disposeRowSeed = 1
+	let cachedPatientSeed = 0
 	const medicineRows = ref<MedicineRow[]>([createMedicineRow("medicine_1")] as MedicineRow[])
 	const disposeRows = ref<DisposeRow[]>([createDisposeRow("dispose_1")] as DisposeRow[])
 
@@ -563,6 +570,67 @@
 		return "未添加诊断"
 	}
 
+	function isAllDigits(value : string) : boolean {
+		if (value.length == 0) {
+			return false
+		}
+		for (let i = 0; i < value.length; i++) {
+			const code = value.charCodeAt(i)
+			if (code < 48 || code > 57) {
+				return false
+			}
+		}
+		return true
+	}
+
+	function isValidIdCard(value : string) : boolean {
+		if (value.length != 18) {
+			return false
+		}
+		const front = value.substring(0, 17)
+		if (isAllDigits(front) == false) {
+			return false
+		}
+		const last = value.substring(17, 18)
+		const lastCode = last == "x" ? "X" : last
+		const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2] as number[]
+		const checkCodes = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"] as string[]
+		let sum = 0
+		for (let i = 0; i < 17; i++) {
+			sum = sum + (value.charCodeAt(i) - 48) * weights[i]
+		}
+		return lastCode == checkCodes[sum % 11]
+	}
+
+	function hasCurrentPatientInput() : boolean {
+		return patientName.value.trim() != "" || idCard.value.trim() != "" || phone.value.trim() != "" || diagnosisTags.value.length > 0 || diagnosisRemark.value.trim() != ""
+	}
+
+	function validateForm() : boolean {
+		if (patientName.value.trim() == "") {
+			uni.showToast({
+				title: "请输入姓名",
+				icon: "none"
+			})
+			return false
+		}
+		if (isValidIdCard(idCard.value.trim()) == false) {
+			uni.showToast({
+				title: "请输入18位有效身份证号",
+				icon: "none"
+			})
+			return false
+		}
+		if (phone.value.trim().length != 11 || isAllDigits(phone.value.trim()) == false) {
+			uni.showToast({
+				title: "请输入11位手机号",
+				icon: "none"
+			})
+			return false
+		}
+		return true
+	}
+
 	function setGender(value : string) : void {
 		gender.value = value
 	}
@@ -575,6 +643,13 @@
 
 	function openDiagnosisModal() : void {
 		diagnosisModalShow.value = true
+	}
+
+	function viewPendingPatients() : void {
+		uni.showToast({
+			title: "当前待提交 " + cachedPatients.value.length.toString() + " 份",
+			icon: "none"
+		})
 	}
 
 	function confirmDiagnosis(label : string) : void {
@@ -630,12 +705,20 @@
 		}
 	}
 
+	function removeCachedPatient(index : number) : void {
+		if (index >= 0 && index < cachedPatients.value.length) {
+			cachedPatients.value.splice(index, 1)
+			cachedPatients.value = cachedPatients.value.slice(0)
+		}
+	}
+
 	function resetForm() : void {
 		patientName.value = ""
 		idCard.value = ""
 		phone.value = ""
 		internalId.value = ""
 		gender.value = "男"
+		birthPlace.value = ""
 		contactPhone.value = ""
 		identityValue.value = [] as any[]
 		identityText.value = [] as string[]
@@ -650,9 +733,13 @@
 	}
 
 	function cacheCurrentAndNext() : void {
+		if (validateForm() == false) {
+			return
+		}
 		const cacheName = patientName.value.trim() == "" ? "未命名人员" : patientName.value.trim()
+		cachedPatientSeed = cachedPatientSeed + 1
 		const cacheItem = {
-			id: "cache_" + (cachedPatients.value.length + 1).toString(),
+			id: "cache_" + cachedPatientSeed.toString(),
 			name: cacheName,
 			identity: getFirstText(identityText.value, "未选择身份"),
 			diagnosis: getDiagnosisSummary()
@@ -667,7 +754,17 @@
 	}
 
 	function submitAll() : void {
+		if (hasCurrentPatientInput() && validateForm() == false) {
+			return
+		}
 		const total = cachedPatients.value.length + (patientName.value.trim() == "" && diagnosisTags.value.length == 0 ? 0 : 1)
+		if (total == 0) {
+			uni.showToast({
+				title: "请先填写或缓存人员信息",
+				icon: "none"
+			})
+			return
+		}
 		uni.showToast({
 			title: "已提交 " + total.toString() + " 位人员信息",
 			icon: "none"
@@ -694,6 +791,14 @@
 		border-color: rgba(226, 255, 241, 0.18);
 		border-radius: 22px;
 		background-color: rgba(255, 255, 255, 0.12);
+	}
+
+	.submit_count_badge {
+		min-width: 52px;
+		height: 28px;
+		padding: 0px 12px;
+		border-radius: 14px;
+		background-color: rgba(217, 255, 244, 0.18);
 	}
 
 	.staff_avatar {
@@ -751,6 +856,23 @@
 	}
 
 	.diagnosis_tag_close {
+		width: 16px;
+		height: 16px;
+		border-radius: 8px;
+		background-color: #d6f0ea;
+	}
+
+	.bottom_cache_tag {
+		min-height: 30px;
+		padding: 0px 9px;
+		border-radius: 10px;
+		background-color: #e9f8f5;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #d4eee8;
+	}
+
+	.bottom_cache_close {
 		width: 16px;
 		height: 16px;
 		border-radius: 8px;
