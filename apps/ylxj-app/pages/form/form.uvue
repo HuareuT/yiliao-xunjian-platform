@@ -233,11 +233,12 @@
 									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">开药记录</x-text>
 								</view>
 								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
-									icon-size="15" font-size="13">添加药品</x-button>
+									icon-size="15" font-size="13" @click="addMedicineRow">添加药品</x-button>
 							</view>
-							<view class="process_row flex-row mb-20">
+							<view v-for="(item, index) in medicineRows" :key="item.id" class="process_row flex-row mb-10">
 								<view class="flex-2">
-									<x-picker-selected v-model="medicineValue" v-model:model-str="medicineText" title="选择药品"
+									<x-picker-selected v-model="(item.medicineValue as any[])"
+										v-model:model-str="(item.medicineText as string[])" title="选择药品"
 										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
 										:list="medicineList" :width-cover-center="true">
 										<template v-slot:default="{ label }">
@@ -255,12 +256,14 @@
 									</x-picker-selected>
 								</view>
 								<view class="flex-2 ml-8">
-									<x-input v-model="dosage" height="38" round="11" color="#f7fbff" font-size="13" placeholder="剂量"
-										placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px" _class="round-a-11 overflow">
+									<x-input v-model="(item.dosage as string)" height="38" round="11" color="#f7fbff" font-size="13"
+										placeholder="剂量" placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px"
+										_class="round-a-11 overflow">
 										<template v-slot:inputRight>
-											<x-picker-selected v-model="doseUnitValue" v-model:model-str="doseUnitText" title="选择剂量单位"
-												:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
-												:list="doseUnitList" :width-cover-center="true">
+											<x-picker-selected v-model="(item.doseUnitValue as any[])"
+												v-model:model-str="(item.doseUnitText as string[])" title="选择剂量单位" :multiple="false"
+												:is-radio-mode="true" label-key="text" filter-key="text" id-key="id" :list="doseUnitList"
+												:width-cover-center="true">
 												<template v-slot:default="{ label }">
 													<view class="unit_select_trigger flex-row flex-row-center-end">
 														<x-text font-size="13"
@@ -273,7 +276,8 @@
 									</x-input>
 								</view>
 								<view class="flex-1 ml-8">
-									<x-picker-selected v-model="routeValue" v-model:model-str="routeText" title="选择给药途径"
+									<x-picker-selected v-model="(item.routeValue as any[])"
+										v-model:model-str="(item.routeText as string[])" title="选择给药途径"
 										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
 										:list="routeList" :width-cover-center="true">
 										<template v-slot:default="{ label }">
@@ -291,7 +295,8 @@
 									</x-picker-selected>
 								</view>
 								<view class="flex-1 ml-8">
-									<x-picker-selected v-model="frequencyValue" v-model:model-str="frequencyText" title="选择频次"
+									<x-picker-selected v-model="(item.frequencyValue as any[])"
+										v-model:model-str="(item.frequencyText as string[])" title="选择频次"
 										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
 										:list="frequencyList" :width-cover-center="true">
 										<template v-slot:default="{ label }">
@@ -309,12 +314,14 @@
 									</x-picker-selected>
 								</view>
 								<view class="flex-2 ml-8">
-									<x-input v-model="amount" height="38" round="11" color="#f7fbff" font-size="13" placeholder="数量"
-										placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px" _class="round-a-11 overflow">
+									<x-input v-model="(item.amount as string)" height="38" round="11" color="#f7fbff" font-size="13"
+										placeholder="数量" placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px"
+										_class="round-a-11 overflow">
 										<template v-slot:inputRight>
-											<x-picker-selected v-model="amountUnitValue" v-model:model-str="amountUnitText" title="选择数量单位"
-												:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
-												:list="amountUnitList" :width-cover-center="true">
+											<x-picker-selected v-model="(item.amountUnitValue as any[])"
+												v-model:model-str="(item.amountUnitText as string[])" title="选择数量单位" :multiple="false"
+												:is-radio-mode="true" label-key="text" filter-key="text" id-key="id" :list="amountUnitList"
+												:width-cover-center="true">
 												<template v-slot:default="{ label }">
 													<view class="unit_select_trigger flex-row flex-row-center-end">
 														<x-text font-size="13"
@@ -326,6 +333,11 @@
 										</template>
 									</x-input>
 								</view>
+								<view v-if="medicineRows.length > 1" class="ml-8">
+									<x-button width="38" height="38" round="11" color="#ffffff" font-color="#e75c61" border="1"
+										border-color="#f0c8cc" icon="delete-bin-6-line" icon-size="18" :icon-btn="true"
+										@click="removeMedicineRow(index)"></x-button>
+								</view>
 							</view>
 
 							<view class="flex-row flex-row-center-between mb-12">
@@ -334,11 +346,12 @@
 									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">处置记录</x-text>
 								</view>
 								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
-									icon-size="15" font-size="13">添加处置</x-button>
+									icon-size="15" font-size="13" @click="addDisposeRow">添加处置</x-button>
 							</view>
-							<view class="process_row flex-row">
+							<view v-for="(item, index) in disposeRows" :key="item.id" class="process_row flex-row mb-8">
 								<view class="flex-1">
-									<x-picker-selected v-model="disposeWayValue" v-model:model-str="disposeWayText" title="选择处置方式"
+									<x-picker-selected v-model="(item.disposeWayValue as any[])"
+										v-model:model-str="(item.disposeWayText as string[])" title="选择处置方式"
 										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
 										:list="disposeWayList" :width-cover-center="true">
 										<template v-slot:default="{ label }">
@@ -356,9 +369,14 @@
 									</x-picker-selected>
 								</view>
 								<view class="flex-1 ml-8">
-									<x-input v-model="disposeRemark" height="38" round="11" color="#f7fbff" font-size="13"
+									<x-input v-model="(item.disposeRemark as string)" height="38" round="11" color="#f7fbff" font-size="13"
 										placeholder="补充说明" placeholder-style="color:#9aa8be" input-padding="8px 10px"
 										_class="round-a-11 overflow"></x-input>
+								</view>
+								<view v-if="disposeRows.length > 1" class="ml-8">
+									<x-button width="38" height="38" round="11" color="#ffffff" font-color="#e75c61" border="1"
+										border-color="#f0c8cc" icon="delete-bin-6-line" icon-size="18" :icon-btn="true"
+										@click="removeDisposeRow(index)"></x-button>
 								</view>
 							</view>
 						</view>
@@ -468,6 +486,29 @@
 		diagnosis : string
 	}
 
+	type MedicineRow = {
+		id : string,
+		medicineValue : any[],
+		medicineText : string[],
+		dosage : string,
+		doseUnitValue : any[],
+		doseUnitText : string[],
+		routeValue : any[],
+		routeText : string[],
+		frequencyValue : any[],
+		frequencyText : string[],
+		amount : string,
+		amountUnitValue : any[],
+		amountUnitText : string[]
+	}
+
+	type DisposeRow = {
+		id : string,
+		disposeWayValue : any[],
+		disposeWayText : string[],
+		disposeRemark : string
+	}
+
 	defineOptions({ name: "FormPage" })
 
 	const identityList = ref<UTSJSONObject[]>([
@@ -556,21 +597,37 @@
 	const selectedDiagnosisId = ref<string>("")
 	const selectedDiagnosisName = ref<string>("")
 
-	const medicineValue = ref<any[]>([] as any[])
-	const medicineText = ref<string[]>([] as string[])
-	const dosage = ref<string>("")
-	const doseUnitValue = ref<any[]>([] as any[])
-	const doseUnitText = ref<string[]>([] as string[])
-	const routeValue = ref<any[]>(["oral"] as any[])
-	const routeText = ref<string[]>(["口服"] as string[])
-	const frequencyValue = ref<any[]>(["qd"] as any[])
-	const frequencyText = ref<string[]>(["1/日"] as string[])
-	const amount = ref<string>("")
-	const amountUnitValue = ref<any[]>([] as any[])
-	const amountUnitText = ref<string[]>([] as string[])
-	const disposeWayValue = ref<any[]>([] as any[])
-	const disposeWayText = ref<string[]>([] as string[])
-	const disposeRemark = ref<string>("")
+	function createMedicineRow(id : string) : MedicineRow {
+		return {
+			id: id,
+			medicineValue: [] as any[],
+			medicineText: [] as string[],
+			dosage: "",
+			doseUnitValue: [] as any[],
+			doseUnitText: [] as string[],
+			routeValue: ["oral"] as any[],
+			routeText: ["口服"] as string[],
+			frequencyValue: ["qd"] as any[],
+			frequencyText: ["1/日"] as string[],
+			amount: "",
+			amountUnitValue: [] as any[],
+			amountUnitText: [] as string[]
+		} as MedicineRow
+	}
+
+	function createDisposeRow(id : string) : DisposeRow {
+		return {
+			id: id,
+			disposeWayValue: [] as any[],
+			disposeWayText: [] as string[],
+			disposeRemark: ""
+		} as DisposeRow
+	}
+
+	let medicineRowSeed = 1
+	let disposeRowSeed = 1
+	const medicineRows = ref<MedicineRow[]>([createMedicineRow("medicine_1")] as MedicineRow[])
+	const disposeRows = ref<DisposeRow[]>([createDisposeRow("dispose_1")] as DisposeRow[])
 
 	const cachedPatients = ref<CachedPatient[]>([] as CachedPatient[])
 
@@ -664,6 +721,46 @@
 		}
 	}
 
+	function addMedicineRow() : void {
+		medicineRowSeed = medicineRowSeed + 1
+		medicineRows.value.push(createMedicineRow("medicine_" + medicineRowSeed.toString()))
+		medicineRows.value = medicineRows.value.slice(0)
+	}
+
+	function removeMedicineRow(index : number) : void {
+		if (medicineRows.value.length <= 1) {
+			uni.showToast({
+				title: "至少保留一条药品记录",
+				icon: "none"
+			})
+			return
+		}
+		if (index >= 0 && index < medicineRows.value.length) {
+			medicineRows.value.splice(index, 1)
+			medicineRows.value = medicineRows.value.slice(0)
+		}
+	}
+
+	function addDisposeRow() : void {
+		disposeRowSeed = disposeRowSeed + 1
+		disposeRows.value.push(createDisposeRow("dispose_" + disposeRowSeed.toString()))
+		disposeRows.value = disposeRows.value.slice(0)
+	}
+
+	function removeDisposeRow(index : number) : void {
+		if (disposeRows.value.length <= 1) {
+			uni.showToast({
+				title: "至少保留一条处置记录",
+				icon: "none"
+			})
+			return
+		}
+		if (index >= 0 && index < disposeRows.value.length) {
+			disposeRows.value.splice(index, 1)
+			disposeRows.value = disposeRows.value.slice(0)
+		}
+	}
+
 	function resetForm() : void {
 		patientName.value = ""
 		idCard.value = ""
@@ -676,21 +773,10 @@
 		unitName.value = ""
 		diagnosisTags.value = [] as string[]
 		diagnosisRemark.value = ""
-		medicineValue.value = [] as any[]
-		medicineText.value = [] as string[]
-		dosage.value = ""
-		doseUnitValue.value = [] as any[]
-		doseUnitText.value = [] as string[]
-		routeValue.value = ["oral"] as any[]
-		routeText.value = ["口服"] as string[]
-		frequencyValue.value = ["qd"] as any[]
-		frequencyText.value = ["1/日"] as string[]
-		amount.value = ""
-		amountUnitValue.value = [] as any[]
-		amountUnitText.value = [] as string[]
-		disposeWayValue.value = [] as any[]
-		disposeWayText.value = [] as string[]
-		disposeRemark.value = ""
+		medicineRowSeed = 1
+		disposeRowSeed = 1
+		medicineRows.value = [createMedicineRow("medicine_1")] as MedicineRow[]
+		disposeRows.value = [createDisposeRow("dispose_1")] as DisposeRow[]
 		selectedDiagnosisId.value = ""
 		selectedDiagnosisName.value = ""
 		diagnosisSearch.value = ""
