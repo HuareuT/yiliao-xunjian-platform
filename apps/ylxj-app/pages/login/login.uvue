@@ -1,19 +1,451 @@
 <template>
-	<!-- #ifdef APP -->
-	<scroll-view style="flex:1">
-	<!-- #endif -->
-		<view class="">
-			我是登录页面
-		</view>
-	<!-- #ifdef APP -->
-	</scroll-view>
-	<!-- #endif -->
+	<view class="login_page fulled-height flex-center overflow py-18 px-22">
+		<x-sheet
+			width="100%"
+			height="100%"
+			color="#f8fbff"
+			:round="18"
+			:margin="[0]"
+			:padding="[0]"
+			:shadow="['0','18','rgba(42, 77, 130, 0.12)']"
+		>
+			<view class="flex-row flex-1">
+				<x-sheet
+					width="330"
+					height="100%"
+					color="#153d4a"
+					:linear-gradient="['to bottom','#153d4a','#0c796c']"
+					:round="[18,0,0,18]"
+					:margin="[0]"
+					:padding="[26,28,26,28]"
+				>
+					<view class="fulled-height flex-col flex-between">
+						<view class="flex-row flex-row-center-between">
+							<x-sheet width="58" height="58" color="rgba(255, 255, 255, 0.16)" :round="15" :margin="[0]" :padding="[0]">
+								<view class="fulled-height flex-center">
+									<x-icon name="stethoscope-line" font-size="34" color="#ffffff"></x-icon>
+								</view>
+							</x-sheet>
+							<x-tag
+								color="success"
+								skin="thin"
+								:round="8"
+								icon="pulse-line"
+								font-size="13"
+								_class="text-weight-b"
+							>巡诊中台</x-tag>
+						</view>
+
+						<view class="flex-1 flex-col flex-col-center-start pb-12">
+							<x-text font-size="36" color="#ffffff" class="text-weight-b">医疗巡诊系统</x-text>
+							<x-text
+								font-size="15"
+								color="rgba(255,255,255,0.76)"
+                class="mt-10"
+							>面向平板横屏场景的医护协同巡诊入口，保障身份核验、患者核对与流程留痕。</x-text>
+							<view class="flex-row flex-row-center-start mt-16">
+								<x-tag
+									color="success"
+									bg-color="rgba(226,255,241,0.16)"
+									font-color="#d8fff0"
+									border-color="rgba(216,255,240,0.24)"
+									:round="8"
+									font-size="13"
+									icon="shield-check-line"
+								>双岗核验</x-tag>
+								<x-tag
+									color="success"
+									bg-color="rgba(226,255,241,0.16)"
+									font-color="#d8fff0"
+									border-color="rgba(216,255,240,0.24)"
+									:round="8"
+									font-size="13"
+									icon="route-line"
+									class="ml-10"
+								>巡诊闭环</x-tag>
+							</view>
+						</view>
+
+						<x-sheet
+							width="100%"
+							color="rgba(255, 255, 255, 0.12)"
+							:round="16"
+							:padding="[16]"
+							:margin="[0]"
+							:border="1"
+							:border-color="['rgba(226, 255, 241, 0.18)']"
+						>
+							<view class="flex-row flex-row-center-start">
+								<x-sheet width="40" height="40" color="rgba(223, 255, 246, 0.12)" :round="12" :margin="[0]" :padding="[0]">
+									<view class="fulled-height flex-center">
+										<x-icon name="fingerprint-line" font-size="24" color="#dffff6"></x-icon>
+									</view>
+								</x-sheet>
+								<view class="ml-12 flex-1">
+									<x-text font-size="17" color="#ffffff" _class="text-weight-b">双角色准入</x-text>
+									<x-text font-size="12" color="rgba(255,255,255,0.62)">Doctor & Nurse Sign-in</x-text>
+								</view>
+							</view>
+							<view class="mt-12">
+								<view class="flex-row flex-row-center-start mb-6">
+									<x-sheet width="6" height="6" color="#7df1cc" :round="3" :padding="[0]" :margin="[0,0,10,0]"></x-sheet>
+									<x-text font-size="13" color="rgba(255,255,255,0.78)">医生、护士分别完成账号密码校验</x-text>
+								</view>
+								<view class="flex-row flex-row-center-start">
+									<x-sheet width="6" height="6" color="#7df1cc" :round="3" :padding="[0]" :margin="[0,0,10,0]"></x-sheet>
+									<x-text font-size="13" color="rgba(255,255,255,0.78)">支持固定账号与公用账号两种登录方式</x-text>
+								</view>
+							</view>
+						</x-sheet>
+					</view>
+				</x-sheet>
+
+				<view class="flex-1">
+					<x-sheet width="100%" height="100%" color="#f7faff" :round="[0,18,18,0]" :margin="[0]" :padding="[22,34,16,36]">
+						<view class="flex-row flex-row-top-start flex-between">
+							<view class="flex-1">
+								<x-text font-size="27" color="#14233f" class="text-weight-b">医护协同登录</x-text>
+								<x-text
+									font-size="14"
+									color="#71829e"
+									class="mt-6"
+								>医生与护士分别完成账号密码校验后进入巡诊工作台</x-text>
+							</view>
+							<view class="flex-row flex-row-center-start mt-4">
+								<x-tag
+									color="primary"
+									skin="thin"
+									:round="8"
+									icon="tablet-line"
+									font-size="13"
+								>横屏平板</x-tag>
+								<x-tag
+									color="success"
+									skin="thin"
+									:round="8"
+									icon="shield-keyhole-line"
+									font-size="13"
+									class="ml-10"
+								>双人准入</x-tag>
+							</view>
+						</view>
+
+						<view class="flex-row mt-14">
+							<view class="flex-1">
+								<x-sheet
+									width="100%"
+									color="#f7fdfb"
+									:linear-gradient="['to bottom','#ffffff','#f0fbf7']"
+									:round="18"
+									:margin="[0]"
+									:padding="[14,24,14,24]"
+									:border="1"
+									:border-color="['#d7eee6']"
+								>
+								<view class="flex-row flex-row-center-start">
+									<x-sheet width="46" height="46" color="#d9f4ec" :round="13" :margin="[0]" :padding="[0]">
+										<view class="fulled-height flex-center">
+											<x-icon name="first-aid-kit-line" font-size="26" color="#0f8f7a"></x-icon>
+										</view>
+									</x-sheet>
+									<view class="ml-12 flex-1">
+										<x-text font-size="21" color="#17243d" _class="text-weight-b">医生登录</x-text>
+										<x-text font-size="13" color="#7b8aa5">诊疗确认与医嘱巡查</x-text>
+									</view>
+								</view>
+
+								<x-sheet width="100%" color="rgba(255, 255, 255, 0.72)" :round="13" :padding="[3]" :margin="[0,15,0,15]">
+									<x-tabs
+										v-model="doctorMode"
+										:list="accountModeTabs"
+										width="100%"
+										height="36"
+										round="10"
+										item-width="50%"
+										color="#ecf7f3"
+										active-title-color="success"
+										title-color="#6c7c93"
+										line-color="success"
+										:show-line="false"
+										font-size="14"
+										active-font-size="14"
+										item-active-style="background-color:#ffffff;border-radius:10px;"
+										text-active-style="font-weight:700;"
+									></x-tabs>
+								</x-sheet>
+
+								<x-sheet :margin="[0]" :padding="[0]" color="transparent" height="320">
+									<view class="mb-15">
+										<view class="flex-row flex-row-center-start mb-4 pl-2">
+											<x-text font-size="14" color="#33445f">医生账号</x-text>
+											<x-text font-size="14" color="#e75c61">*</x-text>
+										</view>
+										<x-input
+											v-model="doctorAccount"
+											height="40"
+											round="10"
+											left-icon="user-3-line"
+											icon-color="#0f8f7a"
+											color="#ffffff"
+											font-size="14"
+											input-padding="7px 10px"
+											placeholder-style="color:#9aa8be"
+											_class="round-a-10 overflow"
+											:placeholder="doctorMode == 'fixed' ? '请输入医生工号' : '请输入公用医生账号'"
+										></x-input>
+									</view>
+
+									<view class="mb-15">
+										<view class="flex-row flex-row-center-start mb-4 pl-2">
+											<x-text font-size="14" color="#33445f">登录密码</x-text>
+											<x-text font-size="14" color="#e75c61">*</x-text>
+										</view>
+										<x-input
+											v-model="doctorPassword"
+											height="40"
+											round="10"
+											left-icon="lock-password-line"
+											icon-color="#0f8f7a"
+											color="#ffffff"
+											font-size="14"
+											input-padding="7px 10px"
+											:password="true"
+											placeholder-style="color:#9aa8be"
+											placeholder="请输入登录密码"
+											_class="round-a-10 overflow"
+										></x-input>
+									</view>
+
+									<view v-if="doctorMode == 'shared'">
+										<view class="mb-15">
+											<view class="flex-row flex-row-center-start mb-4 pl-2">
+												<x-text font-size="14" color="#33445f">姓名</x-text>
+												<x-text font-size="14" color="#e75c61">*</x-text>
+											</view>
+											<x-input
+												v-model="doctorName"
+												height="40"
+												round="10"
+												left-icon="id-card-line"
+												icon-color="#0f8f7a"
+												color="#ffffff"
+												font-size="14"
+												input-padding="7px 10px"
+												placeholder-style="color:#9aa8be"
+												placeholder="请输入医生姓名"
+												_class="round-a-10 overflow"
+											></x-input>
+										</view>
+
+										<view class="mb-15">
+											<view class="flex-row flex-row-center-start mb-4 pl-2">
+												<x-text font-size="14" color="#33445f">科室</x-text>
+												<x-text font-size="14" color="#e75c61">*</x-text>
+											</view>
+											<x-input
+												v-model="doctorDepartment"
+												height="40"
+												round="10"
+												left-icon="building-2-line"
+												icon-color="#0f8f7a"
+												color="#ffffff"
+												font-size="14"
+												input-padding="7px 10px"
+												placeholder-style="color:#9aa8be"
+												placeholder="请输入所属科室"
+												_class="round-a-10 overflow"
+											></x-input>
+										</view>
+									</view>
+								</x-sheet>
+								</x-sheet>
+							</view>
+
+							<view class="flex-1 ml-24">
+								<x-sheet
+									width="100%"
+									color="#f8faff"
+									:linear-gradient="['to bottom','#ffffff','#f2f6ff']"
+									:round="18"
+									:margin="[0]"
+									:padding="[14,24,14,24]"
+									:border="1"
+									:border-color="['#dbe5ff']"
+								>
+								<view class="flex-row flex-row-center-start">
+									<x-sheet width="46" height="46" color="#e2eaff" :round="13" :margin="[0]" :padding="[0]">
+										<view class="fulled-height flex-center">
+											<x-icon name="heart-pulse-line" font-size="26" color="#326be6"></x-icon>
+										</view>
+									</x-sheet>
+									<view class="ml-12 flex-1">
+										<x-text font-size="21" color="#17243d" _class="text-weight-b">护士登录</x-text>
+										<x-text font-size="13" color="#7b8aa5">患者核对与护理协同</x-text>
+									</view>
+								</view>
+
+								<x-sheet width="100%" color="rgba(255, 255, 255, 0.72)" :round="13" :padding="[3]" :margin="[0,15,0,15]">
+									<x-tabs
+										v-model="nurseMode"
+										:list="accountModeTabs"
+										width="100%"
+										height="36"
+										round="10"
+										item-width="50%"
+										color="#eef3ff"
+										active-title-color="primary"
+										title-color="#6c7c93"
+										line-color="primary"
+										:show-line="false"
+										font-size="14"
+										active-font-size="14"
+										item-active-style="background-color:#ffffff;border-radius:10px;"
+										text-active-style="font-weight:700;"
+									></x-tabs>
+								</x-sheet>
+
+								<x-sheet :margin="[0]" :padding="[0]" color="transparent" height="320">
+									<view class="mb-15">
+										<view class="flex-row flex-row-center-start mb-4 pl-2">
+											<x-text font-size="14" color="#33445f">护士账号</x-text>
+											<x-text font-size="14" color="#e75c61">*</x-text>
+										</view>
+										<x-input
+											v-model="nurseAccount"
+											height="40"
+											round="10"
+											left-icon="user-heart-line"
+											icon-color="#326be6"
+											color="#ffffff"
+											font-size="14"
+											input-padding="7px 10px"
+											placeholder-style="color:#9aa8be"
+											_class="round-a-10 overflow"
+											:placeholder="nurseMode == 'fixed' ? '请输入护士账号' : '请输入公用护士账号'"
+										></x-input>
+									</view>
+
+									<view class="mb-15">
+										<view class="flex-row flex-row-center-start mb-4 pl-2">
+											<x-text font-size="14" color="#33445f">登录密码</x-text>
+											<x-text font-size="14" color="#e75c61">*</x-text>
+										</view>
+										<x-input
+											v-model="nursePassword"
+											height="40"
+											round="10"
+											left-icon="lock-password-line"
+											icon-color="#326be6"
+											color="#ffffff"
+											font-size="14"
+											input-padding="7px 10px"
+											:password="true"
+											placeholder-style="color:#9aa8be"
+											placeholder="请输入登录密码"
+											_class="round-a-10 overflow"
+										></x-input>
+									</view>
+
+									<view v-if="nurseMode == 'shared'">
+										<view class="mb-15">
+											<view class="flex-row flex-row-center-start mb-4 pl-2">
+												<x-text font-size="14" color="#33445f">姓名</x-text>
+												<x-text font-size="14" color="#e75c61">*</x-text>
+											</view>
+											<x-input
+												v-model="nurseName"
+												height="40"
+												round="10"
+												left-icon="id-card-line"
+												icon-color="#326be6"
+												color="#ffffff"
+												font-size="14"
+												input-padding="7px 10px"
+												placeholder-style="color:#9aa8be"
+												placeholder="请输入护士姓名"
+												_class="round-a-10 overflow"
+											></x-input>
+										</view>
+
+										<view class="mb-15">
+											<view class="flex-row flex-row-center-start mb-4 pl-2">
+												<x-text font-size="14" color="#33445f">科室</x-text>
+												<x-text font-size="14" color="#e75c61">*</x-text>
+											</view>
+											<x-input
+												v-model="nurseDepartment"
+												height="40"
+												round="10"
+												left-icon="building-2-line"
+												icon-color="#326be6"
+												color="#ffffff"
+												font-size="14"
+												input-padding="7px 10px"
+												placeholder-style="color:#9aa8be"
+												placeholder="请输入所属科室"
+												_class="round-a-10 overflow"
+											></x-input>
+										</view>
+									</view>
+								</x-sheet>
+								</x-sheet>
+							</view>
+						</view>
+
+						<view class="pt-10 flex-col flex-col-top-center" style="margin-top:auto">
+							<x-button
+								width="400"
+								height="52"
+								round="14"
+								color="primary"
+								:linear-gradient="['to right','#0f8f7a','#168dff']"
+								icon="login-box-line"
+								icon-size="22"
+								font-size="18"
+								font-weight="bold"
+								:shadow="[0, 12, 26]"
+								@click="handleLoginTap"
+							>登录</x-button>
+						</view>
+					</x-sheet>
+				</view>
+			</view>
+		</x-sheet>
+	</view>
 </template>
 
-<script setup>
+<script setup lang="uts">
+import { TABS_ITEM_INFO } from "@/uni_modules/tmx-ui/interface.uts"
 
+defineOptions({ name: "LoginPage" })
+
+const fixedAccountTab: TABS_ITEM_INFO = { id: "fixed", title: "固定账号" } as TABS_ITEM_INFO
+const sharedAccountTab: TABS_ITEM_INFO = { id: "shared", title: "公用账号" } as TABS_ITEM_INFO
+const accountModeTabs = ref<TABS_ITEM_INFO[]>([
+	fixedAccountTab,
+	sharedAccountTab
+])
+
+const doctorMode = ref<string>("fixed")
+const nurseMode = ref<string>("fixed")
+
+const doctorAccount = ref<string>("")
+const doctorPassword = ref<string>("")
+const doctorName = ref<string>("")
+const doctorDepartment = ref<string>("")
+
+const nurseAccount = ref<string>("")
+const nursePassword = ref<string>("")
+const nurseName = ref<string>("")
+const nurseDepartment = ref<string>("")
+
+function handleLoginTap() : void {
+  getSystemInfo()
+}
 </script>
 
 <style>
-
+.login_page {
+	background-color: #eaf2f4;
+}
 </style>
