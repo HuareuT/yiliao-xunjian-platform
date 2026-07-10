@@ -203,9 +203,13 @@
 						<view class="mt-14">
 							<view class="flex-row flex-row-center-start mb-10">
 								<view class="flex-row flex-row-center-start flex-wrap">
-									<x-tag v-for="(item, index) in diagnosisTags" :key="index" color="primary" skin="thin" :round="8"
-										font-size="13" icon="close-circle-fill" class="mr-8 mb-6"
-										@click="removeDiagnosis(index)">{{ item }}</x-tag>
+									<view v-for="(item, index) in diagnosisTags" :key="index"
+										class="diagnosis_tag flex-row flex-row-center-start mr-8 mb-6">
+										<x-text font-size="13" color="#0f7d74" _class="text-weight-b">{{ item }}</x-text>
+										<view class="diagnosis_tag_close flex-center ml-6" @click="removeDiagnosis(index)">
+											<x-icon name="close-line" font-size="12" color="#0f7d74"></x-icon>
+										</view>
+									</view>
 									<x-text v-if="diagnosisTags.length == 0" font-size="13" color="#9aa8be">暂无诊断，请点击右上角添加</x-text>
 								</view>
 							</view>
@@ -734,6 +738,23 @@
 		border-left-width: 1px;
 		border-left-style: solid;
 		border-left-color: #e1ebf5;
+	}
+
+	.diagnosis_tag {
+		min-height: 30px;
+		padding: 0px 10px;
+		border-radius: 10px;
+		background-color: #e9f8f5;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #d4eee8;
+	}
+
+	.diagnosis_tag_close {
+		width: 16px;
+		height: 16px;
+		border-radius: 8px;
+		background-color: #d6f0ea;
 	}
 
 </style>

@@ -2,7 +2,7 @@
 	<x-overlay :show="props.show" :overlay-click="true" :z-index="1300" :duration="260"
 		custom-style="background-color:rgba(11, 31, 45, 0.42);display:flex;align-items:center;justify-content:center;"
 		@update:show="handleOverlayShow">
-		<x-sheet width="660" height="560" color="#ffffff" :round="24" :margin="[0]" :padding="[0]" :border="1"
+		<x-sheet width="660"  color="#ffffff" :round="24" :margin="[0]" :padding="[0]" :border="1"
 			:border-color="['#dfeaf5']" :shadow="['0','16','rgba(24, 61, 96, 0.16)']">
 			<view class="diagnosis_dialog fulled-height flex-col">
 				<view class="diagnosis_header flex-row flex-row-center-between">
@@ -20,47 +20,42 @@
 				</view>
 
 				<view class="dialog_body flex-1 flex-col">
-					<view class="selected_panel pa-16">
+					<view class="selected_panel pa-12">
 						<view class="flex-row flex-row-center-between">
-							<view>
-								<x-text font-size="13" color="#6f829b" _class="text-weight-b">当前预览</x-text>
-								<x-text font-size="20" color="#153d4a" _class="text-weight-b"
-									class="mt-7">{{ getDiagnosisPreview() }}</x-text>
-							</view>
-							<x-tag color="#0b7d73" bg-color="#e6f4f2" font-color="#0b645c" border-color="#cce7e3" skin="thin"
-								:round="10" font-size="12">诊断组合</x-tag>
+							<x-text font-size="18" color="#153d4a" _class="text-weight-b">{{ getDiagnosisPreview() }}</x-text>
+							<x-tag skin="thin" :round="10" font-size="12">诊断组合</x-tag>
 						</view>
-						<view class="flex-row flex-row-center-start mt-14">
-							<x-text font-size="13" color="#6f829b">前缀：</x-text>
-							<x-button v-for="item in prefixOptions" :key="item.id" class="ml-8" :width="item.width" height="30"
+						<view class="flex-row flex-row-center-start mt-10">
+							<x-text font-size="12" color="#6f829b">前缀：</x-text>
+							<x-button v-for="item in prefixOptions" :key="item.id" class="ml-8" :width="item.width" height="28"
 								round="9" :color="prefix == item.value ? '#0b7d73' : item.color"
 								:font-color="prefix == item.value ? '#ffffff' : item.fontColor" border="1"
-								:border-color="prefix == item.value ? '#0b7d73' : item.borderColor" font-size="13"
+								:border-color="prefix == item.value ? '#0b7d73' : item.borderColor" font-size="12"
 								@click="setPrefix(item.value)">{{ item.title }}</x-button>
 						</view>
 					</view>
 
-					<view class="flex-row mt-14">
+					<view class="flex-row mt-10">
 						<view class="prefix_input">
-							<x-input v-model="prefix" height="42" round="12" color="#f6fafc" font-size="14" placeholder="自定义前缀"
+							<x-input v-model="prefix" height="38" round="12" color="#f6fafc" font-size="13" placeholder="自定义前缀"
 								placeholder-style="color:#9aa8be" input-padding="8px 12px" _class="round-a-12 overflow"></x-input>
 						</view>
 						<view class="flex-1 ml-12">
-							<x-input v-model="search" height="42" round="12" left-icon="search-line" icon-color="#9aa8be"
-								color="#f6fafc" font-size="14" placeholder="搜索诊断类型" placeholder-style="color:#9aa8be"
+							<x-input v-model="search" height="38" round="12" left-icon="search-line" icon-color="#9aa8be"
+								color="#f6fafc" font-size="13" placeholder="搜索诊断类型" placeholder-style="color:#9aa8be"
 								input-padding="8px 12px" _class="round-a-12 overflow"></x-input>
 						</view>
 					</view>
 
-					<view class="category_tabs mt-14">
-						<x-tabs v-model="category" :list="categoryTabs" width="100%" height="38" round="12" item-width="33.33%"
+					<view class="category_tabs mt-10">
+						<x-tabs v-model="category" :list="categoryTabs" width="100%" height="34" round="12" item-width="33.33%"
 							color="#edf6f7" active-title-color="#0b7d73" title-color="#64788f" line-color="#0b7d73"
-							:show-line="false" font-size="14" active-font-size="14"
+							:show-line="false" font-size="13" active-font-size="13"
 							item-active-style="background-color:#ffffff;border-radius:12px;"
 							text-active-style="font-weight:700;"></x-tabs>
 					</view>
 
-					<scroll-view scroll-y="true" class="diagnosis_list mt-14">
+					<scroll-view scroll-y="true" class="diagnosis_list mt-10">
 						<view class="flex-row flex-wrap">
 							<view v-for="item in getRenderList()" :key="item.id" class="diagnosis_option mb-10">
 								<x-button width="100%" height="46" round="13" :color="selectedId == item.id ? '#0b7d73' : '#f0f8f6'"
@@ -204,7 +199,7 @@
 		if (prefix.value.trim() == "") {
 			return selectedName.value
 		}
-		return prefix.value.trim() + " " + selectedName.value
+		return "【" + prefix.value.trim() + "】" + selectedName.value
 	}
 
 	function setPrefix(value : string) : void {
@@ -262,7 +257,7 @@
 	}
 
 	.diagnosis_header {
-		height: 82px;
+		height: 72px;
 		padding: 0px 22px;
 		border-bottom-width: 1px;
 		border-bottom-style: solid;
@@ -271,14 +266,14 @@
 	}
 
 	.diagnosis_icon {
-		width: 46px;
-		height: 46px;
-		border-radius: 15px;
+		width: 42px;
+		height: 42px;
+		border-radius: 14px;
 		background-color: #0b7d73;
 	}
 
 	.dialog_body {
-		padding: 18px 22px 0px 22px;
+		padding: 14px 22px 0px 22px;
 		background-color: #ffffff;
 	}
 
@@ -295,13 +290,13 @@
 	}
 
 	.category_tabs {
-		padding: 3px;
+		padding: 2px;
 		border-radius: 14px;
 		background-color: #edf6f7;
 	}
 
 	.diagnosis_list {
-		height: 184px;
+		height: 252px;
 	}
 
 	.diagnosis_option {
@@ -310,7 +305,7 @@
 	}
 
 	.empty_result {
-		height: 110px;
+		height: 150px;
 		border-radius: 16px;
 		background-color: #f6fafc;
 	}
