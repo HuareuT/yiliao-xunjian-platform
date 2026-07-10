@@ -254,21 +254,77 @@
 										</template>
 									</x-picker-selected>
 								</view>
-								<view class="flex-1 ml-8">
+								<view class="flex-2 ml-8">
 									<x-input v-model="dosage" height="38" round="11" color="#f7fbff" font-size="13" placeholder="剂量"
-										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+										placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px" _class="round-a-11 overflow">
+										<template v-slot:inputRight>
+											<x-picker-selected v-model="doseUnitValue" v-model:model-str="doseUnitText" title="选择剂量单位"
+												:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
+												:list="doseUnitList" :width-cover-center="true">
+												<template v-slot:default="{ label }">
+													<view class="unit_select_trigger flex-row flex-row-center-end">
+														<x-text font-size="13"
+															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "单位" : label }}</x-text>
+														<x-icon name="arrow-down-s-line" font-size="18" color="#8da2ba"></x-icon>
+													</view>
+												</template>
+											</x-picker-selected>
+										</template>
+									</x-input>
 								</view>
 								<view class="flex-1 ml-8">
-									<x-input v-model="route" height="38" round="11" color="#f7fbff" font-size="13" placeholder="给药途径"
-										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+									<x-picker-selected v-model="routeValue" v-model:model-str="routeText" title="选择给药途径"
+										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
+										:list="routeList" :width-cover-center="true">
+										<template v-slot:default="{ label }">
+											<x-sheet width="100%" height="38" color="#f7fbff" :round="11" :margin="[0]"
+												:padding="[10,0,10,0]">
+												<view class="fulled-height flex-row flex-row-center-between">
+													<view class="flex-row flex-row-center-start flex-1">
+														<x-text font-size="13"
+															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "给药途径" : label }}</x-text>
+													</view>
+													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
+												</view>
+											</x-sheet>
+										</template>
+									</x-picker-selected>
 								</view>
 								<view class="flex-1 ml-8">
-									<x-input v-model="frequency" height="38" round="11" color="#f7fbff" font-size="13" placeholder="频次"
-										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+									<x-picker-selected v-model="frequencyValue" v-model:model-str="frequencyText" title="选择频次"
+										:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
+										:list="frequencyList" :width-cover-center="true">
+										<template v-slot:default="{ label }">
+											<x-sheet width="100%" height="38" color="#f7fbff" :round="11" :margin="[0]"
+												:padding="[10,0,10,0]">
+												<view class="fulled-height flex-row flex-row-center-between">
+													<view class="flex-row flex-row-center-start flex-1">
+														<x-text font-size="13"
+															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "频次" : label }}</x-text>
+													</view>
+													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
+												</view>
+											</x-sheet>
+										</template>
+									</x-picker-selected>
 								</view>
-								<view class="flex-1 ml-8">
+								<view class="flex-2 ml-8">
 									<x-input v-model="amount" height="38" round="11" color="#f7fbff" font-size="13" placeholder="数量"
-										placeholder-style="color:#9aa8be" input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
+										placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px" _class="round-a-11 overflow">
+										<template v-slot:inputRight>
+											<x-picker-selected v-model="amountUnitValue" v-model:model-str="amountUnitText" title="选择数量单位"
+												:multiple="false" :is-radio-mode="true" label-key="text" filter-key="text" id-key="id"
+												:list="amountUnitList" :width-cover-center="true">
+												<template v-slot:default="{ label }">
+													<view class="unit_select_trigger flex-row flex-row-center-end">
+														<x-text font-size="13"
+															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "单位" : label }}</x-text>
+														<x-icon name="arrow-down-s-line" font-size="18" color="#8da2ba"></x-icon>
+													</view>
+												</template>
+											</x-picker-selected>
+										</template>
+									</x-input>
 								</view>
 							</view>
 
@@ -438,6 +494,38 @@
 		{ id: "bandage", text: "无菌敷贴" } as UTSJSONObject
 	])
 
+	const doseUnitList = ref<UTSJSONObject[]>([
+		{ id: "mg", text: "mg" } as UTSJSONObject,
+		{ id: "g", text: "g" } as UTSJSONObject,
+		{ id: "ml", text: "ml" } as UTSJSONObject,
+		{ id: "tablet", text: "片" } as UTSJSONObject,
+		{ id: "capsule", text: "粒" } as UTSJSONObject
+	])
+
+	const routeList = ref<UTSJSONObject[]>([
+		{ id: "oral", text: "口服" } as UTSJSONObject,
+		{ id: "external", text: "外用" } as UTSJSONObject,
+		{ id: "topical", text: "局部涂抹" } as UTSJSONObject,
+		{ id: "injection", text: "注射" } as UTSJSONObject,
+		{ id: "spray", text: "喷雾" } as UTSJSONObject
+	])
+
+	const frequencyList = ref<UTSJSONObject[]>([
+		{ id: "once", text: "一次" } as UTSJSONObject,
+		{ id: "qd", text: "1/日" } as UTSJSONObject,
+		{ id: "bid", text: "2/日" } as UTSJSONObject,
+		{ id: "tid", text: "3/日" } as UTSJSONObject,
+		{ id: "prn", text: "必要时" } as UTSJSONObject
+	])
+
+	const amountUnitList = ref<UTSJSONObject[]>([
+		{ id: "box", text: "盒" } as UTSJSONObject,
+		{ id: "bottle", text: "瓶" } as UTSJSONObject,
+		{ id: "bag", text: "袋" } as UTSJSONObject,
+		{ id: "piece", text: "片" } as UTSJSONObject,
+		{ id: "tube", text: "支" } as UTSJSONObject
+	])
+
 	const diagnosisOptions = ref<DiagnosisOption[]>([
 		{ id: "resp", title: "上呼吸道感染", category: "全部诊断" } as DiagnosisOption,
 		{ id: "gastro", title: "急性胃肠炎", category: "全部诊断" } as DiagnosisOption,
@@ -471,9 +559,15 @@
 	const medicineValue = ref<any[]>([] as any[])
 	const medicineText = ref<string[]>([] as string[])
 	const dosage = ref<string>("")
-	const route = ref<string>("口服")
-	const frequency = ref<string>("1/日")
+	const doseUnitValue = ref<any[]>([] as any[])
+	const doseUnitText = ref<string[]>([] as string[])
+	const routeValue = ref<any[]>(["oral"] as any[])
+	const routeText = ref<string[]>(["口服"] as string[])
+	const frequencyValue = ref<any[]>(["qd"] as any[])
+	const frequencyText = ref<string[]>(["1/日"] as string[])
 	const amount = ref<string>("")
+	const amountUnitValue = ref<any[]>([] as any[])
+	const amountUnitText = ref<string[]>([] as string[])
 	const disposeWayValue = ref<any[]>([] as any[])
 	const disposeWayText = ref<string[]>([] as string[])
 	const disposeRemark = ref<string>("")
@@ -585,9 +679,15 @@
 		medicineValue.value = [] as any[]
 		medicineText.value = [] as string[]
 		dosage.value = ""
-		route.value = "口服"
-		frequency.value = "1/日"
+		doseUnitValue.value = [] as any[]
+		doseUnitText.value = [] as string[]
+		routeValue.value = ["oral"] as any[]
+		routeText.value = ["口服"] as string[]
+		frequencyValue.value = ["qd"] as any[]
+		frequencyText.value = ["1/日"] as string[]
 		amount.value = ""
+		amountUnitValue.value = [] as any[]
+		amountUnitText.value = [] as string[]
 		disposeWayValue.value = [] as any[]
 		disposeWayText.value = [] as string[]
 		disposeRemark.value = ""
@@ -676,6 +776,15 @@
 		border-radius: 3px;
 		background-color: #2f6df6;
 		margin-right: 8px;
+	}
+
+	.unit_select_trigger {
+		width: 78px;
+		height: 38px;
+		padding-right: 6px;
+		border-left-width: 1px;
+		border-left-style: solid;
+		border-left-color: #e1ebf5;
 	}
 
 	.diagnosis_preview {
