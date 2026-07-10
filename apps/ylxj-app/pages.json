@@ -14,7 +14,14 @@
       "style": {
         "navigationBarTitleText": "uni-app x"
       }
-    }
+		},
+		{
+			"path": "pages/form-before/form-before",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom"
+			}
+		}
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

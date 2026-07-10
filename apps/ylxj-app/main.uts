@@ -12,8 +12,10 @@ export function createApp() {
 	app.use(xui,
 		{
 			config: {
+				color: "#0c796c",
+				"theme": new Map<string, string>([["primary", "#0c796c"]])
 				designSize: 1440,
-        maximumCalculatedSize: 2200,
+				maximumCalculatedSize: 2200,
 			}, // 可选，tmui主题配置
 			i18nOptions: null // 可选，多语言配置
 		} as Tmui4xOptions
