@@ -402,82 +402,12 @@
 			</x-sheet>
 		</view>
 
-		<x-modal v-model:show="diagnosisModalShow" title="添加诊断类型" width="560" height="530" round="18" content-padding="18"
-			confirm-text="确定添加" cancel-text="取消" :show-close="true" :show-footer="false" :overlay-click="true">
-			<view class="diagnosis_modal">
-				<view class="diagnosis_preview pa-14">
-					<x-text font-size="14" color="#7a8da6" _class="text-weight-b">诊断组合与预览</x-text>
-					<view class="flex-row mt-12">
-						<view class="flex-1">
-							<x-text font-size="13" color="#52647d">前缀修饰词</x-text>
-							<x-input v-model="diagnosisPrefix" height="40" round="12" color="#f7fbff" font-size="14"
-								placeholder="如：疑似、拟" placeholder-style="color:#9aa8be" input-padding="8px 12px"
-								_class="round-a-12 overflow"></x-input>
-						</view>
-						<view class="flex-2 ml-12">
-							<x-text font-size="13" color="#52647d">选定类型</x-text>
-							<x-sheet width="100%" height="40" color="#f7fbff" :round="12" :margin="[0]" :padding="[12,0,12,0]">
-								<view class="fulled-height flex-row flex-row-center-start">
-									<x-text font-size="14"
-										:color="selectedDiagnosisName == '' ? '#9aa8be' : '#243a55'">{{ selectedDiagnosisName == "" ? "请从下方选择诊断类型..." : selectedDiagnosisName }}</x-text>
-								</view>
-							</x-sheet>
-						</view>
-					</view>
-					<view class="flex-row flex-row-center-start mt-12">
-						<x-text font-size="13" color="#52647d">快速词：</x-text>
-						<x-button width="54" height="28" round="8" :skin="diagnosisPrefix == '疑似' ? 'default' : 'thin'"
-							color="success" font-size="13" @click="setDiagnosisPrefix('疑似')">疑似</x-button>
-						<x-button class="ml-8" width="48" height="28" round="8" :skin="diagnosisPrefix == '拟' ? 'default' : 'thin'"
-							color="success" font-size="13" @click="setDiagnosisPrefix('拟')">拟</x-button>
-						<x-button class="ml-8" width="54" height="28" round="8" :skin="diagnosisPrefix == '待查' ? 'default' : 'thin'"
-							color="success" font-size="13" @click="setDiagnosisPrefix('待查')">待查</x-button>
-						<x-button class="ml-8" width="58" height="28" round="8" color="#ffffff" font-color="#7a8da6" border="1"
-							border-color="#dbe7f3" font-size="13" @click="setDiagnosisPrefix('')">清除</x-button>
-					</view>
-					<view class="diagnosis_result flex-row flex-row-center-between mt-14 px-10">
-						<x-text font-size="14" color="#243a55" _class="text-weight-b">效果预览：</x-text>
-						<x-tag color="success" skin="thin" :round="10" font-size="13">{{ getDiagnosisPreview() }}</x-tag>
-					</view>
-				</view>
-
-				<x-input v-model="diagnosisSearch" height="40" round="12" left-icon="search-line" icon-color="#9aa8be"
-					color="#f7fbff" font-size="14" placeholder="请输入内容检索全部诊断" placeholder-style="color:#9aa8be"
-					input-padding="8px 12px" _class="round-a-12 overflow mt-14"></x-input>
-
-				<view class="flex-row flex-row-center-start mt-16 mb-12">
-					<x-button width="78" height="30" round="8" :skin="diagnosisCategory == '全部诊断' ? 'default' : 'text'"
-						color="success" font-size="14" @click="setDiagnosisCategory('全部诊断')">全部诊断</x-button>
-					<x-button class="ml-8" width="66" height="30" round="8"
-						:skin="diagnosisCategory == '老年病' ? 'default' : 'text'" color="success" font-size="14"
-						@click="setDiagnosisCategory('老年病')">老年病</x-button>
-					<x-button class="ml-8" width="66" height="30" round="8"
-						:skin="diagnosisCategory == '皮肤病' ? 'default' : 'text'" color="success" font-size="14"
-						@click="setDiagnosisCategory('皮肤病')">皮肤病</x-button>
-				</view>
-
-				<view class="diagnosis_grid flex-row flex-wrap">
-					<x-button v-for="item in getDiagnosisRenderList()" :key="item.id" width="48%" height="42" round="11"
-						:skin="selectedDiagnosisId == item.id ? 'default' : 'thin'" color="success" font-size="14"
-						class="mr-10 mb-10" @click="selectDiagnosis(item)">{{ item.title }}</x-button>
-				</view>
-				<view class="flex-row flex-row-center-end mt-10">
-					<x-button width="88" height="40" round="12" color="#ffffff" font-color="#3d5876" border="1"
-						border-color="#dbe7f3" font-size="14" @click="closeDiagnosisModal">取消</x-button>
-					<x-button class="ml-12" width="112" height="40" round="12" color="primary" font-size="14" font-weight="bold"
-						@click="confirmDiagnosis">确定添加</x-button>
-				</view>
-			</view>
-		</x-modal>
+		<diagnosis-dialog v-model:show="diagnosisModalShow" @confirm="confirmDiagnosis"></diagnosis-dialog>
 	</view>
 </template>
 
 <script setup lang="uts">
-	type DiagnosisOption = {
-		id : string,
-		title : string,
-		category : string
-	}
+	import DiagnosisDialog from "./diagnosis-dialog.uvue"
 
 	type CachedPatient = {
 		id : string,
@@ -567,17 +497,6 @@
 		{ id: "tube", text: "支" } as UTSJSONObject
 	])
 
-	const diagnosisOptions = ref<DiagnosisOption[]>([
-		{ id: "resp", title: "上呼吸道感染", category: "全部诊断" } as DiagnosisOption,
-		{ id: "gastro", title: "急性胃肠炎", category: "全部诊断" } as DiagnosisOption,
-		{ id: "skin-injury", title: "皮肤外伤", category: "皮肤病" } as DiagnosisOption,
-		{ id: "hypertension", title: "高血压", category: "老年病" } as DiagnosisOption,
-		{ id: "diabetes", title: "糖尿病", category: "老年病" } as DiagnosisOption,
-		{ id: "cold-fever", title: "感冒发热", category: "全部诊断" } as DiagnosisOption,
-		{ id: "eczema", title: "泛发性湿疹", category: "皮肤病" } as DiagnosisOption,
-		{ id: "spasm", title: "寻常痉挛", category: "全部诊断" } as DiagnosisOption
-	])
-
 	const patientName = ref<string>("")
 	const idCard = ref<string>("")
 	const phone = ref<string>("")
@@ -591,11 +510,6 @@
 	const diagnosisTags = ref<string[]>([] as string[])
 	const diagnosisRemark = ref<string>("")
 	const diagnosisModalShow = ref<boolean>(false)
-	const diagnosisPrefix = ref<string>("疑似")
-	const diagnosisSearch = ref<string>("")
-	const diagnosisCategory = ref<string>("全部诊断")
-	const selectedDiagnosisId = ref<string>("")
-	const selectedDiagnosisName = ref<string>("")
 
 	function createMedicineRow(id : string) : MedicineRow {
 		return {
@@ -645,16 +559,6 @@
 		return "未添加诊断"
 	}
 
-	function getDiagnosisPreview() : string {
-		if (selectedDiagnosisName.value == "") {
-			return "请选择诊断类型"
-		}
-		if (diagnosisPrefix.value == "") {
-			return selectedDiagnosisName.value
-		}
-		return diagnosisPrefix.value + " " + selectedDiagnosisName.value
-	}
-
 	function setGender(value : string) : void {
 		gender.value = value
 	}
@@ -669,46 +573,7 @@
 		diagnosisModalShow.value = true
 	}
 
-	function closeDiagnosisModal() : void {
-		diagnosisModalShow.value = false
-	}
-
-	function setDiagnosisPrefix(value : string) : void {
-		diagnosisPrefix.value = value
-	}
-
-	function setDiagnosisCategory(value : string) : void {
-		diagnosisCategory.value = value
-	}
-
-	function selectDiagnosis(item : DiagnosisOption) : void {
-		selectedDiagnosisId.value = item.id
-		selectedDiagnosisName.value = item.title
-	}
-
-	function getDiagnosisRenderList() : DiagnosisOption[] {
-		const keyword = diagnosisSearch.value.trim()
-		let result = [] as DiagnosisOption[]
-		for (let i = 0; i < diagnosisOptions.value.length; i++) {
-			const item = diagnosisOptions.value[i]
-			const matchCategory = diagnosisCategory.value == "全部诊断" || item.category == diagnosisCategory.value
-			const matchKeyword = keyword == "" || item.title.indexOf(keyword) > -1
-			if (matchCategory && matchKeyword) {
-				result.push(item)
-			}
-		}
-		return result
-	}
-
-	function confirmDiagnosis() : void {
-		const label = getDiagnosisPreview()
-		if (selectedDiagnosisName.value == "") {
-			uni.showToast({
-				title: "请先选择诊断类型",
-				icon: "none"
-			})
-			return
-		}
+	function confirmDiagnosis(label : string) : void {
 		diagnosisTags.value.push(label)
 		diagnosisTags.value = diagnosisTags.value.slice(0)
 		diagnosisModalShow.value = false
@@ -777,9 +642,7 @@
 		disposeRowSeed = 1
 		medicineRows.value = [createMedicineRow("medicine_1")] as MedicineRow[]
 		disposeRows.value = [createDisposeRow("dispose_1")] as DisposeRow[]
-		selectedDiagnosisId.value = ""
-		selectedDiagnosisName.value = ""
-		diagnosisSearch.value = ""
+		diagnosisModalShow.value = false
 	}
 
 	function cacheCurrentAndNext() : void {
@@ -873,22 +736,4 @@
 		border-left-color: #e1ebf5;
 	}
 
-	.diagnosis_preview {
-		border-width: 1px;
-		border-style: solid;
-		border-color: #e0e9f5;
-		border-radius: 14px;
-		background-color: #f7faff;
-	}
-
-	.diagnosis_result {
-		height: 38px;
-		border-top-width: 1px;
-		border-top-style: solid;
-		border-top-color: #e6eef8;
-	}
-
-	.diagnosis_grid {
-		height: 178px;
-	}
 </style>

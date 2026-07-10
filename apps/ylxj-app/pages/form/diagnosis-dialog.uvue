@@ -1,0 +1,326 @@
+<template>
+	<x-overlay :show="props.show" :overlay-click="true" :z-index="1300" :duration="260"
+		custom-style="background-color:rgba(11, 31, 45, 0.42);display:flex;align-items:center;justify-content:center;"
+		@update:show="handleOverlayShow">
+		<x-sheet width="660" height="560" color="#ffffff" :round="24" :margin="[0]" :padding="[0]" :border="1"
+			:border-color="['#dfeaf5']" :shadow="['0','16','rgba(24, 61, 96, 0.16)']">
+			<view class="diagnosis_dialog fulled-height flex-col">
+				<view class="diagnosis_header flex-row flex-row-center-between">
+					<view class="flex-row flex-row-center-start">
+						<view class="diagnosis_icon flex-center">
+							<x-icon name="pulse-line" font-size="23" color="#ffffff"></x-icon>
+						</view>
+						<view class="ml-12">
+							<x-text font-size="22" color="#16233a" _class="text-weight-b">添加诊断</x-text>
+							<x-text font-size="13" color="#7d8fa8" class="mt-3">选择诊断类型，可添加疑似、拟诊等前缀</x-text>
+						</view>
+					</view>
+					<x-button width="36" height="36" round="12" color="#f7fbff" font-color="#6d7f96" icon="close-line"
+						icon-size="20" :icon-btn="true" @click="closeDialog"></x-button>
+				</view>
+
+				<view class="dialog_body flex-1 flex-col">
+					<view class="selected_panel pa-16">
+						<view class="flex-row flex-row-center-between">
+							<view>
+								<x-text font-size="13" color="#6f829b" _class="text-weight-b">当前预览</x-text>
+								<x-text font-size="20" color="#153d4a" _class="text-weight-b"
+									class="mt-7">{{ getDiagnosisPreview() }}</x-text>
+							</view>
+							<x-tag color="#0b7d73" bg-color="#e6f4f2" font-color="#0b645c" border-color="#cce7e3" skin="thin"
+								:round="10" font-size="12">诊断组合</x-tag>
+						</view>
+						<view class="flex-row flex-row-center-start mt-14">
+							<x-text font-size="13" color="#6f829b">前缀：</x-text>
+							<x-button v-for="item in prefixOptions" :key="item.id" class="ml-8" :width="item.width" height="30"
+								round="9" :color="prefix == item.value ? '#0b7d73' : item.color"
+								:font-color="prefix == item.value ? '#ffffff' : item.fontColor" border="1"
+								:border-color="prefix == item.value ? '#0b7d73' : item.borderColor" font-size="13"
+								@click="setPrefix(item.value)">{{ item.title }}</x-button>
+						</view>
+					</view>
+
+					<view class="flex-row mt-14">
+						<view class="prefix_input">
+							<x-input v-model="prefix" height="42" round="12" color="#f6fafc" font-size="14" placeholder="自定义前缀"
+								placeholder-style="color:#9aa8be" input-padding="8px 12px" _class="round-a-12 overflow"></x-input>
+						</view>
+						<view class="flex-1 ml-12">
+							<x-input v-model="search" height="42" round="12" left-icon="search-line" icon-color="#9aa8be"
+								color="#f6fafc" font-size="14" placeholder="搜索诊断类型" placeholder-style="color:#9aa8be"
+								input-padding="8px 12px" _class="round-a-12 overflow"></x-input>
+						</view>
+					</view>
+
+					<view class="category_tabs mt-14">
+						<x-tabs v-model="category" :list="categoryTabs" width="100%" height="38" round="12" item-width="33.33%"
+							color="#edf6f7" active-title-color="#0b7d73" title-color="#64788f" line-color="#0b7d73"
+							:show-line="false" font-size="14" active-font-size="14"
+							item-active-style="background-color:#ffffff;border-radius:12px;"
+							text-active-style="font-weight:700;"></x-tabs>
+					</view>
+
+					<scroll-view scroll-y="true" class="diagnosis_list mt-14">
+						<view class="flex-row flex-wrap">
+							<view v-for="item in getRenderList()" :key="item.id" class="diagnosis_option mb-10">
+								<x-button width="100%" height="46" round="13" :color="selectedId == item.id ? '#0b7d73' : '#f0f8f6'"
+									:font-color="selectedId == item.id ? '#ffffff' : '#1d6c62'" border="1"
+									:border-color="selectedId == item.id ? '#0b7d73' : '#d9eee9'" font-size="14"
+									@click="selectDiagnosis(item)">{{ item.title }}</x-button>
+							</view>
+						</view>
+						<view v-if="getRenderList().length == 0" class="empty_result flex-center">
+							<x-text font-size="14" color="#8b9ab0">没有匹配的诊断类型</x-text>
+						</view>
+					</scroll-view>
+				</view>
+
+				<view class="dialog_footer flex-row flex-row-center-between">
+					<x-text font-size="13" color="#8293aa">确认后会加入当前人员的诊断标签，可继续添加多个诊断</x-text>
+					<view class="flex-row flex-row-center-end">
+						<x-button width="92" height="42" round="13" color="#ffffff" font-color="#3d5876" border="1"
+							border-color="#dbe7f3" font-size="14" @click="closeDialog">取消</x-button>
+						<x-button class="ml-12" width="118" height="42" round="13" color="#0b7d73" font-color="#ffffff"
+							font-size="14" font-weight="bold" icon="add-circle-fill" icon-size="17"
+							@click="confirmDiagnosis">添加诊断</x-button>
+					</view>
+				</view>
+			</view>
+		</x-sheet>
+	</x-overlay>
+</template>
+
+<script setup lang="uts">
+	import { TABS_ITEM_INFO } from "@/uni_modules/tmx-ui/interface.uts"
+
+	type DiagnosisOption = {
+		id : string,
+		title : string,
+		category : string
+	}
+
+	type DiagnosisDialogProps = {
+		show : boolean
+	}
+
+	type PrefixOption = {
+		id : string,
+		title : string,
+		value : string,
+		width : string,
+		color : string,
+		fontColor : string,
+		borderColor : string
+	}
+
+	defineOptions({ name: "DiagnosisDialog", styleIsolation: 'app' })
+
+	const props = withDefaults(defineProps<DiagnosisDialogProps>(), {
+		show: false
+	})
+
+	const emit = defineEmits<{
+		"update:show" : [value: boolean],
+		confirm : [value: string]
+	}>()
+
+	const allCategoryTab : TABS_ITEM_INFO = { id: "全部诊断", title: "全部诊断" } as TABS_ITEM_INFO
+	const elderlyCategoryTab : TABS_ITEM_INFO = { id: "老年病", title: "老年病" } as TABS_ITEM_INFO
+	const skinCategoryTab : TABS_ITEM_INFO = { id: "皮肤病", title: "皮肤病" } as TABS_ITEM_INFO
+	const categoryTabs = ref<TABS_ITEM_INFO[]>([
+		allCategoryTab,
+		elderlyCategoryTab,
+		skinCategoryTab
+	])
+
+	const prefixOptions = ref<PrefixOption[]>([
+		{
+			id: "suspected",
+			title: "疑似",
+			value: "疑似",
+			width: "54",
+			color: "#eaf5f2",
+			fontColor: "#2e6a62",
+			borderColor: "#d6ebe7"
+		} as PrefixOption,
+		{
+			id: "planned",
+			title: "拟",
+			value: "拟",
+			width: "48",
+			color: "#eaf5f2",
+			fontColor: "#2e6a62",
+			borderColor: "#d6ebe7"
+		} as PrefixOption,
+		{
+			id: "pending",
+			title: "待查",
+			value: "待查",
+			width: "54",
+			color: "#eaf5f2",
+			fontColor: "#2e6a62",
+			borderColor: "#d6ebe7"
+		} as PrefixOption,
+		{
+			id: "none",
+			title: "无前缀",
+			value: "",
+			width: "58",
+			color: "#ffffff",
+			fontColor: "#75869c",
+			borderColor: "#dbe7f3"
+		} as PrefixOption
+	])
+
+	const diagnosisOptions = ref<DiagnosisOption[]>([
+		{ id: "resp", title: "上呼吸道感染", category: "全部诊断" } as DiagnosisOption,
+		{ id: "gastro", title: "急性胃肠炎", category: "全部诊断" } as DiagnosisOption,
+		{ id: "skin-injury", title: "皮肤外伤", category: "皮肤病" } as DiagnosisOption,
+		{ id: "hypertension", title: "高血压", category: "老年病" } as DiagnosisOption,
+		{ id: "diabetes", title: "糖尿病", category: "老年病" } as DiagnosisOption,
+		{ id: "cold-fever", title: "感冒发热", category: "全部诊断" } as DiagnosisOption,
+		{ id: "eczema", title: "泛发性湿疹", category: "皮肤病" } as DiagnosisOption,
+		{ id: "spasm", title: "寻常痉挛", category: "全部诊断" } as DiagnosisOption
+	])
+
+	const prefix = ref<string>("疑似")
+	const search = ref<string>("")
+	const category = ref<string>("全部诊断")
+	const selectedId = ref<string>("")
+	const selectedName = ref<string>("")
+
+	function resetDialog() : void {
+		prefix.value = "疑似"
+		search.value = ""
+		category.value = "全部诊断"
+		selectedId.value = ""
+		selectedName.value = ""
+	}
+
+	function getDiagnosisPreview() : string {
+		if (selectedName.value == "") {
+			return "请选择诊断类型"
+		}
+		if (prefix.value.trim() == "") {
+			return selectedName.value
+		}
+		return prefix.value.trim() + " " + selectedName.value
+	}
+
+	function setPrefix(value : string) : void {
+		prefix.value = value
+	}
+
+	function selectDiagnosis(item : DiagnosisOption) : void {
+		selectedId.value = item.id
+		selectedName.value = item.title
+	}
+
+	function getRenderList() : DiagnosisOption[] {
+		const keyword = search.value.trim()
+		let result = [] as DiagnosisOption[]
+		for (let i = 0; i < diagnosisOptions.value.length; i++) {
+			const item = diagnosisOptions.value[i]
+			const matchCategory = category.value == "全部诊断" || item.category == category.value
+			const matchKeyword = keyword == "" || item.title.indexOf(keyword) > -1
+			if (matchCategory && matchKeyword) {
+				result.push(item)
+			}
+		}
+		return result
+	}
+
+	function closeDialog() : void {
+		emit("update:show", false)
+		resetDialog()
+	}
+
+	function handleOverlayShow(value : boolean) : void {
+		emit("update:show", value)
+		if (value == false) {
+			resetDialog()
+		}
+	}
+
+	function confirmDiagnosis() : void {
+		if (selectedName.value == "") {
+			uni.showToast({
+				title: "请先选择诊断类型",
+				icon: "none"
+			})
+			return
+		}
+		emit("confirm", getDiagnosisPreview())
+		emit("update:show", false)
+		resetDialog()
+	}
+</script>
+
+<style>
+	.diagnosis_dialog {
+		overflow: hidden;
+	}
+
+	.diagnosis_header {
+		height: 82px;
+		padding: 0px 22px;
+		border-bottom-width: 1px;
+		border-bottom-style: solid;
+		border-bottom-color: #e3edf2;
+		background-color: #fbfdff;
+	}
+
+	.diagnosis_icon {
+		width: 46px;
+		height: 46px;
+		border-radius: 15px;
+		background-color: #0b7d73;
+	}
+
+	.dialog_body {
+		padding: 18px 22px 0px 22px;
+		background-color: #ffffff;
+	}
+
+	.selected_panel {
+		border-width: 1px;
+		border-style: solid;
+		border-color: #d4e6ee;
+		border-radius: 18px;
+		background-color: #f5fafb;
+	}
+
+	.prefix_input {
+		width: 150px;
+	}
+
+	.category_tabs {
+		padding: 3px;
+		border-radius: 14px;
+		background-color: #edf6f7;
+	}
+
+	.diagnosis_list {
+		height: 184px;
+	}
+
+	.diagnosis_option {
+		width: 48%;
+		margin-right: 10px;
+	}
+
+	.empty_result {
+		height: 110px;
+		border-radius: 16px;
+		background-color: #f6fafc;
+	}
+
+	.dialog_footer {
+		height: 70px;
+		padding: 0px 22px;
+		border-top-width: 1px;
+		border-top-style: solid;
+		border-top-color: #e3edf2;
+		background-color: #f8fbfd;
+	}
+</style>
