@@ -33,6 +33,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     columns: useColumns(),
     exportConfig: {
+      type: "xlsx",
       filename: "巡诊记录",
       sheetName: "巡诊记录",
     },

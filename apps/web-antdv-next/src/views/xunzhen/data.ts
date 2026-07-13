@@ -637,6 +637,11 @@ export function useColumns(): VxeTableGridColumns<XunzhenRecord> {
       width: 140,
     },
     {
+      field: "soldierId",
+      title: "ID号",
+      width: 120,
+    },
+    {
       field: "patientName",
       title: "患者姓名",
       width: 120,

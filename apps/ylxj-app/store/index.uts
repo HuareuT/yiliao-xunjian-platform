@@ -1,0 +1,13 @@
+export type State = {
+  beforeFormData: {},
+  formCacheData: {}
+
+}
+export const state = reactive({ beforeFormData: {}, formCacheData: {} } as State)
+
+export const setBeforeFormData = (data: any) => {
+  state.beforeFormData = data
+}
+export const setFormCacheData = (data: any) => {
+  state.formCacheData = data
+}

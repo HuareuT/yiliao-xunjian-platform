@@ -200,9 +200,20 @@
 		})
 	}
 
+	function getFirstText(values : string[], fallback : string) : string {
+		if (values.length > 0) {
+			return values[0]
+		}
+		return fallback
+	}
+
 	function submitBeforeForm() : void {
+		const supportType = encodeURIComponent(getFirstText(supportTypeText.value, "未选择类型"))!
+		const supportPlace = encodeURIComponent(getFirstText(supportPlaceText.value, "未选择地点"))!
+		const supportPeopleValue = encodeURIComponent(supportPeople.value.trim() == "" ? "0" : supportPeople.value.trim())!
+		const supportTargetValue = encodeURIComponent(supportTarget.value.trim() == "" ? "未填写对象" : supportTarget.value.trim())!
 		uni.navigateTo({
-			url: "/pages/form/form"
+			url: "/pages/form/form?supportType=" + supportType + "&supportPlace=" + supportPlace + "&supportPeople=" + supportPeopleValue + "&supportTarget=" + supportTargetValue
 		})
 	}
 </script>
