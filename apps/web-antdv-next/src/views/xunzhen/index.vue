@@ -1,20 +1,25 @@
 <script lang="ts" setup>
-import type { XunzhenRecord } from "./data";
+import type { XunzhenRecord } from './data';
 
-import type { VxeTableGridOptions } from "#/adapter/vxe-table";
+import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 
-import { ref } from "vue";
+import { ref } from 'vue';
 
-import { Page, useVbenDrawer } from "@vben/common-ui";
+import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { RadioGroup } from "antdv-next";
+import { RadioGroup } from 'antdv-next';
 
-import { useVbenVxeGrid, VbenTableAction } from "#/adapter/vxe-table";
+import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 
-import { campusOptions, getMockXunzhenList, useColumns, useGridFormSchema } from "./data";
-import Detail from "./modules/detail.vue";
+import {
+  campusOptions,
+  getMockXunzhenList,
+  useColumns,
+  useGridFormSchema,
+} from './data';
+import Detail from './modules/detail.vue';
 
-const activeCampus = ref("大学城");
+const activeCampus = ref('大学城');
 
 const [DetailDrawer, detailDrawerApi] = useVbenDrawer({
   connectedComponent: Detail,
@@ -33,11 +38,16 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     columns: useColumns(),
     exportConfig: {
-      type: "xlsx",
-      filename: "巡诊记录",
-      sheetName: "巡诊记录",
+      types: ['xlsx', 'csv'],
+      type: 'xlsx',
+      filename: '巡诊记录',
+      sheetName: '巡诊记录',
+      // remote: true,
+      // async exportMethod({ options }) {
+      //   console.log(options);
+      // },
     },
-    height: "auto",
+    height: 'auto',
     keepSource: true,
     proxyConfig: {
       ajax: {
@@ -52,7 +62,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       },
     },
     rowConfig: {
-      keyField: "id",
+      keyField: 'id',
     },
     toolbarConfig: {
       custom: true,
@@ -70,14 +80,6 @@ function onDetail(row: XunzhenRecord) {
 
 function onCampusChange() {
   gridApi.query();
-}
-
-function onExport() {
-  gridApi.grid?.exportData({
-    filename: `${activeCampus.value}巡诊记录`,
-    sheetName: `${activeCampus.value}巡诊记录`,
-    type: "xlsx",
-  });
 }
 </script>
 

@@ -1,4 +1,4 @@
-import { baseRequestClient } from "#/api/request";
+import { baseRequestClient } from '#/api/request';
 
 export namespace AuthApi {
   /** 登录接口参数 */
@@ -21,18 +21,20 @@ export namespace AuthApi {
 /**
  * 登录
  */
-export async function loginApi(data: AuthApi.LoginParams) {
+export async function loginApi(
+  _data: AuthApi.LoginParams,
+): Promise<AuthApi.LoginResult> {
   // return requestClient.post<AuthApi.LoginResult>("/auth/login", data);
-  return new Promise((resolve) => {
+  return new Promise<any>((resolve) => {
     setTimeout(() => {
       resolve({
         id: 0,
-        password: "123456",
-        realName: "Vben",
-        roles: ["super"],
-        username: "vben",
+        password: '123456',
+        realName: 'Vben',
+        roles: ['super'],
+        username: 'vben',
         accessToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwicGFzc3dvcmQiOiIxMjM0NTYiLCJyZWFsTmFtZSI6IlZiZW4iLCJyb2xlcyI6WyJzdXBlciJdLCJ1c2VybmFtZSI6InZiZW4iLCJpYXQiOjE3ODI0NDU0MDEsImV4cCI6MTc4MzA1MDIwMX0.B_r-qx8r_JFUDHBi8DhQJWG6nAyskJsNlrZW5SrO90w",
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwicGFzc3dvcmQiOiIxMjM0NTYiLCJyZWFsTmFtZSI6IlZiZW4iLCJyb2xlcyI6WyJzdXBlciJdLCJ1c2VybmFtZSI6InZiZW4iLCJpYXQiOjE3ODI0NDU0MDEsImV4cCI6MTc4MzA1MDIwMX0.B_r-qx8r_JFUDHBi8DhQJWG6nAyskJsNlrZW5SrO90w',
       });
     }, 800);
   });
@@ -42,7 +44,7 @@ export async function loginApi(data: AuthApi.LoginParams) {
  * 刷新accessToken
  */
 export async function refreshTokenApi() {
-  return baseRequestClient.post<AuthApi.RefreshTokenResult>("/auth/refresh", {
+  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refresh', {
     withCredentials: true,
   });
 }
@@ -56,16 +58,16 @@ export async function logoutApi() {
   // });
 
   return new Promise((resolve) => {
-    resolve("");
+    resolve('');
   });
 }
 
 /**
  * 获取用户权限码
  */
-export async function getAccessCodesApi() {
+export async function getAccessCodesApi(): Promise<string[]> {
   // return requestClient.get<string[]>("/auth/codes");
-  return new Promise((resolve) => {
-    resolve(["AC_100100", "AC_100110", "AC_100120", "AC_100010"]);
+  return new Promise<any>((resolve) => {
+    resolve(['AC_100100', 'AC_100110', 'AC_100120', 'AC_100010']);
   });
 }

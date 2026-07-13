@@ -1,27 +1,27 @@
 <script lang="ts" setup>
-import type { Recordable } from "@vben/types";
+import type { Recordable } from '@vben/types';
 
-import type { VxeTableGridOptions } from "#/adapter/vxe-table";
-import type { SystemDeptApi, SystemUserApi } from "#/api";
+import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { SystemDeptApi, SystemUserApi } from '#/api';
 
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from 'vue';
 
-import { Page, useVbenDrawer } from "@vben/common-ui";
-import { Plus } from "@vben/icons";
+import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Plus } from '@vben/icons';
 
-import { Button, message, Modal } from "antdv-next";
+import { Button, message, Modal } from 'antdv-next';
 
-import { useVbenVxeGrid, VbenTableAction } from "#/adapter/vxe-table";
-import { deleteUser, getDeptList, getUserList, updateUser } from "#/api";
-import { $t } from "#/locales";
+import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
+import { deleteUser, getDeptList, getUserList, updateUser } from '#/api';
+import { $t } from '#/locales';
 
-import { useColumns, useGridFormSchema } from "./data";
-import Detail from "./modules/detail.vue";
-import Form from "./modules/form.vue";
+import { useColumns, useGridFormSchema } from './data';
+import Detail from './modules/detail.vue';
+import Form from './modules/form.vue';
 
 const deptList = ref<SystemDeptApi.SystemDept[]>([]);
-const inputSearchValue = ref("");
-const selectedDeptId = ref<string>("");
+const inputSearchValue = ref('');
+const selectedDeptId = ref<string>('');
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
@@ -35,13 +35,13 @@ const [DetailDrawer, detailDrawerApi] = useVbenDrawer({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    fieldMappingTime: [["createTime", ["startTime", "endTime"]]],
+    fieldMappingTime: [['createTime', ['startTime', 'endTime']]],
     schema: useGridFormSchema(),
     submitOnChange: true,
   },
   gridOptions: {
     columns: useColumns(onStatusChange),
-    height: "auto",
+    height: 'auto',
     keepSource: true,
     proxyConfig: {
       ajax: {
@@ -56,7 +56,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       },
     },
     rowConfig: {
-      keyField: "id",
+      keyField: 'id',
     },
 
     toolbarConfig: {
@@ -79,7 +79,7 @@ function confirm(content: string, title: string) {
     Modal.confirm({
       content,
       onCancel() {
-        reject(new Error("已取消"));
+        reject(new Error('已取消'));
       },
       onOk() {
         reslove(true);
@@ -95,10 +95,13 @@ function confirm(content: string, title: string) {
  * @param row 行数据
  * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
  */
-async function onStatusChange(newStatus: number, row: SystemUserApi.SystemUser) {
+async function onStatusChange(
+  newStatus: number,
+  row: SystemUserApi.SystemUser,
+) {
   const status: Recordable<string> = {
-    0: "禁用",
-    1: "启用",
+    0: '禁用',
+    1: '启用',
   };
   try {
     await confirm(
@@ -122,15 +125,15 @@ function onDetail(row: SystemUserApi.SystemUser) {
 
 function onDelete(row: SystemUserApi.SystemUser) {
   const hideLoading = message.loading({
-    content: $t("ui.actionMessage.deleting", [row.name]),
+    content: $t('ui.actionMessage.deleting', [row.name]),
     duration: 0,
-    key: "action_process_msg",
+    key: 'action_process_msg',
   });
   deleteUser(row.id)
     .then(() => {
       message.success({
-        content: $t("ui.actionMessage.deleteSuccess", [row.name]),
-        key: "action_process_msg",
+        content: $t('ui.actionMessage.deleteSuccess', [row.name]),
+        key: 'action_process_msg',
       });
       onRefresh();
     })
@@ -152,14 +155,16 @@ async function loadDeptList() {
     const res = await getDeptList();
     deptList.value = res;
   } catch (error) {
-    console.error("Failed to load department list:", error);
+    console.error('Failed to load department list:', error);
   }
 }
 
+/*
 function selectDept(v: string) {
   selectedDeptId.value = v;
   gridApi.query();
 }
+*/
 
 function searchDept(value: string) {
   if (!value) {
@@ -204,7 +209,7 @@ watch(inputSearchValue, (value) => {
       <template #toolbar-tools>
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t("ui.actionTitle.create", [$t("system.user.name")]) }}
+          {{ $t('ui.actionTitle.create', [$t('system.user.name')]) }}
         </Button>
       </template>
       <template #action="{ row }">
