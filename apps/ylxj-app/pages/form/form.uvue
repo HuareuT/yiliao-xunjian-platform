@@ -234,7 +234,7 @@
 						<view class="mt-12">
 							<view class="flex-row flex-row-center-between mb-12">
 								<view class="flex-row flex-row-center-start">
-									<x-icon name="capsule-line" font-size="16" color="#6ba7ff"></x-icon>
+									<x-icon name="capsule-line" font-size="16" color="#0c796c"></x-icon>
 									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">开药记录</x-text>
 								</view>
 								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
@@ -347,7 +347,7 @@
 
 							<view class="flex-row flex-row-center-between mb-12 mt-12">
 								<view class="flex-row flex-row-center-start">
-									<x-icon name="first-aid-kit-line" font-size="16" color="#6ba7ff"></x-icon>
+									<x-icon name="first-aid-kit-line" font-size="16" color="#0c796c"></x-icon>
 									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">处置记录</x-text>
 								</view>
 								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
@@ -1077,7 +1077,7 @@
 		width: 4px;
 		height: 18px;
 		border-radius: 3px;
-		background-color: #2f6df6;
+		background: linear-gradient(to bottom, #153d4a, #0c796c);
 		margin-right: 8px;
 	}
 
