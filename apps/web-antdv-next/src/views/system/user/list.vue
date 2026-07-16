@@ -6,10 +6,10 @@ import type { SystemDeptApi, SystemUserApi } from '#/api';
 
 import { onMounted, ref, watch } from 'vue';
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Page, Tree, useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { Button, message, Modal } from 'antdv-next';
+import { Button, Card, InputSearch, message, Modal } from 'antdv-next';
 
 import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteUser, getDeptList, getUserList, updateUser } from '#/api';
@@ -159,12 +159,10 @@ async function loadDeptList() {
   }
 }
 
-/*
 function selectDept(v: string) {
   selectedDeptId.value = v;
   gridApi.query();
 }
-*/
 
 function searchDept(value: string) {
   if (!value) {
@@ -189,7 +187,7 @@ watch(inputSearchValue, (value) => {
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
     <DetailDrawer @success="onRefresh" />
-    <!-- <div class="flex size-full">
+    <div class="flex size-full">
       <Card class="w-1/6">
         <InputSearch
           v-model:value="inputSearchValue"
@@ -204,45 +202,45 @@ watch(inputSearchValue, (value) => {
         />
       </Card>
 
-      <div class="w-5/6 ml-4"> -->
-    <Grid :table-title="$t('system.user.list')">
-      <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
-          <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('system.user.name')]) }}
-        </Button>
-      </template>
-      <template #action="{ row }">
-        <VbenTableAction
-          :actions="[
-            {
-              text: $t('common.detail'),
-              icon: 'lucide:eye',
-              onClick: () => onDetail(row),
-            },
-            {
-              text: $t('common.edit'),
-              icon: 'lucide:edit',
-              onClick: () => onEdit(row),
-            },
-          ]"
-          :dropdown-actions="[
-            {
-              text: $t('common.delete'),
-              icon: 'lucide:trash-2',
-              danger: true,
-              popConfirm: {
-                title: $t('ui.actionMessage.deleteConfirm', [row.name]),
-                confirm: () => onDelete(row),
-              },
-              auth: ['AC_100100'],
-            },
-          ]"
-          align="center"
-        />
-      </template>
-    </Grid>
-    <!-- </div> -->
-    <!-- </div> -->
+      <div class="w-5/6 ml-4">
+        <Grid :table-title="$t('system.user.list')">
+          <template #toolbar-tools>
+            <Button type="primary" @click="onCreate">
+              <Plus class="size-5" />
+              {{ $t('ui.actionTitle.create', [$t('system.user.name')]) }}
+            </Button>
+          </template>
+          <template #action="{ row }">
+            <VbenTableAction
+              :actions="[
+                {
+                  text: $t('common.detail'),
+                  icon: 'lucide:eye',
+                  onClick: () => onDetail(row),
+                },
+                {
+                  text: $t('common.edit'),
+                  icon: 'lucide:edit',
+                  onClick: () => onEdit(row),
+                },
+              ]"
+              :dropdown-actions="[
+                {
+                  text: $t('common.delete'),
+                  icon: 'lucide:trash-2',
+                  danger: true,
+                  popConfirm: {
+                    title: $t('ui.actionMessage.deleteConfirm', [row.name]),
+                    confirm: () => onDelete(row),
+                  },
+                  auth: ['AC_100100'],
+                },
+              ]"
+              align="center"
+            />
+          </template>
+        </Grid>
+      </div>
+    </div>
   </Page>
 </template>

@@ -149,6 +149,19 @@ const mockRequest = () => {
               },
               component: '/system/user/list',
             },
+            {
+              id: 204,
+              pid: 2,
+              path: '/system/dept',
+              name: 'SystemDept',
+              status: 1,
+              type: 'menu',
+              meta: {
+                icon: 'lucide:folder',
+                title: '部门管理',
+              },
+              component: '/system/dept/list',
+            },
           ],
         },
       ]);
