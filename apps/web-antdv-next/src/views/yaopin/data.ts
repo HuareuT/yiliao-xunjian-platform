@@ -110,7 +110,7 @@ export function useColumns<T = YaopinRecord>(
       field: 'name',
       fixed: 'left',
       title: '药品名称',
-      width: 180,
+      minWidth: 180,
     },
     {
       field: 'unit',
@@ -124,7 +124,7 @@ export function useColumns<T = YaopinRecord>(
     },
     {
       field: 'manufacturer',
-      minWidth: 180,
+      width: 180,
       title: '厂家',
     },
     {

@@ -117,3 +117,10 @@ function onCampusChange() {
     </Grid>
   </Page>
 </template>
+
+<style scoped>
+:deep(.xunzhen-multi-line-cell .vxe-cell) {
+  line-height: 20px;
+  white-space: pre-line;
+}
+</style>

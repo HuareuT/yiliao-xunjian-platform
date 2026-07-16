@@ -95,8 +95,8 @@
 										<x-text font-size="13" color="#e75c61">*</x-text>
 										<x-text font-size="13" color="#44556d" _class="text-weight-b">姓名</x-text>
 									</view>
-									<x-input v-model="patientName" height="42" round="12" color="#f7fbff" font-size="14"
-										placeholder="输入姓名搜索" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+									<x-input v-model="patientName" height="42" round="12" color="#f7fbff" font-size="18"
+										placeholder="请输入姓名" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
 								<view class="flex-1 ml-16">
@@ -104,7 +104,7 @@
 										<x-text font-size="13" color="#e75c61">*</x-text>
 										<x-text font-size="13" color="#44556d" _class="text-weight-b">身份证号</x-text>
 									</view>
-									<x-input v-model="idCard" type="idcard" height="42" round="12" color="#f7fbff" font-size="14"
+									<x-input v-model="idCard" type="idcard" height="42" round="12" color="#f7fbff" font-size="18"
 										:maxlength="18" placeholder="请输入身份证号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
@@ -113,7 +113,7 @@
 										<x-text font-size="13" color="#e75c61">*</x-text>
 										<x-text font-size="13" color="#44556d" _class="text-weight-b">手机号</x-text>
 									</view>
-									<x-input v-model="phone" type="tel" height="42" round="12" color="#f7fbff" font-size="14"
+									<x-input v-model="phone" type="tel" height="42" round="12" color="#f7fbff" font-size="18"
 										:maxlength="11" placeholder="请输入手机号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
@@ -124,7 +124,7 @@
 									<view class="flex-row flex-row-center-start mb-5">
 										<x-text font-size="13" color="#44556d" _class="text-weight-b">ID号</x-text>
 									</view>
-									<x-input v-model="internalId" height="42" round="12" color="#f7fbff" font-size="14"
+									<x-input v-model="internalId" height="42" round="12" color="#f7fbff" font-size="18"
 										placeholder="内部ID号" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
@@ -141,21 +141,22 @@
 								</view>
 								<view class="flex-1 ml-16">
 									<view class="flex-row flex-row-center-start mb-5">
-										<x-text font-size="13" color="#44556d" _class="text-weight-b">出生地</x-text>
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">单位/部队番号/队别</x-text>
 									</view>
-									<x-input v-model="birthPlace" height="42" round="12" color="#f7fbff" font-size="14"
-										placeholder="请输入出生地" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+									<x-input v-model="unitName" height="42" round="12" color="#f7fbff" font-size="18"
+										placeholder="请输入单位/部队番号/队别" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
+
 							</view>
 
 							<view class="flex-row">
-								<view class="flex-1">
+								<view class="flex-1 ">
 									<view class="flex-row flex-row-center-start mb-5">
-										<x-text font-size="13" color="#44556d" _class="text-weight-b">联系人电话</x-text>
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">出生地</x-text>
 									</view>
-									<x-input v-model="contactPhone" type="tel" height="42" round="12" color="#f7fbff" font-size="14"
-										placeholder="紧急联系人电话" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+									<x-input v-model="birthPlace" height="42" round="12" color="#f7fbff" font-size="18"
+										placeholder="请输入出生地" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
 								<view class="flex-1 ml-16">
@@ -170,7 +171,7 @@
 												:padding="[12,0,12,0]">
 												<view class="fulled-height flex-row flex-row-center-between">
 													<view class="flex-row flex-row-center-start flex-1">
-														<x-text font-size="14"
+														<x-text font-size="18"
 															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "请选择或输入身份类别" : label }}</x-text>
 													</view>
 													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
@@ -181,10 +182,10 @@
 								</view>
 								<view class="flex-1 ml-16">
 									<view class="flex-row flex-row-center-start mb-5">
-										<x-text font-size="13" color="#44556d" _class="text-weight-b">单位/部队番号/队别</x-text>
+										<x-text font-size="13" color="#44556d" _class="text-weight-b">联系人电话</x-text>
 									</view>
-									<x-input v-model="unitName" height="42" round="12" color="#f7fbff" font-size="14"
-										placeholder="请输入单位/部队番号/队别" placeholder-style="color:#9aa8be" input-padding="8px 12px"
+									<x-input v-model="contactPhone" type="tel" height="42" round="12" color="#f7fbff" font-size="18"
+										placeholder="紧急联系人电话" placeholder-style="color:#9aa8be" input-padding="8px 12px"
 										_class="round-a-12 overflow"></x-input>
 								</view>
 							</view>
@@ -198,28 +199,28 @@
 								<view class="title_bar"></view>
 								<x-text font-size="17" color="#16233a" _class="text-weight-b">诊断信息</x-text>
 							</view>
-							<x-button width="112" height="36" round="11" color="success" skin="thin" icon="add-circle-fill"
-								icon-size="17" font-size="14" @click="openDiagnosisModal">添加诊断</x-button>
+							<x-button width="130" height="46" round="11" color="success" skin="thin" icon="add-circle-fill"
+								icon-size="22" font-size="18" @click="openDiagnosisModal">添加诊断</x-button>
 						</view>
 						<view class="mt-14">
 							<view class="flex-row flex-row-center-start mb-10">
 								<view class="flex-row flex-row-center-start flex-wrap">
 									<view v-for="(item, index) in diagnosisTags" :key="index"
 										class="diagnosis_tag flex-row flex-row-center-start mr-8 mb-6">
-										<x-text font-size="13" color="#0f7d74" _class="text-weight-b">{{ item }}</x-text>
+										<x-text font-size="18" color="#0f7d74" _class="text-weight-b">{{ item }}</x-text>
 										<view class="diagnosis_tag_close flex-center ml-6" @click="removeDiagnosis(index)">
 											<x-icon name="close-line" font-size="12" color="#0f7d74"></x-icon>
 										</view>
 									</view>
-									<x-text v-if="diagnosisTags.length == 0" font-size="13" color="#9aa8be">暂无诊断，请点击右上角添加</x-text>
+									<x-text v-if="diagnosisTags.length == 0" font-size="18" color="#9aa8be">暂无诊断，请点击右上角添加</x-text>
 								</view>
 							</view>
 							<view>
 								<view class="flex-row flex-row-center-start mb-5">
-									<x-text font-size="13" color="#44556d" _class="text-weight-b">备注</x-text>
+									<x-text font-size="15" color="#44556d" _class="text-weight-b">备注</x-text>
 								</view>
-								<x-input v-model="diagnosisRemark" type="textarea" height="82" round="12" color="#f7fbff" font-size="14"
-									placeholder="请输入诊断补充说明..." placeholder-style="color:#9aa8be" input-padding="10px 12px"
+								<x-input v-model="diagnosisRemark" type="textarea" height="100" round="12" color="#f7fbff"
+									font-size="18" placeholder="请输入诊断补充说明..." placeholder-style="color:#9aa8be" input-padding="10px 12px"
 									_class="round-a-12 overflow"></x-input>
 							</view>
 						</view>
@@ -235,10 +236,10 @@
 							<view class="flex-row flex-row-center-between mb-12">
 								<view class="flex-row flex-row-center-start">
 									<x-icon name="capsule-line" font-size="16" color="#0c796c"></x-icon>
-									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">开药记录</x-text>
+									<x-text class="ml-6" font-size="15" color="#44556d" _class="text-weight-b">开药记录</x-text>
 								</view>
-								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
-									icon-size="15" font-size="13" @click="addMedicineRow">添加药品</x-button>
+								<x-button width="120" height="40" round="10" color="success" skin="thin" icon="add-circle-fill"
+									icon-size="20" font-size="18" @click="addMedicineRow">添加药品</x-button>
 							</view>
 							<view v-for="(item, index) in medicineRows" :key="item.id" class="process_row flex-row mb-10">
 								<view class="flex-2">
@@ -251,7 +252,7 @@
 												:padding="[10,0,10,0]">
 												<view class="fulled-height flex-row flex-row-center-between">
 													<view class="flex-row flex-row-center-start flex-1">
-														<x-text font-size="13"
+														<x-text font-size="18"
 															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "请选择药品" : label }}</x-text>
 													</view>
 													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
@@ -262,7 +263,7 @@
 								</view>
 								<view class="flex-2 ml-8">
 									<x-input v-model="(item.dosage as string)" type="number" height="38" round="11" color="#f7fbff"
-										font-size="13" placeholder="剂量" placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px"
+										font-size="18" placeholder="剂量" placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px"
 										_class="round-a-11 overflow">
 										<template v-slot:inputRight>
 											<x-picker-selected v-model="(item.doseUnitValue as any[])"
@@ -271,7 +272,7 @@
 												:width-cover-center="true">
 												<template v-slot:default="{ label }">
 													<view class="unit_select_trigger flex-row flex-row-center-end">
-														<x-text font-size="13"
+														<x-text font-size="18"
 															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "单位" : label }}</x-text>
 														<x-icon name="arrow-down-s-line" font-size="18" color="#8da2ba"></x-icon>
 													</view>
@@ -290,7 +291,7 @@
 												:padding="[10,0,10,0]">
 												<view class="fulled-height flex-row flex-row-center-between">
 													<view class="flex-row flex-row-center-start flex-1">
-														<x-text font-size="13"
+														<x-text font-size="18"
 															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "给药途径" : label }}</x-text>
 													</view>
 													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
@@ -309,7 +310,7 @@
 												:padding="[10,0,10,0]">
 												<view class="fulled-height flex-row flex-row-center-between">
 													<view class="flex-row flex-row-center-start flex-1">
-														<x-text font-size="13"
+														<x-text font-size="18"
 															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "频次" : label }}</x-text>
 													</view>
 													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
@@ -320,7 +321,7 @@
 								</view>
 								<view class="flex-2 ml-8">
 									<x-input v-model="(item.amount as string)" type="number" height="38" round="11" color="#f7fbff"
-										font-size="13" placeholder="数量" placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px"
+										font-size="18" placeholder="数量" placeholder-style="color:#9aa8be" input-padding="8px 4px 8px 10px"
 										_class="round-a-11 overflow">
 										<template v-slot:inputRight>
 											<x-picker-selected v-model="(item.amountUnitValue as any[])"
@@ -329,7 +330,7 @@
 												:width-cover-center="true">
 												<template v-slot:default="{ label }">
 													<view class="unit_select_trigger flex-row flex-row-center-end">
-														<x-text font-size="13"
+														<x-text font-size="18"
 															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "单位" : label }}</x-text>
 														<x-icon name="arrow-down-s-line" font-size="18" color="#8da2ba"></x-icon>
 													</view>
@@ -345,13 +346,13 @@
 								</view>
 							</view>
 
-							<view class="flex-row flex-row-center-between mb-12 mt-12">
+							<view class="flex-row flex-row-center-between mb-12 mt-24">
 								<view class="flex-row flex-row-center-start">
 									<x-icon name="first-aid-kit-line" font-size="16" color="#0c796c"></x-icon>
-									<x-text class="ml-6" font-size="13" color="#44556d" _class="text-weight-b">处置记录</x-text>
+									<x-text class="ml-6" font-size="15" color="#44556d" _class="text-weight-b">处置记录</x-text>
 								</view>
-								<x-button width="94" height="32" round="10" color="success" skin="thin" icon="add-circle-fill"
-									icon-size="15" font-size="13" @click="addDisposeRow">添加处置</x-button>
+								<x-button width="120" height="40" round="10" color="success" skin="thin" icon="add-circle-fill"
+									icon-size="20" font-size="18" @click="addDisposeRow">添加处置</x-button>
 							</view>
 							<view v-for="(item, index) in disposeRows" :key="item.id" class="process_row flex-row mb-8">
 								<view class="flex-1">
@@ -364,7 +365,7 @@
 												:padding="[10,0,10,0]">
 												<view class="fulled-height flex-row flex-row-center-between">
 													<view class="flex-row flex-row-center-start flex-1">
-														<x-text font-size="13"
+														<x-text font-size="18"
 															:color="label == '' ? '#9aa8be' : '#243a55'">{{ label == "" ? "请选择处置方式" : label }}</x-text>
 													</view>
 													<x-icon name="arrow-down-s-line" font-size="20" color="#8da2ba"></x-icon>
@@ -374,8 +375,8 @@
 									</x-picker-selected>
 								</view>
 								<view class="flex-1 ml-8">
-									<x-input v-model="(item.disposeRemark as string)" type="textarea" height="72" round="11"
-										color="#f7fbff" font-size="13" placeholder="补充说明" placeholder-style="color:#9aa8be"
+									<x-input v-model="(item.disposeRemark as string)" type="textarea" height="90" round="11"
+										color="#f7fbff" font-size="18" placeholder="补充说明" placeholder-style="color:#9aa8be"
 										input-padding="8px 10px" _class="round-a-11 overflow"></x-input>
 								</view>
 								<view v-if="disposeRows.length > 1" class="ml-8">

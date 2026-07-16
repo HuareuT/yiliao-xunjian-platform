@@ -86,17 +86,30 @@ const mockRequest = () => {
           path: '/baozhang-leixing',
         },
         {
-          id: 10_005,
+          id: 10_006,
           component: 'rizhi/index',
           type: 'menu',
           status: 1,
           meta: {
             icon: 'lucide:history',
-            order: 5,
+            order: 6,
             title: '日志管理',
           },
           name: 'Rizhi',
           path: '/rizhi',
+        },
+        {
+          id: 10_007,
+          component: 'chuzhi/index',
+          type: 'menu',
+          status: 1,
+          meta: {
+            icon: 'lucide:clipboard-list',
+            order: 5,
+            title: '处置方式管理',
+          },
+          name: 'Chuzhi',
+          path: '/chuzhi',
         },
         {
           id: 2,
